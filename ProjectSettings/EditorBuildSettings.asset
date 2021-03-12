@@ -8,4 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/UltimateGridsEngine/Demos/Tactics/Tactics-Demo.unity
     guid: 14723b315a50d464e83bda2bd21bdd86
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 54ee3d2f8c31f4b45a95c722e695e5ce,
+      type: 2}
