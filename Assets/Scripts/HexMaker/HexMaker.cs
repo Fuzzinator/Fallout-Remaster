@@ -63,6 +63,12 @@ public class HexMaker : MonoBehaviour
 
     [SerializeField]
     private List<Coordinates> _coords = new List<Coordinates>();
+    
+    [Header("Navigation")]
+    [SerializeField]
+    private LayerMask _obstaclesLayer = new LayerMask();
+    [SerializeField]
+    private LayerMask _doorsLayer = new LayerMask();
 
     [Header("Interaction")]
     [SerializeField]
@@ -70,6 +76,8 @@ public class HexMaker : MonoBehaviour
 
     [SerializeField]
     private HexHighlighter _highlighterObj;
+    
+    
 
     private readonly List<GameObject> _deleteMe = new List<GameObject>();
 
@@ -323,6 +331,10 @@ public class HexMaker : MonoBehaviour
         {
             var i = _coords.Count;
             var newCoord = new Coordinates(center, x, z, _startTop);
+            var obstacles = Physics.CheckSphere(center, InnerRadius, _obstaclesLayer);
+            
+            newCoord.walkable = !obstacles;
+            
             _coords.Add(newCoord);
             if (_startTop)
             {
@@ -492,6 +504,7 @@ public class HexMaker : MonoBehaviour
             return;
         }
         var coord = _coords[index];
+        _highlighterObj.UpdateDisplay(coord);
         _highlighterObj.transform.position = coord.pos;
     }
 
@@ -553,6 +566,8 @@ public class HexMaker : MonoBehaviour
         [Lockable]
         public HexCell coords;
 
+        public bool walkable;
+        
         public string coordString => $"{coords.x},{coords.y},{coords.z}";
 
         [Lockable]
@@ -579,6 +594,7 @@ public class HexMaker : MonoBehaviour
             coords = new HexCell() {x = tempX, z = tempZ};
             textObj = null;
             _neighborIndexes = new Neighbor[6];
+            walkable = true;
         }
 
         public void SetNeighbor(StartTopHexDir direction, List<Coordinates> coords, Coordinates cell)
