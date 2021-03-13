@@ -23,11 +23,12 @@ public class HexHighlighter : MonoBehaviour
     private TextMeshProUGUI _textField;
 
     private const string X = "x";
-    
+
     public bool showHighlighter
     {
         set => gameObject.SetActive(value);
     }
+
     public Mesh sharedMesh
     {
         get => _meshFilter != null ? _meshFilter.sharedMesh : null;
@@ -44,14 +45,38 @@ public class HexHighlighter : MonoBehaviour
     {
         GameManager.InputManager.Player.Enable();
         GameManager.InputManager.Player.Look.performed += LookHandler;
-        
+        GameManager.InputManager.Player.PrimaryClick.performed += PrimaryClickHandler;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.InputManager.Player.Look.performed -= LookHandler;
+        GameManager.InputManager.Player.PrimaryClick.performed -= PrimaryClickHandler;
+    }
+
+    private void PrimaryClickHandler(InputAction.CallbackContext obj)
+    {
+        if (_hoverOnClick && _hexMaker != null)
+        {
+            var coords = _hexMaker.TryHighlightGrid(this);
+            
+            if (coords.walkable)
+            {
+                _hexMaker.PlayerPos = coords;
+            }
+        }
     }
 
     public void UpdateDisplay(HexMaker.Coordinates coord)
     {
+        if (_textField == null)
+        {
+            return;
+        }
         if (coord.walkable)
         {
-            _textField.SetText(string.Empty);
+            var distance = _hexMaker.GetDistanceFromPlayer(coord);
+            _textField.SetText($"{distance}");
         }
         else
         {
@@ -61,21 +86,18 @@ public class HexHighlighter : MonoBehaviour
 
     private void LookHandler(InputAction.CallbackContext obj)
     {
-        if (_hexMaker != null)
+        if (_hoverHighlight)
         {
-            _hexMaker.TryHighlightGrid();
-        }
-        else
-        {
-            Debug.LogError("HexHighlighter is missing HexMaker");
-        }
-        //}
-        /*else if (_hoverOnClick && _hexMaker != null && _hexMaker.UsesCollider)
-        {
-            if (Input.GetMouseButtonDown(0))
+            if (_hexMaker != null)
             {
-                _hexMaker.TryHighlightGrid();
+                _hexMaker.TryHighlightGrid(this);
             }
-        }*/
+            else
+            {
+                Debug.LogError("HexHighlighter is missing HexMaker");
+            }
+        }
     }
+    
+    
 }

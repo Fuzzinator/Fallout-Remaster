@@ -30,7 +30,7 @@ public class @InputManager : IInputActionCollection, IDisposable
                     ""name"": ""PrimaryClick"",
                     ""type"": ""PassThrough"",
                     ""id"": ""5941ce43-89c0-4a3d-ad51-9a18cb5c2def"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
                 },
@@ -47,6 +47,14 @@ public class @InputManager : IInputActionCollection, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""f18845b4-71fd-448f-81cf-4eaa183155e1"",
                     ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""331ba9ef-0c18-43d1-8e45-8d4a527c5743"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -170,6 +178,17 @@ public class @InputManager : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""SecondaryClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""705b4e2d-6a6a-417b-8be4-1d8cd9d134f4"",
+                    ""path"": ""*/{Radius}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse;Touch"",
+                    ""action"": ""New action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -732,6 +751,7 @@ public class @InputManager : IInputActionCollection, IDisposable
         m_Player_PrimaryClick = m_Player.FindAction("PrimaryClick", throwIfNotFound: true);
         m_Player_SecondaryClick = m_Player.FindAction("SecondaryClick", throwIfNotFound: true);
         m_Player_ScrollWheel = m_Player.FindAction("ScrollWheel", throwIfNotFound: true);
+        m_Player_Newaction = m_Player.FindAction("New action", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -796,6 +816,7 @@ public class @InputManager : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_PrimaryClick;
     private readonly InputAction m_Player_SecondaryClick;
     private readonly InputAction m_Player_ScrollWheel;
+    private readonly InputAction m_Player_Newaction;
     public struct PlayerActions
     {
         private @InputManager m_Wrapper;
@@ -804,6 +825,7 @@ public class @InputManager : IInputActionCollection, IDisposable
         public InputAction @PrimaryClick => m_Wrapper.m_Player_PrimaryClick;
         public InputAction @SecondaryClick => m_Wrapper.m_Player_SecondaryClick;
         public InputAction @ScrollWheel => m_Wrapper.m_Player_ScrollWheel;
+        public InputAction @Newaction => m_Wrapper.m_Player_Newaction;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -825,6 +847,9 @@ public class @InputManager : IInputActionCollection, IDisposable
                 @ScrollWheel.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScrollWheel;
                 @ScrollWheel.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScrollWheel;
                 @ScrollWheel.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScrollWheel;
+                @Newaction.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNewaction;
+                @Newaction.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNewaction;
+                @Newaction.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNewaction;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -841,6 +866,9 @@ public class @InputManager : IInputActionCollection, IDisposable
                 @ScrollWheel.started += instance.OnScrollWheel;
                 @ScrollWheel.performed += instance.OnScrollWheel;
                 @ScrollWheel.canceled += instance.OnScrollWheel;
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
             }
         }
     }
@@ -993,6 +1021,7 @@ public class @InputManager : IInputActionCollection, IDisposable
         void OnPrimaryClick(InputAction.CallbackContext context);
         void OnSecondaryClick(InputAction.CallbackContext context);
         void OnScrollWheel(InputAction.CallbackContext context);
+        void OnNewaction(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

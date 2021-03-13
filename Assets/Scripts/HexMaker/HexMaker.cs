@@ -47,7 +47,7 @@ public class HexMaker : MonoBehaviour
     [SerializeField]
     private Collider _collider;
 
-    //[SerializeField]
+    [SerializeField, Lockable]
     private Vector3[] _corners = new Vector3[0];
 
     [SerializeField]
@@ -62,11 +62,15 @@ public class HexMaker : MonoBehaviour
     private Text _textPrefab;
 
     [SerializeField]
+    private bool _displayCoordinates = true;
+
+    [SerializeField]
     private List<Coordinates> _coords = new List<Coordinates>();
-    
+
     [Header("Navigation")]
     [SerializeField]
     private LayerMask _obstaclesLayer = new LayerMask();
+
     [SerializeField]
     private LayerMask _doorsLayer = new LayerMask();
 
@@ -77,7 +81,14 @@ public class HexMaker : MonoBehaviour
     [SerializeField]
     private HexHighlighter _highlighterObj;
     
-    
+    [SerializeField]
+    private Coordinates _playerPos;
+
+    public Coordinates PlayerPos
+    {
+        get => _playerPos;
+        set => _playerPos = value;
+    }
 
     private readonly List<GameObject> _deleteMe = new List<GameObject>();
 
@@ -142,6 +153,15 @@ public class HexMaker : MonoBehaviour
     {
         if (Application.isPlaying)
         {
+            if (!_displayCoordinates)
+            {
+                foreach (var coord in _coords)
+                {
+                    var text = coord.textObj;
+                    Destroy(text);
+                }
+            }
+
             while (_deleteMe.Count > 0)
             {
                 Destroy(_deleteMe[0]);
@@ -158,6 +178,15 @@ public class HexMaker : MonoBehaviour
         }
         else
         {
+            if (!_displayCoordinates)
+            {
+                foreach (var coord in _coords)
+                {
+                    var text = coord.textObj;
+                    DestroyImmediate(text);
+                }
+            }
+
             while (_deleteMe.Count > 0)
             {
                 DestroyImmediate(_deleteMe[0]);
@@ -169,7 +198,7 @@ public class HexMaker : MonoBehaviour
                 DestroyImmediate(_meshFilter.sharedMesh);
                 _meshFilter.sharedMesh = null;
             }
-            
+
             if (!_createCollider)
             {
                 DestroyImmediate(_collider);
@@ -249,18 +278,21 @@ public class HexMaker : MonoBehaviour
             }
         }
 
-        for (var i = 0; i < _coords.Count; i++)
+        if (_displayCoordinates)
         {
-            var coord = _coords[i];
-            if (coord.textObj != null)
+            for (var i = 0; i < _coords.Count; i++)
             {
-                continue;
-            }
+                var coord = _coords[i];
+                if (coord.textObj != null)
+                {
+                    continue;
+                }
 
-            coord.textObj = Instantiate(_textPrefab, _canvas.transform);
-            coord.textObj.transform.position = coord.pos + (Vector3.up * .25f);
-            coord.textObj.text = coord.coordString;
-            _coords[i] = coord;
+                coord.textObj = Instantiate(_textPrefab, _canvas.transform);
+                coord.textObj.transform.position = coord.pos + (Vector3.up * .25f);
+                coord.textObj.text = coord.coordString;
+                _coords[i] = coord;
+            }
         }
     }
 
@@ -295,19 +327,20 @@ public class HexMaker : MonoBehaviour
         }
     }
 
-    public void TryHighlightGrid()
+    public Coordinates TryHighlightGrid(HexHighlighter highlighter)
     {
         if (_collider == null || _camera == null)
         {
-            return;
+            return new Coordinates();
         }
 
         var ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
         var hitGrid = _collider.Raycast(ray, out var hitInfo, Mathf.Infinity);
         if (hitGrid)
         {
-            HighlightHexCoord(hitInfo.point);
+            return HighlightHexCoord(hitInfo.point, highlighter);
         }
+        return new Coordinates();
     }
 
     private void GetHighlightMesh()
@@ -332,9 +365,9 @@ public class HexMaker : MonoBehaviour
             var i = _coords.Count;
             var newCoord = new Coordinates(center, x, z, _startTop);
             var obstacles = Physics.CheckSphere(center, InnerRadius, _obstaclesLayer);
-            
+
             newCoord.walkable = !obstacles;
-            
+
             _coords.Add(newCoord);
             if (_startTop)
             {
@@ -464,7 +497,7 @@ public class HexMaker : MonoBehaviour
         triangles.Add(indexOf3);
     }
 
-    private void HighlightHexCoord(Vector3 pos)
+    private Coordinates HighlightHexCoord(Vector3 pos, HexHighlighter highlighter)
     {
         pos = transform.InverseTransformPoint(pos);
         if (_centerOrig)
@@ -501,11 +534,14 @@ public class HexMaker : MonoBehaviour
 
         if (index < 0 || index >= _coords.Count)
         {
-            return;
+            return new Coordinates();
         }
+
         var coord = _coords[index];
-        _highlighterObj.UpdateDisplay(coord);
-        _highlighterObj.transform.position = coord.pos;
+        
+        highlighter.UpdateDisplay(coord);
+        highlighter.transform.position = coord.pos;
+        return coord;
     }
 
     private void OnDrawGizmos()
@@ -531,6 +567,10 @@ public class HexMaker : MonoBehaviour
         }
     }
 
+    public int GetDistanceFromPlayer(Coordinates coord)
+    {
+        return _playerPos.FindDistanceTo(coord.coords);
+    }
     private bool Contains(Vector3 position) //, Vector3[] rotatedBounds)
     {
         var center = _boundaryObj.transform.InverseTransformPoint(transform.localPosition + position);
@@ -556,7 +596,7 @@ public class HexMaker : MonoBehaviour
 
         return true;
     }
-
+    
     [Serializable]
     public struct Coordinates
     {
@@ -567,8 +607,8 @@ public class HexMaker : MonoBehaviour
         public HexCell coords;
 
         public bool walkable;
-        
-        public string coordString => $"{coords.x},{coords.y},{coords.z}";
+
+        public string coordString => $"{coords.x},{coords.Y},{coords.z}";
 
         [Lockable]
         public Text textObj;
@@ -684,6 +724,14 @@ public class HexMaker : MonoBehaviour
             var cell = new HexCell() {x = xCell, z = zCell};
             return cell;
         }
+        
+        public int FindDistanceTo (HexCell targetCell) 
+        {
+            return
+            ((coords.x < targetCell.x ? targetCell.x - coords.x : coords.x - targetCell.x) +
+                (coords.Y < targetCell.Y ? targetCell.Y - coords.Y : coords.Y - targetCell.Y) +
+                (coords.z < targetCell.z ? targetCell.z - coords.z : coords.z - targetCell.z))/2;
+        }
 
         [Serializable]
         public struct HexCell
@@ -694,7 +742,7 @@ public class HexMaker : MonoBehaviour
             [SerializeField, Lockable(true, false)]
             private int _y;
 
-            public int y => _y = -x - z;
+            public int Y => _y = -x - z;
 
 
             [Lockable(true, false)]
