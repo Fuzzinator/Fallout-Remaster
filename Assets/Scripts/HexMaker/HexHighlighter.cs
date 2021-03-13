@@ -22,6 +22,10 @@ public class HexHighlighter : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _textField;
 
+    private int _currentHoveredIndex = -1;
+    
+    private Action<int> _showDistance = null;
+
     private const string X = "x";
 
     public bool showHighlighter
@@ -46,6 +50,8 @@ public class HexHighlighter : MonoBehaviour
         GameManager.InputManager.Player.Enable();
         GameManager.InputManager.Player.Look.performed += LookHandler;
         GameManager.InputManager.Player.PrimaryClick.performed += PrimaryClickHandler;
+        
+        _showDistance = (distance) => { _textField.SetText(distance < 0 ? X : $"{distance}"); };
     }
 
     private void OnDestroy()
@@ -54,29 +60,18 @@ public class HexHighlighter : MonoBehaviour
         GameManager.InputManager.Player.PrimaryClick.performed -= PrimaryClickHandler;
     }
 
-    private void PrimaryClickHandler(InputAction.CallbackContext obj)
-    {
-        if (_hoverOnClick && _hexMaker != null)
-        {
-            var coords = _hexMaker.TryHighlightGrid(this);
-            
-            if (coords.walkable)
-            {
-                _hexMaker.PlayerPos = coords;
-            }
-        }
-    }
-
     public void UpdateDisplay(HexMaker.Coordinates coord)
     {
-        if (_textField == null)
+        if (_textField == null || _currentHoveredIndex == coord.index)
         {
             return;
         }
+        
+        _currentHoveredIndex = coord.index;
         if (coord.walkable)
         {
-            var distance = _hexMaker.GetDistanceFromPlayer(coord);
-            _textField.SetText($"{distance}");
+            _textField.SetText(string.Empty);
+            _hexMaker.GetDistanceFromPlayer(coord, _showDistance);
         }
         else
         {
@@ -98,6 +93,17 @@ public class HexHighlighter : MonoBehaviour
             }
         }
     }
-    
-    
+
+    private void PrimaryClickHandler(InputAction.CallbackContext obj)
+    {
+        if (_hoverOnClick && _hexMaker != null)
+        {
+            var coords = _hexMaker.TryHighlightGrid(this);
+
+            if (coords.walkable && coords.distance>=0)
+            {
+                _hexMaker.IndexOfPlayerPos = coords.index;
+            }
+        }
+    }
 }
