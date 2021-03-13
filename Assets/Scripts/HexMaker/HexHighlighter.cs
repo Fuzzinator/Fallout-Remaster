@@ -53,7 +53,7 @@ public class HexHighlighter : MonoBehaviour
         
         _showDistance = (coord) =>
         {
-            _textField.SetText(coord.distance < 0 ? X : $"{coord.distance}");
+            _textField.SetText(coord.distance <= 0 ? X : $"{coord.distance}");
         };
     }
 
@@ -102,7 +102,7 @@ public class HexHighlighter : MonoBehaviour
         if (_hoverOnClick && _hexMaker != null)
         {
             var coords = _hexMaker.TryHighlightGrid(this);
-
+            
             if (coords.walkable && coords.distance>=0)
             {
                 _hexMaker.IndexOfPlayerPos = coords.index;

@@ -537,7 +537,6 @@ public class HexMaker : MonoBehaviour
         }
 
         var coord = _coords[index];
-
         highlighter.UpdateDisplay(coord);
         highlighter.transform.position = coord.pos;
         return coord;
@@ -569,13 +568,13 @@ public class HexMaker : MonoBehaviour
     public void GetDistanceFromPlayer(Coordinates coord, Action<Coordinates> toDo)
     {
         StopAllCoroutines();
-        StartCoroutine(FindDistanceTo(coord, null, toDo)); //new WaitForSeconds(.016f)));
-        /*if (IndexOfPlayerPos < 0 || IndexOfPlayerPos >= _coords.Count)
+        
+        if (coord.index == _indexOfPlayerPos)
         {
-            return -1;
+            toDo?.Invoke(new Coordinates(){distance = 0});
         }
-
-        return _coords[IndexOfPlayerPos].FindDistanceTo(coord.coords);*/
+        
+        StartCoroutine(FindDistanceTo(coord, null, toDo));
     }
 
     //Breadth-First search method
@@ -592,8 +591,8 @@ public class HexMaker : MonoBehaviour
         var accessable = false;
         for (var i = 0; i <= targetCell.Neighbors; i++)
         {
-            var neighborIndex = targetCell.GetNeighbor(i);
-            if (neighborIndex < 0 || neighborIndex >= _coords.Count - 1 || !_coords[neighborIndex].walkable)
+            var neighbor = targetCell.GetNeighbor(i);
+            if (neighbor.index < 0 || neighbor.index >= _coords.Count - 1 || !_coords[neighbor.index].walkable)
             {
                 continue;
             }
@@ -629,18 +628,18 @@ public class HexMaker : MonoBehaviour
             for (var d = 0; d <= current.Neighbors; d++)
             {
                 var neighbor = current.GetNeighbor(d);
-                if (neighbor < 0 || neighbor >= _coords.Count || _coords[neighbor].distance > -1 ||
-                    !_coords[neighbor].walkable)
+                if (neighbor.index < 0 || neighbor.index >= _coords.Count || _coords[neighbor.index].distance > -1 ||
+                    !_coords[neighbor.index].walkable)
                 {
                     continue;
                 }
 
-                var coord = _coords[neighbor];
-                
+                var coord = _coords[neighbor.index];
+                coord.SearchHeuristic = _coords[neighbor.index].FindDistanceTo(targetCell.coords)*5;
                 coord.distance = current.distance + 1;
                 coord.PathFrom = current.index;
                 
-                _coords[neighbor] = coord;
+                _coords[neighbor.index] = coord;
                 if (coord.index == targetCell.index)
                 {
                     targetCell = coord;
@@ -661,11 +660,13 @@ public class HexMaker : MonoBehaviour
 
                 frontier.Add(coord);
             }
-
+            
             if (foundTarget)
             {
                 break;
             }
+
+            frontier.Sort((x,y) => x.SearchPriority.CompareTo(y.SearchPriority));
 
             count++;
             if (count % _horizontalCount == 0)
@@ -734,7 +735,9 @@ public class HexMaker : MonoBehaviour
         public int index;
 
         public int PathFrom { get; set; }
+        public int SearchHeuristic { get; set; }
         public int Neighbors => _neighborIndexes.Length - 1;
+        public int SearchPriority => distance + SearchHeuristic;
 
         public Coordinates(Vector3 p, int x, int z, bool startTop, int index)
         {
@@ -761,6 +764,7 @@ public class HexMaker : MonoBehaviour
             walkable = true;
             distance = -1;
             PathFrom = -1;
+            SearchHeuristic = -1;
             this.index = index;
         }
 
@@ -778,9 +782,9 @@ public class HexMaker : MonoBehaviour
             cell._neighborIndexes[(int) opposite] = new Neighbor(opposite.ToString(), coords.IndexOf(this));
         }
 
-        public int GetNeighbor(int direction)
+        public Neighbor GetNeighbor(int direction)
         {
-            return _neighborIndexes[direction].index;
+            return _neighborIndexes[direction];
         }
 
         public static HexCell GetFromPos(Vector3 pos, bool startTop, float innerRadius, float outerRadius)

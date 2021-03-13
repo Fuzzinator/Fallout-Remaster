@@ -72,7 +72,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1615434490604</updated>
-      <workItem from="1615434510197" duration="56174000" />
+      <workItem from="1615434510197" duration="58489000" />
     </task>
     <servers />
   </component>
@@ -156,13 +156,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexMaker.cs</url>
-          <line>679</line>
+          <line>682</line>
           <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\HexMaker\HexMaker.cs" initialLine="672">
             <startOffsets>
-              <option value="19278" />
+              <option value="19499" />
             </startOffsets>
             <endOffsets>
-              <option value="19318" />
+              <option value="19539" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="42" />
