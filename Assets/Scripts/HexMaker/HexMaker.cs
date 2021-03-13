@@ -76,6 +76,9 @@ public class HexMaker : MonoBehaviour
 
     [SerializeField]
     private LayerMask _doorsLayer = new LayerMask();
+    
+    [SerializeField]
+    private List<int> _pathToTarget = new List<int>();
 
     [Header("Interaction")]
     [SerializeField]
@@ -116,7 +119,7 @@ public class HexMaker : MonoBehaviour
         SetHexCorners();
         ClearOldCoords();
         CreateNewCoords();
-        
+
         if (_createMesh || _createCollider)
         {
             CreateMeshAndCollider();
@@ -507,7 +510,7 @@ public class HexMaker : MonoBehaviour
         if (_centerOrig)
         {
             var xOffset = (_horizontalCount * .5f);
-            var zOffset = (_verticalCount  *.5f);
+            var zOffset = (_verticalCount * .5f);
 
             xOffset *= (_startTop ? InnerRadius * 2 : outerRadius * 1.5f);
             zOffset *= (_startTop ? outerRadius * 1.5f : InnerRadius * 2);
@@ -563,7 +566,7 @@ public class HexMaker : MonoBehaviour
         }
     }
 
-    public void GetDistanceFromPlayer(Coordinates coord, Action<int> toDo)
+    public void GetDistanceFromPlayer(Coordinates coord, Action<Coordinates> toDo)
     {
         StopAllCoroutines();
         StartCoroutine(FindDistanceTo(coord, null, toDo)); //new WaitForSeconds(.016f)));
@@ -576,25 +579,34 @@ public class HexMaker : MonoBehaviour
     }
 
     //Breadth-First search method
-    private IEnumerator FindDistanceTo(Coordinates targetCell, WaitForSeconds delay, Action<int> toDo)
+    private IEnumerator FindDistanceTo(Coordinates targetCell, WaitForSeconds delay, Action<Coordinates> toDo)
     {
         for (var i = 0; i < _coords.Count; i++)
         {
             var coord = _coords[i];
             coord.distance = -1;
+            coord.PathFrom = -1;
             _coords[i] = coord;
         }
-        
+
+        var accessable = false;
         for (var i = 0; i <= targetCell.Neighbors; i++)
         {
             var neighborIndex = targetCell.GetNeighbor(i);
-            if (neighborIndex < 0 || neighborIndex > _coords.Count - 1 || !_coords[neighborIndex].walkable)
+            if (neighborIndex < 0 || neighborIndex >= _coords.Count - 1 || !_coords[neighborIndex].walkable)
             {
                 continue;
             }
+
+            accessable = true;
+            break;
+        }
+
+        if (!accessable)
+        {
             yield break;
         }
-        
+
         var frontier = new List<Coordinates>();
 
         if (IndexOfPlayerPos < 0 || IndexOfPlayerPos >= _coords.Count)
@@ -624,12 +636,26 @@ public class HexMaker : MonoBehaviour
                 }
 
                 var coord = _coords[neighbor];
+                
                 coord.distance = current.distance + 1;
+                coord.PathFrom = current.index;
+                
                 _coords[neighbor] = coord;
                 if (coord.index == targetCell.index)
                 {
                     targetCell = coord;
                     foundTarget = true;
+                    
+                    _pathToTarget.Clear();
+                    _pathToTarget.Add(coord.index);
+                    current = coord;
+                    while (current.PathFrom > -1 && current.PathFrom != _indexOfPlayerPos)
+                    {
+                        _pathToTarget.Add(current.PathFrom);
+                        current = _coords[current.PathFrom];
+                    }
+
+                    _pathToTarget.Reverse();
                     break;
                 }
 
@@ -640,7 +666,7 @@ public class HexMaker : MonoBehaviour
             {
                 break;
             }
-            
+
             count++;
             if (count % _horizontalCount == 0)
             {
@@ -653,7 +679,7 @@ public class HexMaker : MonoBehaviour
             yield break;
         }
 
-        toDo?.Invoke(_coords[targetCell.index].distance);
+        toDo?.Invoke(_coords[targetCell.index]);
         yield return null;
     }
 
@@ -707,6 +733,7 @@ public class HexMaker : MonoBehaviour
 
         public int index;
 
+        public int PathFrom { get; set; }
         public int Neighbors => _neighborIndexes.Length - 1;
 
         public Coordinates(Vector3 p, int x, int z, bool startTop, int index)
@@ -733,6 +760,7 @@ public class HexMaker : MonoBehaviour
             };
             walkable = true;
             distance = -1;
+            PathFrom = -1;
             this.index = index;
         }
 

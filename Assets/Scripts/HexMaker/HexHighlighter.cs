@@ -24,10 +24,10 @@ public class HexHighlighter : MonoBehaviour
 
     private int _currentHoveredIndex = -1;
     
-    private Action<int> _showDistance = null;
+    private Action<HexMaker.Coordinates> _showDistance = null;
 
     private const string X = "x";
-
+    
     public bool showHighlighter
     {
         set => gameObject.SetActive(value);
@@ -51,7 +51,10 @@ public class HexHighlighter : MonoBehaviour
         GameManager.InputManager.Player.Look.performed += LookHandler;
         GameManager.InputManager.Player.PrimaryClick.performed += PrimaryClickHandler;
         
-        _showDistance = (distance) => { _textField.SetText(distance < 0 ? X : $"{distance}"); };
+        _showDistance = (coord) =>
+        {
+            _textField.SetText(coord.distance < 0 ? X : $"{coord.distance}");
+        };
     }
 
     private void OnDestroy()
