@@ -14,7 +14,7 @@ public class HexMaker : MonoBehaviour
     #region Variables And Properties
 
     private static HexMaker _instance;
-    public static HexMaker instance => _instance;
+    public static HexMaker Instance => _instance;
 
     [SerializeField]
     private bool _shouldUpdate = false;
@@ -53,7 +53,6 @@ public class HexMaker : MonoBehaviour
 
     [SerializeField]
     private Transform _boundaryObj;
-    //private MeshRenderer _boundryMesh;
 
     [Header("Coordinates")]
     [SerializeField]
@@ -76,7 +75,7 @@ public class HexMaker : MonoBehaviour
 
     [SerializeField]
     private LayerMask _doorsLayer = new LayerMask();
-    
+
     [SerializeField]
     private List<int> _pathToTarget = new List<int>();
 
@@ -99,6 +98,8 @@ public class HexMaker : MonoBehaviour
     private readonly List<GameObject> _deleteMe = new List<GameObject>();
 
     private Vector3 _lastPos;
+
+    private HexCellPriorityQueue _searchFrontier;
 
     private float XOffset => _startTop ? InnerRadius * 2f : outerRadius * 1.5f;
     private float ZOffset => _startTop ? outerRadius * 1.5f : InnerRadius * 2f;
@@ -297,7 +298,7 @@ public class HexMaker : MonoBehaviour
                 coord.textObj = Instantiate(_textPrefab, _canvas.transform);
                 coord.textObj.transform.position = coord.pos + (Vector3.up * .25f);
                 coord.textObj.text = coord.coordString;
-                _coords[i] = coord;
+                //_coords[i] = coord;
             }
         }
     }
@@ -335,19 +336,17 @@ public class HexMaker : MonoBehaviour
 
     public Coordinates TryHighlightGrid(HexHighlighter highlighter)
     {
-        if (_collider == null || _camera == null)
+        if (_collider != null && _camera != null)
         {
-            return new Coordinates();
+            var ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            var hitGrid = _collider.Raycast(ray, out var hitInfo, Mathf.Infinity);
+            if (hitGrid)
+            {
+                return HighlightHexCoord(hitInfo.point, highlighter);
+            }
         }
 
-        var ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-        var hitGrid = _collider.Raycast(ray, out var hitInfo, Mathf.Infinity);
-        if (hitGrid)
-        {
-            return HighlightHexCoord(hitInfo.point, highlighter);
-        }
-
-        return new Coordinates();
+        return null;
     }
 
     private void GetHighlightMesh()
@@ -533,7 +532,7 @@ public class HexMaker : MonoBehaviour
 
         if (index < 0 || index >= _coords.Count)
         {
-            return new Coordinates();
+            return null;
         }
 
         var coord = _coords[index];
@@ -568,24 +567,23 @@ public class HexMaker : MonoBehaviour
     public void GetDistanceFromPlayer(Coordinates coord, Action<Coordinates> toDo)
     {
         StopAllCoroutines();
-        
+
         if (coord.index == _indexOfPlayerPos)
         {
-            toDo?.Invoke(new Coordinates(){distance = 0});
+            toDo?.Invoke(null);
         }
-        
+
         StartCoroutine(FindDistanceTo(coord, null, toDo));
     }
 
     //Breadth-First search method
     private IEnumerator FindDistanceTo(Coordinates targetCell, WaitForSeconds delay, Action<Coordinates> toDo)
     {
-        for (var i = 0; i < _coords.Count; i++)
+        foreach (var coord in _coords)
         {
-            var coord = _coords[i];
             coord.distance = -1;
             coord.PathFrom = -1;
-            _coords[i] = coord;
+            coord.nextWithSamePriority = null;
         }
 
         var accessable = false;
@@ -606,7 +604,14 @@ public class HexMaker : MonoBehaviour
             yield break;
         }
 
-        var frontier = new List<Coordinates>();
+        if (_searchFrontier == null)
+        {
+            _searchFrontier = new HexCellPriorityQueue(); //ref _coords);
+        }
+        else
+        {
+            _searchFrontier.Clear();
+        }
 
         if (IndexOfPlayerPos < 0 || IndexOfPlayerPos >= _coords.Count)
         {
@@ -615,58 +620,81 @@ public class HexMaker : MonoBehaviour
 
         var playerCoord = _coords[IndexOfPlayerPos];
         playerCoord.distance = 0;
-        _coords[IndexOfPlayerPos] = playerCoord;
-        frontier.Add(playerCoord);
+        //_coords[IndexOfPlayerPos] = playerCoord;
+        //frontier.Add(playerCoord);
+
+        _searchFrontier.Enqueue(playerCoord);
 
         var count = 0;
         var foundTarget = false;
-        while (frontier.Count > 0)
+        while (_searchFrontier.Count > 0)
         {
-            var current = frontier[0];
-            frontier.RemoveAt(0);
+            var current = _searchFrontier.Dequeue(); //frontier[0];
+            //frontier.RemoveAt(0);
 
             for (var d = 0; d <= current.Neighbors; d++)
             {
                 var neighbor = current.GetNeighbor(d);
-                if (neighbor.index < 0 || neighbor.index >= _coords.Count || _coords[neighbor.index].distance > -1 ||
-                    !_coords[neighbor.index].walkable)
+                if (neighbor.index < 0 || neighbor.index >= _coords.Count || _coords[neighbor.index] == null ||
+                    !_coords[neighbor.index].walkable || _coords[neighbor.index].distance > -1)
                 {
                     continue;
                 }
 
-                var coord = _coords[neighbor.index];
-                coord.SearchHeuristic = _coords[neighbor.index].FindDistanceTo(targetCell.coords)*5;
-                coord.distance = current.distance + 1;
-                coord.PathFrom = current.index;
-                
-                _coords[neighbor.index] = coord;
-                if (coord.index == targetCell.index)
+                var neighborCoord = _coords[neighbor.index];
+                neighborCoord.PathFrom = current.index;
+                var distance = current.distance;
+                var neighborDistance = neighborCoord.distance;
+                if (neighborDistance == -1)
                 {
-                    targetCell = coord;
+                    neighborCoord.distance = distance + 1;
+                    neighborCoord.SearchHeuristic = neighborCoord.FindDistanceTo(targetCell.coords);
+                    _searchFrontier.Enqueue(neighborCoord);
+                }
+                else if (distance < neighborDistance)
+                {
+                    var oldPriority = neighborCoord.SearchPriority;
+                    neighborCoord.distance = distance + 1;
+                    _searchFrontier.Change(neighborCoord, oldPriority);
+                }
+
+
+                //_coords[neighbor.index] = coord;
+                if (neighborCoord == targetCell)
+                {
+                    //targetCell = coord;
                     foundTarget = true;
-                    
+
                     _pathToTarget.Clear();
-                    _pathToTarget.Add(coord.index);
-                    current = coord;
+                    _pathToTarget.Add(neighborCoord.index);
+                    current = neighborCoord;
+                    var count1 = 0;
                     while (current.PathFrom > -1 && current.PathFrom != _indexOfPlayerPos)
                     {
+                        if (count > 10000)
+                        {
+                            Debug.LogError("What the fuck");
+                            break;
+                        }
+
                         _pathToTarget.Add(current.PathFrom);
                         current = _coords[current.PathFrom];
+                        count++;
                     }
 
                     _pathToTarget.Reverse();
                     break;
                 }
 
-                frontier.Add(coord);
+                //frontier.Add(coord);
             }
-            
+
             if (foundTarget)
             {
                 break;
             }
 
-            frontier.Sort((x,y) => x.SearchPriority.CompareTo(y.SearchPriority));
+            //frontier.Sort((x, y) => x.SearchPriority.CompareTo(y.SearchPriority));
 
             count++;
             if (count % _horizontalCount == 0)
@@ -674,6 +702,8 @@ public class HexMaker : MonoBehaviour
                 yield return delay;
             }
         }
+
+        _searchFrontier.Clear();
 
         if (targetCell.index < 0 || targetCell.index >= _coords.Count)
         {
@@ -710,220 +740,242 @@ public class HexMaker : MonoBehaviour
 
         return true;
     }
+}
+
+
+[Serializable]
+public class Coordinates
+{
+    [Lockable]
+    public Vector3 pos;
+
+    [Lockable]
+    public HexCell coords;
+
+    public bool walkable;
+
+    public string coordString => $"{coords.x},{coords.Y},{coords.z}";
+
+    [Lockable]
+    public Text textObj;
+
+    [SerializeField]
+    private Neighbor[] _neighborIndexes;
+
+    public int distance;
+
+    public int index;
+
+    public int PathFrom { get; set; }
+    public int SearchHeuristic { get; set; }
+
+    [NonSerialized]
+    public Coordinates nextWithSamePriority; // { get; set; }
+
+    public int Neighbors => _neighborIndexes.Length - 1;
+    public int SearchPriority => distance + SearchHeuristic;
+
+    public Coordinates(Vector3 p, int x, int z, bool startTop, int index)
+    {
+        var tempX = x;
+        var tempZ = z;
+
+        if (startTop)
+        {
+            tempX = x - z / 2;
+        }
+        else
+        {
+            tempZ = z - x / 2;
+        }
+
+        pos = p;
+        coords = new HexCell() {x = tempX, z = tempZ};
+        textObj = null;
+        _neighborIndexes = new Neighbor[]
+        {
+            new Neighbor(-1), new Neighbor(-1), new Neighbor(-1), new Neighbor(-1), new Neighbor(-1),
+            new Neighbor(-1)
+        };
+        walkable = true;
+        distance = -1;
+        PathFrom = -1;
+        //NextWithSamePriority = null;
+        this.index = index;
+    }
+
+    public Coordinates()
+    {
+        pos = Vector3.zero;
+        coords = new HexCell() {x = int.MinValue, z = int.MinValue};
+        textObj = null;
+        _neighborIndexes = new Neighbor[0];
+        walkable = false;
+        distance = -1;
+        PathFrom = -1;
+        index = -1;
+        //NextWithSamePriority = null;
+    }
+
+    public void SetNeighbor(StartTopHexDir direction, List<Coordinates> coords, Coordinates cell)
+    {
+        _neighborIndexes[(int) direction] = new Neighbor(direction.ToString(), coords.IndexOf(cell)); //, cell);
+        var opposite = direction.Opposite();
+        cell._neighborIndexes[(int) opposite] = new Neighbor(opposite.ToString(), coords.IndexOf(this)); //, this);
+    }
+
+    public void SetNeighbor(HexDir direction, List<Coordinates> coords, Coordinates cell)
+    {
+        _neighborIndexes[(int) direction] = new Neighbor(direction.ToString(), coords.IndexOf(cell)); //, cell);
+        var opposite = direction.Opposite();
+        cell._neighborIndexes[(int) opposite] = new Neighbor(opposite.ToString(), coords.IndexOf(this)); //, this);
+    }
+
+    public Neighbor GetNeighbor(int direction)
+    {
+        return _neighborIndexes[direction];
+    }
+
+    public static HexCell GetFromPos(Vector3 pos, bool startTop, float innerRadius, float outerRadius)
+    {
+        var farSide = (outerRadius * 3f);
+        var closeSide = (innerRadius * 2f);
+        var x = 0f;
+        var y = 0f;
+        var xCell = 0;
+        var zCell = 0;
+        var yCell = 0;
+        if (startTop)
+        {
+            x = pos.x / closeSide;
+            y = -x;
+            var offset = pos.z / farSide;
+            x -= offset;
+            y -= offset;
+            zCell = Mathf.RoundToInt(-x - y);
+            xCell = Mathf.RoundToInt(x);
+            yCell = Mathf.RoundToInt(y);
+
+            if (xCell + yCell + zCell != 0)
+            {
+                var dX = Mathf.Abs(x - xCell);
+                var dY = Mathf.Abs(y - yCell);
+                var dZ = Mathf.Abs(-x - y - zCell);
+
+                if (dX > dY && dX > dZ)
+                {
+                    xCell = -yCell - zCell;
+                }
+                else if (dZ > dY)
+                {
+                    zCell = -xCell - yCell;
+                }
+            }
+        }
+        else
+        {
+            var z = pos.z / closeSide;
+            y = -z;
+            var offset = pos.x / farSide;
+            z -= offset;
+            y -= offset;
+            zCell = Mathf.RoundToInt(z);
+            xCell = Mathf.RoundToInt(-z - y);
+            yCell = Mathf.RoundToInt(y);
+
+            if (zCell + xCell + yCell != 0)
+            {
+                var dZ = Mathf.Abs(z - zCell);
+                var dY = Mathf.Abs(y - yCell);
+                var dX = Mathf.Abs(-z - y - xCell);
+
+                if (dZ > dY && dZ > dX)
+                {
+                    zCell = -yCell - xCell;
+                }
+                else if (dX > dY)
+                {
+                    xCell = -zCell - yCell;
+                }
+            }
+        }
+
+
+        var cell = new HexCell() {x = xCell, z = zCell};
+        return cell;
+    }
+
+    public int FindDistanceTo(HexCell targetCell)
+    {
+        return
+            ((coords.x < targetCell.x ? targetCell.x - coords.x : coords.x - targetCell.x) +
+             (coords.Y < targetCell.Y ? targetCell.Y - coords.Y : coords.Y - targetCell.Y) +
+             (coords.z < targetCell.z ? targetCell.z - coords.z : coords.z - targetCell.z)) / 2;
+    }
 
     [Serializable]
-    public struct Coordinates
+    public struct HexCell
     {
-        [Lockable]
-        public Vector3 pos;
+        [Lockable(true, false)]
+        public int x;
 
-        [Lockable]
-        public HexCell coords;
+        [SerializeField, Lockable(true, false)]
+        private int _y;
 
-        public bool walkable;
+        public int Y => _y = -x - z;
 
-        public string coordString => $"{coords.x},{coords.Y},{coords.z}";
 
-        [Lockable]
-        public Text textObj;
+        [Lockable(true, false)]
+        public int z;
 
-        [SerializeField]
-        private Neighbor[] _neighborIndexes;
+        public override bool Equals(object obj)
+        {
+            if (!(obj is HexCell)) //shortcut for obj != null && obj is HexCell
+            {
+                return false;
+            }
 
-        public int distance;
+            var cell = (HexCell) obj;
+            return x == cell.x && z == cell.z;
+        }
 
+        public bool Equals(HexCell other)
+        {
+            return x == other.x && z == other.z;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (x * 397) ^ z;
+            }
+        }
+    }
+
+    [Serializable]
+    public struct Neighbor
+    {
+        [Lockable(true, false)]
+        public string direction;
+
+        [Lockable(true, false)]
         public int index;
 
-        public int PathFrom { get; set; }
-        public int SearchHeuristic { get; set; }
-        public int Neighbors => _neighborIndexes.Length - 1;
-        public int SearchPriority => distance + SearchHeuristic;
+        //public Coordinates coord;
 
-        public Coordinates(Vector3 p, int x, int z, bool startTop, int index)
+        public Neighbor(int i)
         {
-            var tempX = x;
-            var tempZ = z;
-
-            if (startTop)
-            {
-                tempX = x - z / 2;
-            }
-            else
-            {
-                tempZ = z - x / 2;
-            }
-
-            pos = p;
-            coords = new HexCell() {x = tempX, z = tempZ};
-            textObj = null;
-            _neighborIndexes = new Neighbor[]
-            {
-                new Neighbor(-1), new Neighbor(-1), new Neighbor(-1), new Neighbor(-1), new Neighbor(-1),
-                new Neighbor(-1)
-            };
-            walkable = true;
-            distance = -1;
-            PathFrom = -1;
-            SearchHeuristic = -1;
-            this.index = index;
+            direction = string.Empty;
+            index = i;
+            //coord = null;
         }
 
-        public void SetNeighbor(StartTopHexDir direction, List<Coordinates> coords, Coordinates cell)
+        public Neighbor(string dir, int i) //, Coordinates cell)
         {
-            _neighborIndexes[(int) direction] = new Neighbor(direction.ToString(), coords.IndexOf(cell));
-            var opposite = direction.Opposite();
-            cell._neighborIndexes[(int) opposite] = new Neighbor(opposite.ToString(), coords.IndexOf(this));
-        }
-
-        public void SetNeighbor(HexDir direction, List<Coordinates> coords, Coordinates cell)
-        {
-            _neighborIndexes[(int) direction] = new Neighbor(direction.ToString(), coords.IndexOf(cell));
-            var opposite = direction.Opposite();
-            cell._neighborIndexes[(int) opposite] = new Neighbor(opposite.ToString(), coords.IndexOf(this));
-        }
-
-        public Neighbor GetNeighbor(int direction)
-        {
-            return _neighborIndexes[direction];
-        }
-
-        public static HexCell GetFromPos(Vector3 pos, bool startTop, float innerRadius, float outerRadius)
-        {
-            var farSide = (outerRadius * 3f);
-            var closeSide = (innerRadius * 2f);
-            var x = 0f;
-            var y = 0f;
-            var xCell = 0;
-            var zCell = 0;
-            var yCell = 0;
-            if (startTop)
-            {
-                x = pos.x / closeSide;
-                y = -x;
-                var offset = pos.z / farSide;
-                x -= offset;
-                y -= offset;
-                zCell = Mathf.RoundToInt(-x - y);
-                xCell = Mathf.RoundToInt(x);
-                yCell = Mathf.RoundToInt(y);
-
-                if (xCell + yCell + zCell != 0)
-                {
-                    var dX = Mathf.Abs(x - xCell);
-                    var dY = Mathf.Abs(y - yCell);
-                    var dZ = Mathf.Abs(-x - y - zCell);
-
-                    if (dX > dY && dX > dZ)
-                    {
-                        xCell = -yCell - zCell;
-                    }
-                    else if (dZ > dY)
-                    {
-                        zCell = -xCell - yCell;
-                    }
-                }
-            }
-            else
-            {
-                var z = pos.z / closeSide;
-                y = -z;
-                var offset = pos.x / farSide;
-                z -= offset;
-                y -= offset;
-                zCell = Mathf.RoundToInt(z);
-                xCell = Mathf.RoundToInt(-z - y);
-                yCell = Mathf.RoundToInt(y);
-
-                if (zCell + xCell + yCell != 0)
-                {
-                    var dZ = Mathf.Abs(z - zCell);
-                    var dY = Mathf.Abs(y - yCell);
-                    var dX = Mathf.Abs(-z - y - xCell);
-
-                    if (dZ > dY && dZ > dX)
-                    {
-                        zCell = -yCell - xCell;
-                    }
-                    else if (dX > dY)
-                    {
-                        xCell = -zCell - yCell;
-                    }
-                }
-            }
-
-
-            var cell = new HexCell() {x = xCell, z = zCell};
-            return cell;
-        }
-
-        public int FindDistanceTo(HexCell targetCell)
-        {
-            return
-                ((coords.x < targetCell.x ? targetCell.x - coords.x : coords.x - targetCell.x) +
-                 (coords.Y < targetCell.Y ? targetCell.Y - coords.Y : coords.Y - targetCell.Y) +
-                 (coords.z < targetCell.z ? targetCell.z - coords.z : coords.z - targetCell.z)) / 2;
-        }
-
-        [Serializable]
-        public struct HexCell
-        {
-            [Lockable(true, false)]
-            public int x;
-
-            [SerializeField, Lockable(true, false)]
-            private int _y;
-
-            public int Y => _y = -x - z;
-
-
-            [Lockable(true, false)]
-            public int z;
-
-            public override bool Equals(object obj)
-            {
-                if (!(obj is HexCell)) //shortcut for obj != null && obj is HexCell
-                {
-                    return false;
-                }
-
-                var cell = (HexCell) obj;
-                return x == cell.x && z == cell.z;
-            }
-
-            public bool Equals(HexCell other)
-            {
-                return x == other.x && z == other.z;
-            }
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    return (x * 397) ^ z;
-                }
-            }
-        }
-
-        [Serializable]
-        public struct Neighbor
-        {
-            [Lockable(true, false)]
-            public string direction;
-
-            [Lockable(true, false)]
-            public int index;
-
-            public Neighbor(int i)
-            {
-                direction = string.Empty;
-                index = i;
-            }
-
-            public Neighbor(string dir, int i)
-            {
-                direction = dir;
-                index = i;
-            }
+            direction = dir;
+            index = i;
+            //coord = cell;
         }
     }
 }

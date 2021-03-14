@@ -24,7 +24,7 @@ public class HexHighlighter : MonoBehaviour
 
     private int _currentHoveredIndex = -1;
     
-    private Action<HexMaker.Coordinates> _showDistance = null;
+    private Action<Coordinates> _showDistance = null;
 
     private const string X = "x";
     
@@ -53,7 +53,14 @@ public class HexHighlighter : MonoBehaviour
         
         _showDistance = (coord) =>
         {
-            _textField.SetText(coord.distance <= 0 ? X : $"{coord.distance}");
+            if (coord == null)
+            {
+                _textField.SetText(X);
+            }
+            else
+            {
+                _textField.SetText(coord.distance <= 0 ? X : $"{coord.distance}");
+            }
         };
     }
 
@@ -63,7 +70,7 @@ public class HexHighlighter : MonoBehaviour
         GameManager.InputManager.Player.PrimaryClick.performed -= PrimaryClickHandler;
     }
 
-    public void UpdateDisplay(HexMaker.Coordinates coord)
+    public void UpdateDisplay(Coordinates coord)
     {
         if (_textField == null || _currentHoveredIndex == coord.index)
         {
@@ -103,7 +110,7 @@ public class HexHighlighter : MonoBehaviour
         {
             var coords = _hexMaker.TryHighlightGrid(this);
             
-            if (coords.walkable && coords.distance>=0)
+            if (coords != null && coords.walkable && coords.distance>=0)
             {
                 _hexMaker.IndexOfPlayerPos = coords.index;
             }

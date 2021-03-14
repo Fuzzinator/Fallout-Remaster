@@ -9,16 +9,13 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Plugins/PlayerInput/PlayerInputEditor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/50FE65A4-93A0-4952-84F1-E3562EFBE38D/c8/45e42580/ValueType.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/31D5D65B-32EC-4832-92E1-3E8AE4100B93/5b/2425b419/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexCellPriorityQueue.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/EAE584CE-26BC-4022-9C1B-1AA476BFA589/df/c2b2995d/List`1.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -29,6 +26,7 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexHighlighter.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexMaker.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexCellPriorityQueue.cs" />
       </list>
     </option>
   </component>
@@ -43,6 +41,7 @@
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="XThreadsFramesViewSplitterKey" value="0.5004248" />
   </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
@@ -54,10 +53,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="23868">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="23868" />
+      <option name="pid" />
       <option name="selectedOptions">
         <set />
       </option>
@@ -72,7 +71,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1615434490604</updated>
-      <workItem from="1615434510197" duration="58489000" />
+      <workItem from="1615434510197" duration="74252000" />
+      <workItem from="1615685456037" duration="7296000" />
+      <workItem from="1615694012108" duration="1479000" />
     </task>
     <servers />
   </component>
@@ -82,90 +83,90 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="438" height="464" key="DebuggerActiveHint" timestamp="1615610730162">
+    <state width="531" height="464" key="DebuggerActiveHint" timestamp="1615684996295">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="438" height="464" key="DebuggerActiveHint/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615610730162" />
-    <state width="3397" height="519" key="GridCell.Tab.0.bottom" timestamp="1615616048051">
+    <state width="531" height="464" key="DebuggerActiveHint/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615684996295" />
+    <state width="3397" height="519" key="GridCell.Tab.0.bottom" timestamp="1615691839063">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.0.bottom/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616048051" />
-    <state width="3397" height="519" key="GridCell.Tab.0.center" timestamp="1615616048051">
+    <state width="3397" height="519" key="GridCell.Tab.0.bottom/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691839063" />
+    <state width="3397" height="519" key="GridCell.Tab.0.center" timestamp="1615691839063">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.0.center/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616048051" />
-    <state width="3397" height="519" key="GridCell.Tab.0.left" timestamp="1615616048051">
+    <state width="3397" height="519" key="GridCell.Tab.0.center/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691839063" />
+    <state width="3397" height="519" key="GridCell.Tab.0.left" timestamp="1615691839063">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.0.left/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616048051" />
-    <state width="3397" height="519" key="GridCell.Tab.0.right" timestamp="1615616048051">
+    <state width="3397" height="519" key="GridCell.Tab.0.left/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691839063" />
+    <state width="3397" height="519" key="GridCell.Tab.0.right" timestamp="1615691839063">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.0.right/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616048051" />
-    <state width="3397" height="519" key="GridCell.Tab.1.bottom" timestamp="1615616053770">
+    <state width="3397" height="519" key="GridCell.Tab.0.right/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691839063" />
+    <state width="3397" height="519" key="GridCell.Tab.1.bottom" timestamp="1615691838860">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.1.bottom/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616053770" />
-    <state width="3397" height="519" key="GridCell.Tab.1.center" timestamp="1615616053770">
+    <state width="3397" height="519" key="GridCell.Tab.1.bottom/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691838860" />
+    <state width="3397" height="519" key="GridCell.Tab.1.center" timestamp="1615691838859">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.1.center/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616053770" />
-    <state width="3397" height="519" key="GridCell.Tab.1.left" timestamp="1615616053770">
+    <state width="3397" height="519" key="GridCell.Tab.1.center/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691838859" />
+    <state width="3397" height="519" key="GridCell.Tab.1.left" timestamp="1615691838859">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.1.left/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616053770" />
-    <state width="3397" height="519" key="GridCell.Tab.1.right" timestamp="1615616053770">
+    <state width="3397" height="519" key="GridCell.Tab.1.left/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691838859" />
+    <state width="3397" height="519" key="GridCell.Tab.1.right" timestamp="1615691838859">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.1.right/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616053770" />
-    <state width="3397" height="519" key="GridCell.Tab.2.bottom" timestamp="1615616047848">
+    <state width="3397" height="519" key="GridCell.Tab.1.right/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691838859" />
+    <state width="3397" height="519" key="GridCell.Tab.2.bottom" timestamp="1615691838861">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.2.bottom/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616047848" />
-    <state width="3397" height="519" key="GridCell.Tab.2.center" timestamp="1615616047848">
+    <state width="3397" height="519" key="GridCell.Tab.2.bottom/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691838861" />
+    <state width="3397" height="519" key="GridCell.Tab.2.center" timestamp="1615691838860">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.2.center/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616047848" />
-    <state width="3397" height="519" key="GridCell.Tab.2.left" timestamp="1615616047848">
+    <state width="3397" height="519" key="GridCell.Tab.2.center/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691838860" />
+    <state width="3397" height="519" key="GridCell.Tab.2.left" timestamp="1615691838860">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.2.left/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616047848" />
-    <state width="3397" height="519" key="GridCell.Tab.2.right" timestamp="1615616047848">
+    <state width="3397" height="519" key="GridCell.Tab.2.left/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691838860" />
+    <state width="3397" height="519" key="GridCell.Tab.2.right" timestamp="1615691838861">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.2.right/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616047848" />
-    <state width="3397" height="519" key="GridCell.Tab.3.bottom" timestamp="1615616047848">
+    <state width="3397" height="519" key="GridCell.Tab.2.right/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691838861" />
+    <state width="3397" height="519" key="GridCell.Tab.3.bottom" timestamp="1615691838861">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.3.bottom/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616047848" />
-    <state width="3397" height="519" key="GridCell.Tab.3.center" timestamp="1615616047848">
+    <state width="3397" height="519" key="GridCell.Tab.3.bottom/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691838861" />
+    <state width="3397" height="519" key="GridCell.Tab.3.center" timestamp="1615691838861">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.3.center/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616047848" />
-    <state width="3397" height="519" key="GridCell.Tab.3.left" timestamp="1615616047848">
+    <state width="3397" height="519" key="GridCell.Tab.3.center/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691838861" />
+    <state width="3397" height="519" key="GridCell.Tab.3.left" timestamp="1615691838861">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.3.left/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616047848" />
-    <state width="3397" height="519" key="GridCell.Tab.3.right" timestamp="1615616047848">
+    <state width="3397" height="519" key="GridCell.Tab.3.left/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691838861" />
+    <state width="3397" height="519" key="GridCell.Tab.3.right" timestamp="1615691838861">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="519" key="GridCell.Tab.3.right/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615616047848" />
+    <state width="3397" height="519" key="GridCell.Tab.3.right/0.-1440.3440.1400/3440.-501.1920.1160/0.0.3440.1400@0.0.3440.1400" timestamp="1615691838861" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexMaker.cs</url>
-          <line>682</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\HexMaker\HexMaker.cs" initialLine="672">
+          <line>671</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\HexMaker\HexMaker.cs" initialLine="671">
             <startOffsets>
-              <option value="19499" />
+              <option value="19464" />
             </startOffsets>
             <endOffsets>
-              <option value="19539" />
+              <option value="19465" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="42" />
+          <option name="timeStamp" value="85" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

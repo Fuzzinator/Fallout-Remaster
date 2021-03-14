@@ -889,6 +889,7 @@
           </e>
           <e p="GameManager.cs" t="Include" />
           <e p="HexMaker" t="Include">
+            <e p="HexCellPriorityQueue.cs" t="Include" />
             <e p="HexHighlighter.cs" t="Include" />
             <e p="HexMaker.cs" t="Include" />
             <e p="Outline.shader" t="Include" />
