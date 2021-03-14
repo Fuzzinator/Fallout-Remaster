@@ -79,6 +79,8 @@ public class HexMaker : MonoBehaviour
     [SerializeField]
     private List<int> _pathToTarget = new List<int>();
 
+    public List<int> PathToTarget => _pathToTarget;
+
     [Header("Interaction")]
     [SerializeField]
     private Camera _camera;

@@ -22,9 +22,14 @@ public class HexHighlighter : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _textField;
 
+    [SerializeField]
+    private Transform _tempPlayer;
+
     private int _currentHoveredIndex = -1;
     
     private Action<Coordinates> _showDistance = null;
+
+    private Coroutine _playerMoving;
 
     private const string X = "x";
     
@@ -61,6 +66,7 @@ public class HexHighlighter : MonoBehaviour
             {
                 _textField.SetText(coord.distance <= 0 ? X : $"{coord.distance}");
             }
+
         };
     }
 
@@ -112,8 +118,28 @@ public class HexHighlighter : MonoBehaviour
             
             if (coords != null && coords.walkable && coords.distance>=0)
             {
-                _hexMaker.IndexOfPlayerPos = coords.index;
+                if (_playerMoving != null)
+                {
+                    StopCoroutine(_playerMoving);
+                }
+                _playerMoving = StartCoroutine(MovePlayer());
             }
+        }
+    }
+
+    private IEnumerator MovePlayer()
+    {
+        yield return null;
+        var pathToTake = _hexMaker.PathToTarget.ToArray();
+        var count = pathToTake.Length;
+        var halfASecond = new WaitForSeconds(.25f);
+        for (var i = 0; i < count; i++)
+        {
+            var pos = pathToTake[i];
+            var coord = _hexMaker.Coords[pos];
+            _tempPlayer.position = coord.pos;
+            _hexMaker.IndexOfPlayerPos = pos;
+            yield return halfASecond;
         }
     }
 }
