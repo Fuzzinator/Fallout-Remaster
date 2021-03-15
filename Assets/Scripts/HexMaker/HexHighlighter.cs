@@ -32,6 +32,8 @@ public class HexHighlighter : MonoBehaviour
     private Coroutine _playerMoving;
 
     private const string X = "x";
+
+    private bool canGetPath = false;
     
     public bool showHighlighter
     {
@@ -56,7 +58,7 @@ public class HexHighlighter : MonoBehaviour
         GameManager.InputManager.Player.Look.performed += LookHandler;
         GameManager.InputManager.Player.PrimaryClick.performed += PrimaryClickHandler;
         
-        _showDistance = (coord) =>
+        /*_showDistance = (coord) =>
         {
             if (coord == null)
             {
@@ -67,7 +69,7 @@ public class HexHighlighter : MonoBehaviour
                 _textField.SetText(coord.distance <= 0 ? X : $"{coord.distance}");
             }
 
-        };
+        };*/
     }
 
     private void OnDestroy()
@@ -87,7 +89,16 @@ public class HexHighlighter : MonoBehaviour
         if (coord.walkable)
         {
             _textField.SetText(string.Empty);
-            _hexMaker.GetDistanceFromPlayer(coord, _showDistance);
+            coord = _hexMaker.GetDistanceFromPlayer(coord);//, _showDistance);
+            
+            if (coord == null)
+            {
+                _textField.SetText(X);
+            }
+            else
+            {
+                _textField.SetText(coord.distance <= 0 ? X : $"{coord.distance}");
+            }
         }
         else
         {
@@ -97,8 +108,9 @@ public class HexHighlighter : MonoBehaviour
 
     private void LookHandler(InputAction.CallbackContext obj)
     {
-        if (_hoverHighlight)
+        if (_hoverHighlight && canGetPath)
         {
+            canGetPath = false;
             if (_hexMaker != null)
             {
                 _hexMaker.TryHighlightGrid(this);
@@ -140,6 +152,18 @@ public class HexHighlighter : MonoBehaviour
             _tempPlayer.position = coord.pos;
             _hexMaker.IndexOfPlayerPos = pos;
             yield return halfASecond;
+        }
+    }
+
+    private void Update()
+    {
+        if (!canGetPath)
+        {
+            canGetPath = true;
+            if (_hoverHighlight && _hexMaker != null)
+            {
+                _hexMaker.TryHighlightGrid(this);
+            }
         }
     }
 }

@@ -566,49 +566,42 @@ public class HexMaker : MonoBehaviour
         }
     }
 
-    public void GetDistanceFromPlayer(Coordinates coord, Action<Coordinates> toDo)
+    public Coordinates GetDistanceFromPlayer(Coordinates coord)//, Action<Coordinates> toDo)
     {
-        StopAllCoroutines();
+        //StopAllCoroutines();
 
         if (coord.index == _indexOfPlayerPos)
         {
-            toDo?.Invoke(null);
+            return null;
+            //toDo?.Invoke(null);
         }
 
-        StartCoroutine(FindDistanceTo(coord, null, toDo));
+        var playerPos = _indexOfPlayerPos > -1 && _indexOfPlayerPos < _coords.Count ? _coords[_indexOfPlayerPos] : null;
+        if (playerPos == null)
+        {
+            return null;
+            //toDo?.Invoke(null);
+        }
+
+        return FindDistanceTo(playerPos, coord);
+        
+        //StartCoroutine(FindDistanceTo(playerPos, coord, null, toDo));
     }
 
-    //Breadth-First search method
-    private IEnumerator FindDistanceTo(Coordinates targetCell, WaitForSeconds delay, Action<Coordinates> toDo)
+    //A* search method
+    private Coordinates FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, int maxDistance = Int32.MaxValue)
     {
         foreach (var coord in _coords)
         {
             coord.distance = -1;
             coord.PathFrom = -1;
+            coord.QueueStatus = HexCellPriorityQueue.QueueStatus.PreQueue;
             coord.nextWithSamePriority = null;
-        }
-
-        var accessable = false;
-        for (var i = 0; i <= targetCell.Neighbors; i++)
-        {
-            var neighbor = targetCell.GetNeighbor(i);
-            if (neighbor.index < 0 || neighbor.index >= _coords.Count - 1 || !_coords[neighbor.index].walkable)
-            {
-                continue;
-            }
-
-            accessable = true;
-            break;
-        }
-
-        if (!accessable)
-        {
-            yield break;
         }
 
         if (_searchFrontier == null)
         {
-            _searchFrontier = new HexCellPriorityQueue(); //ref _coords);
+            _searchFrontier = new HexCellPriorityQueue();
         }
         else
         {
@@ -617,28 +610,23 @@ public class HexMaker : MonoBehaviour
 
         if (IndexOfPlayerPos < 0 || IndexOfPlayerPos >= _coords.Count)
         {
-            yield break;
+            return null;
         }
 
-        var playerCoord = _coords[IndexOfPlayerPos];
-        playerCoord.distance = 0;
-        //_coords[IndexOfPlayerPos] = playerCoord;
-        //frontier.Add(playerCoord);
+        sourceCell.distance = 0;
 
-        _searchFrontier.Enqueue(playerCoord);
+        _searchFrontier.Enqueue(sourceCell);
 
-        var count = 0;
         var foundTarget = false;
         while (_searchFrontier.Count > 0)
         {
-            var current = _searchFrontier.Dequeue(); //frontier[0];
-            //frontier.RemoveAt(0);
+            var current = _searchFrontier.Dequeue();
 
             for (var d = 0; d <= current.Neighbors; d++)
             {
                 var neighbor = current.GetNeighbor(d);
                 if (neighbor.index < 0 || neighbor.index >= _coords.Count || _coords[neighbor.index] == null ||
-                    !_coords[neighbor.index].walkable || _coords[neighbor.index].distance > -1)
+                    !_coords[neighbor.index].walkable || _coords[neighbor.index].QueueStatus != HexCellPriorityQueue.QueueStatus.PreQueue /*_coords[neighbor.index].distance > -1*/)
                 {
                     continue;
                 }
@@ -660,11 +648,14 @@ public class HexMaker : MonoBehaviour
                     _searchFrontier.Change(neighborCoord, oldPriority);
                 }
 
-
-                //_coords[neighbor.index] = coord;
+                if (distance > maxDistance)
+                {
+                    _searchFrontier.Clear();
+                    return null;
+                }
+                
                 if (neighborCoord == targetCell)
                 {
-                    //targetCell = coord;
                     foundTarget = true;
 
                     _pathToTarget.Clear();
@@ -673,7 +664,7 @@ public class HexMaker : MonoBehaviour
                     var count1 = 0;
                     while (current.PathFrom > -1 && current.PathFrom != _indexOfPlayerPos)
                     {
-                        if (count > 10000)
+                        if (count1 > 10000)
                         {
                             Debug.LogError("What the fuck");
                             break;
@@ -681,27 +672,17 @@ public class HexMaker : MonoBehaviour
 
                         _pathToTarget.Add(current.PathFrom);
                         current = _coords[current.PathFrom];
-                        count++;
+                        count1++;
                     }
 
                     _pathToTarget.Reverse();
                     break;
                 }
-
-                //frontier.Add(coord);
             }
 
             if (foundTarget)
             {
                 break;
-            }
-
-            //frontier.Sort((x, y) => x.SearchPriority.CompareTo(y.SearchPriority));
-
-            count++;
-            if (count % _horizontalCount == 0)
-            {
-                yield return delay;
             }
         }
 
@@ -709,14 +690,13 @@ public class HexMaker : MonoBehaviour
 
         if (targetCell.index < 0 || targetCell.index >= _coords.Count)
         {
-            yield break;
+            return null;
         }
 
-        toDo?.Invoke(_coords[targetCell.index]);
-        yield return null;
+        return targetCell;
     }
 
-    private bool Contains(Vector3 position) //, Vector3[] rotatedBounds)
+    private bool Contains(Vector3 position)
     {
         var t = _boundaryObj.transform.parent;
 
@@ -770,6 +750,8 @@ public class Coordinates
 
     public int PathFrom { get; set; }
     public int SearchHeuristic { get; set; }
+    
+    public HexCellPriorityQueue.QueueStatus QueueStatus { get; set; }
 
     [NonSerialized]
     public Coordinates nextWithSamePriority; // { get; set; }

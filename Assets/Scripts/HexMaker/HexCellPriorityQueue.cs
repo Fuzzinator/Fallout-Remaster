@@ -11,12 +11,6 @@ public class HexCellPriorityQueue
     public int Count => _count;
 
     private int _minimum = int.MaxValue;
-
-    /*public HexCellPriorityQueue(ref List<Coordinates> list)
-    {
-        _sourceList = list;
-    }*/
-
     public void Enqueue(Coordinates cell)
     {
         _count++;
@@ -34,6 +28,7 @@ public class HexCellPriorityQueue
         }
 
         cell.nextWithSamePriority = _list[priority]; //Testing
+        cell.QueueStatus = QueueStatus.InQueue;
         _list[priority] = cell;
 
         /*if (priority >= _list.Count || priority < 0)
@@ -67,7 +62,7 @@ public class HexCellPriorityQueue
                     _list[_minimum] = _sourceList[nextCoord];
                 }*/
                 _list[_minimum] = nextCoord;
-
+                coord.QueueStatus = QueueStatus.PostQueue;
                 return coord;
             }
         }
@@ -112,6 +107,7 @@ public class HexCellPriorityQueue
             if (coord != null)
             {
                 coord.nextWithSamePriority = null;
+                coord.QueueStatus = QueueStatus.PreQueue;
             }
         }
         _list.Clear();
@@ -119,30 +115,10 @@ public class HexCellPriorityQueue
         _minimum = int.MaxValue;
     }
 
-    /*int Compare(Coordinates a, Coordinates b)
+    public enum QueueStatus
     {
-        var aNull = a == null;
-        var bNull = b == null;
-        if (!aNull && bNull)
-        {
-            return 1;
-        }
-
-        if (aNull && !bNull)
-        {
-            return -1;
-        }
-
-        if (aNull && bNull)
-        {
-            return 0;
-        }
-
-        if (a.SearchPriority > b.SearchPriority)
-            return 1;
-        if (a.SearchPriority < b.SearchPriority)
-            return -1;
-        else
-            return 0;
-    }*/
+        PreQueue,
+        InQueue,
+        PostQueue
+    }
 }
