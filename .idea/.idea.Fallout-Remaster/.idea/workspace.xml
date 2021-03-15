@@ -24,10 +24,10 @@
         <option value="$PROJECT_DIR$/Assets/HexMaker/HexMaker.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/InputTracker.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexCellPriorityQueue.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexHighlighter.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexMaker.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" />
       </list>
     </option>
   </component>
@@ -75,7 +75,7 @@
       <workItem from="1615434510197" duration="74252000" />
       <workItem from="1615685456037" duration="7296000" />
       <workItem from="1615694012108" duration="1479000" />
-      <workItem from="1615702878383" duration="18319000" />
+      <workItem from="1615702878383" duration="22497000" />
     </task>
     <servers />
   </component>
@@ -162,10 +162,10 @@
           <line>701</line>
           <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\HexMaker\HexMaker.cs" initialLine="701">
             <startOffsets>
-              <option value="20374" />
+              <option value="20372" />
             </startOffsets>
             <endOffsets>
-              <option value="20386" />
+              <option value="20384" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="92" />
@@ -175,10 +175,10 @@
           <line>655</line>
           <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\HexMaker\HexMaker.cs" initialLine="655">
             <startOffsets>
-              <option value="19076" />
+              <option value="19074" />
             </startOffsets>
             <endOffsets>
-              <option value="19088" />
+              <option value="19086" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="93" />

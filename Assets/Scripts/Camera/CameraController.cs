@@ -8,27 +8,33 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField]
     private Camera _camera;
+
     public Camera TargetCamera => _camera;
 
     [SerializeField]
     private float _moveSpeed = 5;
-    
+
     private int _borderSize = 10;
-    
+
     [SerializeField]
     private Vector4 _positionLimits = Vector4.zero;
-    
+
+    private Vector4 _actualPosLimits = Vector4.zero;
+
     //I will eventually add scrolling in and out and rotating around the map
     //I'll use this as a reference https://catlikecoding.com/unity/tutorials/hex-map/part-5/
 
     private Coroutine _movingCamera;
     private bool _moveCamera;
+
     private void OnValidate()
     {
         if (_camera == null)
         {
             TryGetComponent(out _camera);
         }
+
+        UpdatePosLimits();
     }
 
     private void OnDisable()
@@ -54,17 +60,19 @@ public class CameraController : MonoBehaviour
 
     private void UpdatePosLimits()
     {
-        
+        var height = _camera.orthographicSize;
+        var width = (_camera.aspect - 1) * height; //height * _camera.aspect;
+        _actualPosLimits = new Vector4(_positionLimits.x - width, _positionLimits.y, _positionLimits.z + width,
+            _positionLimits.w);
     }
-    
+
     private void LookHandler(InputAction.CallbackContext obj)
     {
         CheckCursorPos(Mouse.current.position.ReadValue());
     }
-    
+
     private void ScrollWheelHandler(InputAction.CallbackContext obj)
     {
-        
     }
 
     private void CheckCursorPos(Vector2 cursorPos)
@@ -74,7 +82,7 @@ public class CameraController : MonoBehaviour
         {
             if (!_moveCamera)
             {
-                _moveCamera = true;   
+                _moveCamera = true;
                 _movingCamera ??= StartCoroutine(TryMoveCamera());
             }
         }
@@ -92,21 +100,21 @@ public class CameraController : MonoBehaviour
     private IEnumerator TryMoveCamera()
     {
         yield return null;
-        
+
         var mousePos = Mouse.current.position.ReadValue();
-        while (_moveCamera) 
+        while (_moveCamera)
         {
-            var screenCenter = new Vector2(Screen.width, Screen.height)*.5f;
+            var screenCenter = new Vector2(Screen.width, Screen.height) * .5f;
             mousePos = Mouse.current.position.ReadValue();
-            var dir = (mousePos-screenCenter).normalized;
+            var dir = (mousePos - screenCenter).normalized;
             var origPos = transform.localPosition;
-            var newPos = origPos + (Vector3)(dir * (_moveSpeed * Time.deltaTime));
-            if (newPos.x > _positionLimits.x || newPos.x < _positionLimits.z)
+            var newPos = origPos + (Vector3) (dir * (_moveSpeed * Time.deltaTime));
+            if (newPos.x > _actualPosLimits.x || newPos.x < _actualPosLimits.z)
             {
                 newPos.x = origPos.x;
             }
 
-            if (newPos.y > _positionLimits.y || newPos.y < _positionLimits.w)
+            if (newPos.y > _actualPosLimits.y || newPos.y < _actualPosLimits.w)
             {
                 newPos.y = origPos.y;
             }
