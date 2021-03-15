@@ -162,7 +162,7 @@ public class HexMaker : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            if (!_displayCoordinates)
+            /*if (!_displayCoordinates)
             {
                 foreach (var coord in _coords)
                 {
@@ -183,7 +183,7 @@ public class HexMaker : MonoBehaviour
                 _meshFilter.sharedMesh = null;
                 Destroy(_collider);
                 _collider = null;
-            }
+            }*/
         }
         else
         {
@@ -566,30 +566,28 @@ public class HexMaker : MonoBehaviour
         }
     }
 
-    public Coordinates GetDistanceFromPlayer(Coordinates coord)//, Action<Coordinates> toDo)
+    public void GetDistanceFromPlayer(Coordinates coord, Action<Coordinates> toDo)
     {
-        //StopAllCoroutines();
+        StopAllCoroutines();
 
         if (coord.index == _indexOfPlayerPos)
         {
-            return null;
-            //toDo?.Invoke(null);
+            toDo?.Invoke(null);
+            return;
         }
 
         var playerPos = _indexOfPlayerPos > -1 && _indexOfPlayerPos < _coords.Count ? _coords[_indexOfPlayerPos] : null;
         if (playerPos == null)
         {
-            return null;
-            //toDo?.Invoke(null);
+            toDo?.Invoke(null);
+            return;
         }
 
-        return FindDistanceTo(playerPos, coord);
-        
-        //StartCoroutine(FindDistanceTo(playerPos, coord, null, toDo));
+        StartCoroutine(FindDistanceTo(playerPos, coord, toDo));
     }
 
     //A* search method
-    private Coordinates FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, int maxDistance = Int32.MaxValue)
+    private IEnumerator FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, Action<Coordinates> toDo, int maxDistance = Int32.MaxValue)
     {
         foreach (var coord in _coords)
         {
@@ -610,7 +608,8 @@ public class HexMaker : MonoBehaviour
 
         if (IndexOfPlayerPos < 0 || IndexOfPlayerPos >= _coords.Count)
         {
-            return null;
+            toDo?.Invoke(null);
+            yield break;
         }
 
         sourceCell.distance = 0;
@@ -618,6 +617,8 @@ public class HexMaker : MonoBehaviour
         _searchFrontier.Enqueue(sourceCell);
 
         var foundTarget = false;
+        yield return null;
+        var count = 0;
         while (_searchFrontier.Count > 0)
         {
             var current = _searchFrontier.Dequeue();
@@ -651,7 +652,8 @@ public class HexMaker : MonoBehaviour
                 if (distance > maxDistance)
                 {
                     _searchFrontier.Clear();
-                    return null;
+                    toDo?.Invoke(null);
+                    yield break;
                 }
                 
                 if (neighborCoord == targetCell)
@@ -684,16 +686,23 @@ public class HexMaker : MonoBehaviour
             {
                 break;
             }
+
+            if (count % 50 == 0)
+            {
+                yield return null;
+            }
+            count++;
         }
 
         _searchFrontier.Clear();
 
         if (targetCell.index < 0 || targetCell.index >= _coords.Count)
         {
-            return null;
+            toDo?.Invoke(null);
+            yield break;
         }
 
-        return targetCell;
+        toDo?.Invoke(targetCell);
     }
 
     private bool Contains(Vector3 position)

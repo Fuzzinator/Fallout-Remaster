@@ -26,15 +26,15 @@ public class HexHighlighter : MonoBehaviour
     private Transform _tempPlayer;
 
     private int _currentHoveredIndex = -1;
-    
+
     private Action<Coordinates> _showDistance = null;
 
     private Coroutine _playerMoving;
 
+    private Coordinates _hoveredCoord = null;
+
     private const string X = "x";
 
-    private bool canGetPath = false;
-    
     public bool showHighlighter
     {
         set => gameObject.SetActive(value);
@@ -55,10 +55,19 @@ public class HexHighlighter : MonoBehaviour
     private void Start()
     {
         GameManager.InputManager.Player.Enable();
-        GameManager.InputManager.Player.Look.performed += LookHandler;
-        GameManager.InputManager.Player.PrimaryClick.performed += PrimaryClickHandler;
         
-        /*_showDistance = (coord) =>
+        if (_hoverHighlight)
+        {
+            GameManager.InputManager.Player.Look.performed += LookHandler;
+            Cursor.visible = false;
+        }
+
+        if (_hoverOnClick)
+        {
+            GameManager.InputManager.Player.PrimaryClick.performed += PrimaryClickHandler;
+        }
+
+        _showDistance = (coord) =>
         {
             if (coord == null)
             {
@@ -68,8 +77,7 @@ public class HexHighlighter : MonoBehaviour
             {
                 _textField.SetText(coord.distance <= 0 ? X : $"{coord.distance}");
             }
-
-        };*/
+        };
     }
 
     private void OnDestroy()
@@ -84,21 +92,13 @@ public class HexHighlighter : MonoBehaviour
         {
             return;
         }
-        
+
         _currentHoveredIndex = coord.index;
         if (coord.walkable)
         {
             _textField.SetText(string.Empty);
-            coord = _hexMaker.GetDistanceFromPlayer(coord);//, _showDistance);
-            
-            if (coord == null)
-            {
-                _textField.SetText(X);
-            }
-            else
-            {
-                _textField.SetText(coord.distance <= 0 ? X : $"{coord.distance}");
-            }
+
+            _hexMaker.GetDistanceFromPlayer(coord, _showDistance);
         }
         else
         {
@@ -108,12 +108,11 @@ public class HexHighlighter : MonoBehaviour
 
     private void LookHandler(InputAction.CallbackContext obj)
     {
-        if (_hoverHighlight && canGetPath)
+        if (_hoverHighlight)
         {
-            canGetPath = false;
             if (_hexMaker != null)
             {
-                _hexMaker.TryHighlightGrid(this);
+                _hoveredCoord = _hexMaker.TryHighlightGrid(this);
             }
             else
             {
@@ -127,13 +126,14 @@ public class HexHighlighter : MonoBehaviour
         if (_hoverOnClick && _hexMaker != null)
         {
             var coords = _hexMaker.TryHighlightGrid(this);
-            
-            if (coords != null && coords.walkable && coords.distance>=0)
+
+            if (coords != null && coords.walkable && coords.distance >= 0)
             {
                 if (_playerMoving != null)
                 {
                     StopCoroutine(_playerMoving);
                 }
+
                 _playerMoving = StartCoroutine(MovePlayer());
             }
         }
@@ -152,18 +152,6 @@ public class HexHighlighter : MonoBehaviour
             _tempPlayer.position = coord.pos;
             _hexMaker.IndexOfPlayerPos = pos;
             yield return halfASecond;
-        }
-    }
-
-    private void Update()
-    {
-        if (!canGetPath)
-        {
-            canGetPath = true;
-            if (_hoverHighlight && _hexMaker != null)
-            {
-                _hexMaker.TryHighlightGrid(this);
-            }
         }
     }
 }
