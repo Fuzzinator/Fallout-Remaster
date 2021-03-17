@@ -12,9 +12,7 @@ using UnityEngine.UI;
 public class HexMaker : MonoBehaviour
 {
     #region Variables And Properties
-
-    private static HexMaker _instance;
-    public static HexMaker Instance => _instance;
+    public static HexMaker Instance { get; private set; }
 
     [SerializeField]
     private bool _shouldUpdate = false;
@@ -91,12 +89,6 @@ public class HexMaker : MonoBehaviour
     [SerializeField]
     private int _indexOfPlayerPos;
 
-    public int IndexOfPlayerPos
-    {
-        get => _indexOfPlayerPos;
-        set => _indexOfPlayerPos = value;
-    }
-
     private readonly List<GameObject> _deleteMe = new List<GameObject>();
 
     private Vector3 _lastPos;
@@ -137,8 +129,6 @@ public class HexMaker : MonoBehaviour
         {
             _camera = Camera.main;
         }
-
-        _indexOfPlayerPos = _coords.Count / 2;
     }
 
     private void Awake()
@@ -148,9 +138,9 @@ public class HexMaker : MonoBehaviour
             return;
         }
 
-        if (enabled && _instance == null)
+        if (enabled && Instance == null)
         {
-            _instance = this;
+            Instance = this;
         }
         else
         {
@@ -160,32 +150,7 @@ public class HexMaker : MonoBehaviour
 
     private void Update()
     {
-        if (Application.isPlaying)
-        {
-            /*if (!_displayCoordinates)
-            {
-                foreach (var coord in _coords)
-                {
-                    var text = coord.textObj;
-                    Destroy(text);
-                }
-            }
-
-            while (_deleteMe.Count > 0)
-            {
-                Destroy(_deleteMe[0]);
-                _deleteMe.RemoveAt(0);
-            }
-
-            if (!_createMesh && _meshFilter.sharedMesh != null)
-            {
-                Destroy(_meshFilter.sharedMesh);
-                _meshFilter.sharedMesh = null;
-                Destroy(_collider);
-                _collider = null;
-            }*/
-        }
-        else
+        if (!Application.isPlaying)
         {
             if (!_displayCoordinates)
             {
@@ -206,12 +171,6 @@ public class HexMaker : MonoBehaviour
             {
                 DestroyImmediate(_meshFilter.sharedMesh);
                 _meshFilter.sharedMesh = null;
-            }
-
-            if (!_createCollider)
-            {
-                DestroyImmediate(_collider);
-                _collider = null;
             }
         }
     }
@@ -336,7 +295,7 @@ public class HexMaker : MonoBehaviour
         }
     }
 
-    public Coordinates TryHighlightGrid(HexHighlighter highlighter)
+    public Coordinates TryGetCoordinates(HexHighlighter highlighter = null)
     {
         if (_collider != null && _camera != null)
         {
@@ -344,7 +303,7 @@ public class HexMaker : MonoBehaviour
             var hitGrid = _collider.Raycast(ray, out var hitInfo, Mathf.Infinity);
             if (hitGrid)
             {
-                return HighlightHexCoord(hitInfo.point, highlighter);
+                return GetCoordinates(hitInfo.point, highlighter);
             }
         }
 
@@ -354,14 +313,14 @@ public class HexMaker : MonoBehaviour
     private void GetHighlightMesh()
     {
         var trans = _highlighterObj.transform;
-        _highlighterObj.sharedMesh = new Mesh
+        _highlighterObj.SharedMesh = new Mesh
         {
             vertices = GetVerts(out var triangles, trans,
                 new List<Coordinates>() {new Coordinates(trans.position, 0, 0, _startTop, 0)}).ToArray(),
             triangles = triangles.ToArray(),
             name = "Highlight Mesh"
         };
-        _highlighterObj.sharedMesh.RecalculateNormals();
+        _highlighterObj.SharedMesh.RecalculateNormals();
     }
 
     private void SetNeighbors(Vector3 newPos, int x, int z)
@@ -505,7 +464,7 @@ public class HexMaker : MonoBehaviour
         triangles.Add(indexOf3);
     }
 
-    private Coordinates HighlightHexCoord(Vector3 pos, HexHighlighter highlighter)
+    private Coordinates GetCoordinates(Vector3 pos, HexHighlighter highlighter = null)
     {
         pos = transform.InverseTransformPoint(pos);
         if (_centerOrig)
@@ -538,8 +497,12 @@ public class HexMaker : MonoBehaviour
         }
 
         var coord = _coords[index];
-        highlighter.UpdateDisplay(coord);
-        highlighter.transform.position = coord.pos;
+        if (highlighter != null)
+        {
+            highlighter.UpdateDisplay(coord);
+            highlighter.transform.position = coord.pos;
+        }
+
         return coord;
     }
 
@@ -566,28 +529,22 @@ public class HexMaker : MonoBehaviour
         }
     }
 
-    public void GetDistanceFromPlayer(Coordinates coord, Action<Coordinates> toDo)
+    public void GetDistanceToCoord(Coordinates sourceCell, Coordinates targetCell, Action<Coordinates> toDo)
     {
         StopAllCoroutines();
 
-        if (coord.index == _indexOfPlayerPos)
+        if (sourceCell== null || targetCell == null)
         {
             toDo?.Invoke(null);
             return;
         }
 
-        var playerPos = _indexOfPlayerPos > -1 && _indexOfPlayerPos < _coords.Count ? _coords[_indexOfPlayerPos] : null;
-        if (playerPos == null)
-        {
-            toDo?.Invoke(null);
-            return;
-        }
-
-        StartCoroutine(FindDistanceTo(playerPos, coord, toDo));
+        StartCoroutine(FindDistanceTo(sourceCell, targetCell, toDo));
     }
 
     //A* search method
-    private IEnumerator FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, Action<Coordinates> toDo, int maxDistance = Int32.MaxValue)
+    private IEnumerator FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, Action<Coordinates> toDo,
+        int maxDistance = Int32.MaxValue)
     {
         foreach (var coord in _coords)
         {
@@ -606,7 +563,7 @@ public class HexMaker : MonoBehaviour
             _searchFrontier.Clear();
         }
 
-        if (IndexOfPlayerPos < 0 || IndexOfPlayerPos >= _coords.Count)
+        if (sourceCell == null)
         {
             toDo?.Invoke(null);
             yield break;
@@ -626,13 +583,18 @@ public class HexMaker : MonoBehaviour
             for (var d = 0; d <= current.Neighbors; d++)
             {
                 var neighbor = current.GetNeighbor(d);
-                if (neighbor.index < 0 || neighbor.index >= _coords.Count || _coords[neighbor.index] == null ||
-                    !_coords[neighbor.index].walkable || _coords[neighbor.index].QueueStatus != HexCellPriorityQueue.QueueStatus.PreQueue /*_coords[neighbor.index].distance > -1*/)
+                if (neighbor.index < 0 || neighbor.index >= _coords.Count)
                 {
                     continue;
                 }
 
                 var neighborCoord = _coords[neighbor.index];
+                if (neighborCoord == null || neighborCoord.occupied || !neighborCoord.walkable ||
+                    neighborCoord.QueueStatus !=  HexCellPriorityQueue.QueueStatus.PreQueue)
+                {
+                    continue;
+                }
+
                 neighborCoord.PathFrom = current.index;
                 var distance = current.distance;
                 var neighborDistance = neighborCoord.distance;
@@ -655,7 +617,7 @@ public class HexMaker : MonoBehaviour
                     toDo?.Invoke(null);
                     yield break;
                 }
-                
+
                 if (neighborCoord == targetCell)
                 {
                     foundTarget = true;
@@ -691,6 +653,7 @@ public class HexMaker : MonoBehaviour
             {
                 yield return null;
             }
+
             count++;
         }
 
@@ -743,7 +706,11 @@ public class Coordinates
     [Lockable]
     public HexCell coords;
 
+    public bool occupied = false;
+
     public bool walkable;
+
+    public IOccupier occupyingObject { get; set; }
 
     public string coordString => $"{coords.x},{coords.Y},{coords.z}";
 
@@ -759,7 +726,7 @@ public class Coordinates
 
     public int PathFrom { get; set; }
     public int SearchHeuristic { get; set; }
-    
+
     public HexCellPriorityQueue.QueueStatus QueueStatus { get; set; }
 
     [NonSerialized]

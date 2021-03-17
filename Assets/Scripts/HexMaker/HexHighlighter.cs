@@ -7,16 +7,17 @@ using UnityEngine.InputSystem;
 
 public class HexHighlighter : MonoBehaviour
 {
+    #region Variables And Properties
+
+    public static HexHighlighter Instance { get; private set; }
+
     [SerializeField]
     private MeshFilter _meshFilter;
 
     [SerializeField]
     private bool _hoverHighlight;
 
-    [SerializeField]
-    private bool _hoverOnClick;
-
-    [SerializeField]
+    [SerializeField, HideInInspector]
     private HexMaker _hexMaker;
 
     [SerializeField]
@@ -29,9 +30,8 @@ public class HexHighlighter : MonoBehaviour
 
     private Action<Coordinates> _showDistance = null;
 
-    private Coroutine _playerMoving;
 
-    private Coordinates _hoveredCoord = null;
+    public Coordinates HoveredCoord { get; private set; }
 
     private const string X = "x";
 
@@ -40,7 +40,7 @@ public class HexHighlighter : MonoBehaviour
         set => gameObject.SetActive(value);
     }
 
-    public Mesh sharedMesh
+    public Mesh SharedMesh
     {
         get => _meshFilter != null ? _meshFilter.sharedMesh : null;
         set
@@ -52,19 +52,28 @@ public class HexHighlighter : MonoBehaviour
         }
     }
 
+    #endregion
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
     private void Start()
     {
         GameManager.InputManager.Player.Enable();
-        
+
         if (_hoverHighlight)
         {
             GameManager.InputManager.Player.Look.performed += LookHandler;
             Cursor.visible = false;
-        }
-
-        if (_hoverOnClick)
-        {
-            GameManager.InputManager.Player.PrimaryClick.performed += PrimaryClickHandler;
         }
 
         _showDistance = (coord) =>
@@ -83,7 +92,21 @@ public class HexHighlighter : MonoBehaviour
     private void OnDestroy()
     {
         GameManager.InputManager.Player.Look.performed -= LookHandler;
-        GameManager.InputManager.Player.PrimaryClick.performed -= PrimaryClickHandler;
+    }
+
+    private void LookHandler(InputAction.CallbackContext obj)
+    {
+        if (_hoverHighlight)
+        {
+            if (_hexMaker != null)
+            {
+                HoveredCoord = _hexMaker.TryGetCoordinates(this);
+            }
+            else
+            {
+                Debug.LogError("HexHighlighter is missing HexMaker");
+            }
+        }
     }
 
     public void UpdateDisplay(Coordinates coord)
@@ -97,61 +120,17 @@ public class HexHighlighter : MonoBehaviour
         if (coord.walkable)
         {
             _textField.SetText(string.Empty);
-
-            _hexMaker.GetDistanceFromPlayer(coord, _showDistance);
+            var player = Player.Instance;
+            if (player == null || _hexMaker == null)
+            {
+                return;
+            }
+            
+            _hexMaker.GetDistanceToCoord(_hexMaker.Coords[player.CurrentLocation],coord, _showDistance);
         }
         else
         {
             _textField.SetText(X);
-        }
-    }
-
-    private void LookHandler(InputAction.CallbackContext obj)
-    {
-        if (_hoverHighlight)
-        {
-            if (_hexMaker != null)
-            {
-                _hoveredCoord = _hexMaker.TryHighlightGrid(this);
-            }
-            else
-            {
-                Debug.LogError("HexHighlighter is missing HexMaker");
-            }
-        }
-    }
-
-    private void PrimaryClickHandler(InputAction.CallbackContext obj)
-    {
-        if (_hoverOnClick && _hexMaker != null)
-        {
-            var coords = _hexMaker.TryHighlightGrid(this);
-
-            if (coords != null && coords.walkable && coords.distance >= 0)
-            {
-                if (_playerMoving != null)
-                {
-                    StopCoroutine(_playerMoving);
-                }
-
-                _playerMoving = StartCoroutine(MovePlayer());
-            }
-        }
-    }
-
-    private IEnumerator MovePlayer()
-    {
-        yield return null;
-        var pathToTake = _hexMaker.PathToTarget.ToArray();
-        var count = pathToTake.Length;
-        var halfASecond = new WaitForSeconds(.25f);
-        for (var i = 0; i < count; i++)
-        {
-            var pos = pathToTake[i];
-            var coord = _hexMaker.Coords[pos];
-            _tempPlayer.position = coord.pos;
-            _hexMaker.IndexOfPlayerPos = pos;
-            yield return halfASecond;
         }
     }
 }
