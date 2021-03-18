@@ -75,9 +75,9 @@ public class HexMaker : MonoBehaviour
     private LayerMask _doorsLayer = new LayerMask();
 
     [SerializeField]
-    private List<int> _pathToTarget = new List<int>();
+    private List<Coordinates> _pathToTarget = new List<Coordinates>();
 
-    public List<int> PathToTarget => _pathToTarget;
+    public List<Coordinates> PathToTarget => _pathToTarget;
 
     [Header("Interaction")]
     [SerializeField]
@@ -86,20 +86,19 @@ public class HexMaker : MonoBehaviour
     [SerializeField]
     private HexHighlighter _highlighterObj;
 
-    [SerializeField]
-    private int _indexOfPlayerPos;
-
     private readonly List<GameObject> _deleteMe = new List<GameObject>();
 
     private Vector3 _lastPos;
 
     private HexCellPriorityQueue _searchFrontier;
 
+    //private int _searchFrontierPhase = 0;
+
     private float XOffset => _startTop ? InnerRadius * 2f : outerRadius * 1.5f;
     private float ZOffset => _startTop ? outerRadius * 1.5f : InnerRadius * 2f;
 
     public bool UsesCollider => _createCollider;
-
+    public bool HasValidPath => _pathToTarget.Count > 0;
     #endregion
 
     private void OnValidate()
@@ -295,7 +294,7 @@ public class HexMaker : MonoBehaviour
         }
     }
 
-    public Coordinates TryGetCoordinates(HexHighlighter highlighter = null)
+    public Coordinates TryGetCoordinates()
     {
         if (_collider != null && _camera != null)
         {
@@ -303,10 +302,10 @@ public class HexMaker : MonoBehaviour
             var hitGrid = _collider.Raycast(ray, out var hitInfo, Mathf.Infinity);
             if (hitGrid)
             {
-                return GetCoordinates(hitInfo.point, highlighter);
+                return GetCoordinates(hitInfo.point);
             }
         }
-
+        Debug.LogWarning("Check _collider and _camera one of them is null");
         return null;
     }
 
@@ -464,7 +463,7 @@ public class HexMaker : MonoBehaviour
         triangles.Add(indexOf3);
     }
 
-    private Coordinates GetCoordinates(Vector3 pos, HexHighlighter highlighter = null)
+    private Coordinates GetCoordinates(Vector3 pos)
     {
         pos = transform.InverseTransformPoint(pos);
         if (_centerOrig)
@@ -493,15 +492,11 @@ public class HexMaker : MonoBehaviour
 
         if (index < 0 || index >= _coords.Count)
         {
+            Debug.LogWarning($"Index is {index}. I wonder why...");
             return null;
         }
 
         var coord = _coords[index];
-        if (highlighter != null)
-        {
-            highlighter.UpdateDisplay(coord);
-            highlighter.transform.position = coord.pos;
-        }
 
         return coord;
     }
@@ -546,11 +541,14 @@ public class HexMaker : MonoBehaviour
     private IEnumerator FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, Action<Coordinates> toDo,
         int maxDistance = Int32.MaxValue)
     {
+        _pathToTarget.Clear();
+        yield return null;
+        //_searchFrontierPhase += 2;
         foreach (var coord in _coords)
         {
             coord.distance = -1;
             coord.PathFrom = -1;
-            coord.QueueStatus = HexCellPriorityQueue.QueueStatus.PreQueue;
+            //coord.QueueStatus = HexCellPriorityQueue.QueueStatus.PreQueue;
             coord.nextWithSamePriority = null;
         }
 
@@ -569,16 +567,16 @@ public class HexMaker : MonoBehaviour
             yield break;
         }
 
+        //sourceCell.SearchPhase = _searchFrontierPhase;
         sourceCell.distance = 0;
-
         _searchFrontier.Enqueue(sourceCell);
 
         var foundTarget = false;
-        yield return null;
         var count = 0;
         while (_searchFrontier.Count > 0)
         {
             var current = _searchFrontier.Dequeue();
+            //current.SearchPhase += 1;
 
             for (var d = 0; d <= current.Neighbors; d++)
             {
@@ -590,7 +588,7 @@ public class HexMaker : MonoBehaviour
 
                 var neighborCoord = _coords[neighbor.index];
                 if (neighborCoord == null || neighborCoord.occupied || !neighborCoord.walkable ||
-                    neighborCoord.QueueStatus !=  HexCellPriorityQueue.QueueStatus.PreQueue)
+                    neighborCoord.distance>-1)
                 {
                     continue;
                 }
@@ -601,15 +599,16 @@ public class HexMaker : MonoBehaviour
                 if (neighborDistance == -1)
                 {
                     neighborCoord.distance = distance + 1;
+                    //neighborCoord.SearchPhase = _searchFrontierPhase;
                     neighborCoord.SearchHeuristic = neighborCoord.FindDistanceTo(targetCell.coords);
                     _searchFrontier.Enqueue(neighborCoord);
                 }
-                else if (distance < neighborDistance)
+                /*else if (distance < neighborDistance)
                 {
                     var oldPriority = neighborCoord.SearchPriority;
                     neighborCoord.distance = distance + 1;
                     _searchFrontier.Change(neighborCoord, oldPriority);
-                }
+                }*/
 
                 if (distance > maxDistance)
                 {
@@ -622,11 +621,10 @@ public class HexMaker : MonoBehaviour
                 {
                     foundTarget = true;
 
-                    _pathToTarget.Clear();
-                    _pathToTarget.Add(neighborCoord.index);
+                    _pathToTarget.Add(neighborCoord);
                     current = neighborCoord;
                     var count1 = 0;
-                    while (current.PathFrom > -1 && current.PathFrom != _indexOfPlayerPos)
+                    while (current.PathFrom > -1 && current.PathFrom != sourceCell.index)
                     {
                         if (count1 > 10000)
                         {
@@ -634,9 +632,12 @@ public class HexMaker : MonoBehaviour
                             break;
                         }
 
-                        _pathToTarget.Add(current.PathFrom);
-                        current = _coords[current.PathFrom];
-                        count1++;
+                        if (current.PathFrom > -1 && current.PathFrom < _coords.Count)
+                        {
+                            current = _coords[current.PathFrom];
+                            _pathToTarget.Add(current);
+                            count1++;
+                        }
                     }
 
                     _pathToTarget.Reverse();
@@ -657,8 +658,6 @@ public class HexMaker : MonoBehaviour
             count++;
         }
 
-        _searchFrontier.Clear();
-
         if (targetCell.index < 0 || targetCell.index >= _coords.Count)
         {
             toDo?.Invoke(null);
@@ -666,6 +665,10 @@ public class HexMaker : MonoBehaviour
         }
 
         toDo?.Invoke(targetCell);
+        
+        yield return null;
+        
+        _searchFrontier.Clear();
     }
 
     private bool Contains(Vector3 position)
@@ -727,7 +730,7 @@ public class Coordinates
     public int PathFrom { get; set; }
     public int SearchHeuristic { get; set; }
 
-    public HexCellPriorityQueue.QueueStatus QueueStatus { get; set; }
+    //public int SearchPhase { get; set; } //HexCellPriorityQueue.QueueStatus QueueStatus { get; set; }
 
     [NonSerialized]
     public Coordinates nextWithSamePriority; // { get; set; }
@@ -796,6 +799,24 @@ public class Coordinates
         return _neighborIndexes[direction];
     }
 
+    public bool CheckIfNeighbor(int index, out HexDir dir)
+    {
+        dir = HexDir.N;
+
+        foreach (var neighbor in _neighborIndexes)
+        {
+            if (neighbor.index != index)
+            {
+                continue;
+            }
+            
+            dir = neighbor.hexDir;
+            return true;
+        }
+        
+        return false;
+    }
+    
     public static HexCell GetFromPos(Vector3 pos, bool startTop, float innerRadius, float outerRadius)
     {
         var farSide = (outerRadius * 3f);
@@ -919,6 +940,8 @@ public class Coordinates
         [Lockable(true, false)]
         public string direction;
 
+        public HexDir hexDir;
+        
         [Lockable(true, false)]
         public int index;
 
@@ -928,6 +951,7 @@ public class Coordinates
         {
             direction = string.Empty;
             index = i;
+            hexDir = HexDir.N;
             //coord = null;
         }
 
@@ -935,6 +959,7 @@ public class Coordinates
         {
             direction = dir;
             index = i;
+            var canParse = Enum.TryParse(dir, out hexDir);
             //coord = cell;
         }
     }

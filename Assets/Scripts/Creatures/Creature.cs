@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ThreePupperStudios.Lockable;
 using UnityEngine;
 
 public class Creature : MonoBehaviour, IOccupier
@@ -26,6 +27,9 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected float _moveSpeed;
+
+    [SerializeField, Lockable]
+    protected float _rotationSpeed = 10;
     private void OnEnable()
     {
         if (HexMaker.Instance?.Coords != null)
@@ -39,11 +43,11 @@ public class Creature : MonoBehaviour, IOccupier
             }
         }
     }
-    public void EnterCoordinate(Coordinates coord)
+    public virtual void EnterCoordinate(Coordinates coord)
     {
         if (coord.occupied)
         {
-            Debug.LogWarning("Player is entering occupied space. This shouldn't be happening.");
+            Debug.LogWarning("Creature is entering occupied space. This shouldn't be happening.");
             return;
         }
 
@@ -52,7 +56,7 @@ public class Creature : MonoBehaviour, IOccupier
         _currentLocation = coord.index;
     }
 
-    public void LeaveCoordinate()
+    public virtual void LeaveCoordinate()
     {
         if (_hexMaker == null)
         {
@@ -64,7 +68,7 @@ public class Creature : MonoBehaviour, IOccupier
             var currentCoord = _hexMaker.Coords[_currentLocation];
             if (!currentCoord.occupied)
             {
-                Debug.LogWarning("Player is leaving unoccupied space. This shouldn't be happening.");
+                Debug.LogWarning("Creature is leaving unoccupied space. This shouldn't be happening.");
             }
 
             if (currentCoord.occupyingObject as Player == this)
@@ -74,7 +78,7 @@ public class Creature : MonoBehaviour, IOccupier
             }
             else
             {
-                Debug.LogWarning("Player leaving space they did not occupy. This shouldn't be happening.");
+                Debug.LogWarning("Creature leaving space they did not occupy. This shouldn't be happening.");
             }
         }
     }

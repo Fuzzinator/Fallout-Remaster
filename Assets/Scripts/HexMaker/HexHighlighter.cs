@@ -14,24 +14,25 @@ public class HexHighlighter : MonoBehaviour
     [SerializeField]
     private MeshFilter _meshFilter;
 
-    [SerializeField]
-    private bool _hoverHighlight;
-
     [SerializeField, HideInInspector]
     private HexMaker _hexMaker;
 
     [SerializeField]
     private TextMeshProUGUI _textField;
 
-    [SerializeField]
-    private Transform _tempPlayer;
-
     private int _currentHoveredIndex = -1;
 
     private Action<Coordinates> _showDistance = null;
 
+    private Vector2 _lastMousePos;
+    private bool _mouseMovedLastFrame = false;
 
     public Coordinates HoveredCoord { get; private set; }
+
+    /*private Coroutine _waitToUpdate;
+
+    private Coordinates _targetCoord;*/
+    private Coordinates _sourceCoord;
 
     private const string X = "x";
 
@@ -70,11 +71,9 @@ public class HexHighlighter : MonoBehaviour
     {
         GameManager.InputManager.Player.Enable();
 
-        if (_hoverHighlight)
-        {
-            GameManager.InputManager.Player.Look.performed += LookHandler;
-            Cursor.visible = false;
-        }
+        GameManager.InputManager.Player.Look.performed += LookHandler;
+        LookHandler(new InputAction.CallbackContext());
+        Cursor.visible = false;
 
         _showDistance = (coord) =>
         {
@@ -87,6 +86,21 @@ public class HexHighlighter : MonoBehaviour
                 _textField.SetText(coord.distance <= 0 ? X : $"{coord.distance}");
             }
         };
+
+        _mouseMovedLastFrame = false;
+    }
+
+    private void Update()
+    {
+        /*if (_lastMousePos != Mouse.current.position.ReadValue())
+        {
+            _mouseMovedLastFrame = true;
+            _lastMousePos = Mouse.current.position.ReadValue();
+        }
+        else
+        {
+            _mouseMovedLastFrame = false;
+        }*/
     }
 
     private void OnDestroy()
@@ -96,37 +110,74 @@ public class HexHighlighter : MonoBehaviour
 
     private void LookHandler(InputAction.CallbackContext obj)
     {
-        if (_hoverHighlight)
-        {
-            if (_hexMaker != null)
-            {
-                HoveredCoord = _hexMaker.TryGetCoordinates(this);
-            }
-            else
-            {
-                Debug.LogError("HexHighlighter is missing HexMaker");
-            }
-        }
-    }
-
-    public void UpdateDisplay(Coordinates coord)
-    {
-        if (_textField == null || _currentHoveredIndex == coord.index)
+        var newCoord = _hexMaker.TryGetCoordinates();
+        if (HoveredCoord == newCoord)
         {
             return;
         }
 
-        _currentHoveredIndex = coord.index;
-        if (coord.walkable)
+        HoveredCoord = newCoord;
+
+        if (HoveredCoord == null)
+        {
+            return;
+        }
+
+        transform.position = HoveredCoord.pos;
+
+        var player = Player.Instance;
+        if (player != null)
+        {
+            var sourceCoord = _hexMaker.Coords[player.CurrentLocation];
+            UpdateDisplay(sourceCoord, HoveredCoord);
+        }
+    }
+
+    /*public void UpdateDisplayLater(Coordinates sourceCoord, Coordinates targetCoord)
+    {
+        if (_waitToUpdate != null)
+        {
+            _sourceCoord = sourceCoord;
+            _targetCoord = targetCoord;
+            return;
+        }
+
+        _waitToUpdate = StartCoroutine(WaitThenUpdateDisplay(sourceCoord, targetCoord));
+    }
+
+    private IEnumerator WaitThenUpdateDisplay(Coordinates sourceCoord, Coordinates targetCoord)
+    {
+        yield return null;
+        _textField.SetText(string.Empty);
+        _hexMaker.PathToTarget.Clear();
+        while (_mouseMovedLastFrame)
+        {
+            yield return null;
+        }
+        UpdateDisplay(_sourceCoord, _targetCoord);
+        _waitToUpdate = null;
+    }*/
+
+    public void UpdateDisplay(Coordinates sourceCoord, Coordinates targetCoord)
+    {
+        if (targetCoord == null ||
+            (_currentHoveredIndex == targetCoord.index && _sourceCoord.index == sourceCoord.index))
+        {
+            return;
+        }
+
+        _sourceCoord = sourceCoord;
+        _currentHoveredIndex = targetCoord.index;
+        if (targetCoord.walkable)
         {
             _textField.SetText(string.Empty);
-            var player = Player.Instance;
+            /*var player = Player.Instance;
             if (player == null || _hexMaker == null)
             {
                 return;
-            }
-            
-            _hexMaker.GetDistanceToCoord(_hexMaker.Coords[player.CurrentLocation],coord, _showDistance);
+            }*/
+
+            _hexMaker.GetDistanceToCoord(sourceCoord, targetCoord, _showDistance);
         }
         else
         {

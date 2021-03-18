@@ -28,7 +28,7 @@ public class HexCellPriorityQueue
         }
 
         cell.nextWithSamePriority = _list[priority]; //Testing
-        cell.QueueStatus = QueueStatus.InQueue;
+        
         _list[priority] = cell;
 
         /*if (priority >= _list.Count || priority < 0)
@@ -62,7 +62,7 @@ public class HexCellPriorityQueue
                     _list[_minimum] = _sourceList[nextCoord];
                 }*/
                 _list[_minimum] = nextCoord;
-                coord.QueueStatus = QueueStatus.PostQueue;
+                
                 return coord;
             }
         }
@@ -107,7 +107,6 @@ public class HexCellPriorityQueue
             if (coord != null)
             {
                 coord.nextWithSamePriority = null;
-                coord.QueueStatus = QueueStatus.PreQueue;
             }
         }
         _list.Clear();
