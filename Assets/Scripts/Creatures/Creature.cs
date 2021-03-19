@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Creature : MonoBehaviour, IOccupier
 {
+    #region Variables and Properties
     [SerializeField]
     protected string _name;
 
@@ -18,7 +19,6 @@ public class Creature : MonoBehaviour, IOccupier
     [SerializeField]
     protected int _currentLocation;
 
-    [SerializeField, HideInInspector]
     protected HexMaker _hexMaker;
     public int CurrentLocation => _currentLocation;
 
@@ -30,7 +30,11 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField, Lockable]
     protected float _rotationSpeed = 10;
-    private void OnEnable()
+
+    protected Coroutine _isMoving;
+    
+    #endregion
+    private void Start()
     {
         if (HexMaker.Instance?.Coords != null)
         {
@@ -40,6 +44,9 @@ public class Creature : MonoBehaviour, IOccupier
                 var coord = coords[_currentLocation];
                 coord.occupied = true;
                 transform.position = coord.pos;
+                var neighbor = coord.GetNeighbor((int) _facingDir);
+                var targetRot = GetTargetRotation(coord, coords[neighbor.index], out _facingDir);
+                transform.rotation = targetRot;
             }
         }
     }
@@ -81,5 +88,71 @@ public class Creature : MonoBehaviour, IOccupier
                 Debug.LogWarning("Creature leaving space they did not occupy. This shouldn't be happening.");
             }
         }
+    }
+    
+    protected IEnumerator MoveCreature()
+    {
+        yield return null;
+
+        if (_hexMaker == null)
+        {
+            _hexMaker = HexMaker.Instance;
+        }
+
+        var pathToTake = _hexMaker.PathToTarget.ToArray();
+        _hexMaker.PathToTarget.Clear();
+        var count = pathToTake.Length;
+        for (var i = 0; i < count; i++)
+        {
+            var coord = pathToTake[i];
+            if (coord.index == _currentLocation)
+            {
+                continue;
+            }
+
+            var t = transform;
+            
+            var currentPos = t.position;
+            var currentCoord = _hexMaker.Coords[_currentLocation];
+
+            var currentRot = t.rotation;
+            var targetRotation = GetTargetRotation(currentCoord, coord, out var targetDir);
+
+            var rotLerp = 0f;
+            for (var f = 0f; f < 1; f += _moveSpeed * Time.deltaTime)
+            {
+                if (rotLerp < 1)
+                {
+                    transform.rotation = Quaternion.Lerp(currentRot, targetRotation, rotLerp);
+                    rotLerp += _rotationSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    transform.rotation = targetRotation;
+                }
+                transform.position = Vector3.Lerp(currentPos, coord.pos, f);
+                yield return null;
+            }
+
+            LeaveCoordinate();
+
+            transform.position = coord.pos;
+
+            EnterCoordinate(coord);
+            _facingDir = targetDir;
+        }
+    }
+    
+    protected Quaternion GetTargetRotation(Coordinates currentCoord, Coordinates targetCoord, out HexDir targetDir)
+    {
+        var targetRotation = Quaternion.LookRotation(transform.position - targetCoord.pos);
+
+        var isNeighbor = currentCoord.CheckIfNeighbor(targetCoord.index, out targetDir);
+        if (!isNeighbor)
+        {
+            Debug.LogWarning("The next hex is not a neighbor of the current one? Something fucked up.");
+        }
+        
+        return targetRotation;
     }
 }

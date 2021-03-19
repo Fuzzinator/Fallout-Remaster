@@ -10,8 +10,6 @@ public class Player : Human
 
     public static Player Instance { get; private set; }
 
-    private Coroutine _playerMoving;
-
     #endregion
 
     #region MonoBehaviours
@@ -80,71 +78,19 @@ public class Player : Human
             return;
         }
         
-        var coords = highlighter.HoveredCoord;//_hexMaker.TryGetCoordinates();
+        var coords = highlighter.HoveredCoord;
 
         if (coords == null || !coords.walkable || coords.occupied || coords.distance < 0)
         {
             return;
         }
         
-        if (_playerMoving != null)
+        if (_isMoving != null)
         {
-            StopCoroutine(_playerMoving);
+            StopCoroutine(_isMoving);
         }
 
-        _playerMoving = StartCoroutine(MovePlayer());
-    }
-
-    private IEnumerator MovePlayer()
-    {
-        yield return null;
-
-        if (_hexMaker == null)
-        {
-            _hexMaker = HexMaker.Instance;
-        }
-
-        var pathToTake = _hexMaker.PathToTarget.ToArray();
-        _hexMaker.PathToTarget.Clear();
-        var count = pathToTake.Length;
-        for (var i = 0; i < count; i++)
-        {
-            var coord = pathToTake[i];
-            if (coord.index == _currentLocation)
-            {
-                continue;
-            }
-
-            var t = transform;
-            
-            var currentPos = t.position;
-            var currentCoord = _hexMaker.Coords[_currentLocation];
-
-            var currentRot = t.rotation;
-            var targetRotation = GetTargetRotation(currentCoord, coord);
-
-            var rotLerp = 0f;
-            for (var f = 0f; f < 1; f += _moveSpeed * Time.deltaTime)
-            {
-                if (rotLerp < 1)
-                {
-                    transform.rotation = Quaternion.Lerp(currentRot, targetRotation, rotLerp);
-                    rotLerp += _rotationSpeed * Time.deltaTime;
-                }
-                else
-                {
-                    transform.rotation = targetRotation;
-                }
-                transform.position = Vector3.Lerp(currentPos, coord.pos, f);
-                yield return null;
-            }
-
-            LeaveCoordinate();
-
-            transform.position = coord.pos;
-
-            EnterCoordinate(coord);
-        }
+        _isMoving = StartCoroutine(MoveCreature());
     }
 
     public override void EnterCoordinate(Coordinates coord)
@@ -157,10 +103,5 @@ public class Player : Human
         }
     }
 
-    private Quaternion GetTargetRotation(Coordinates currentCoord, Coordinates coord)
-    {
-        var targetRotation = Quaternion.LookRotation(transform.position - coord.pos);
 
-        return targetRotation;
-    }
 }
