@@ -7,32 +7,31 @@ using UnityEngine;
 public class Creature : MonoBehaviour, IOccupier
 {
     #region Variables and Properties
-    [SerializeField]
-    protected string _name;
 
-    [SerializeField]
-    protected SPECIAL _special;
+    [SerializeField] protected string _name;
 
-    [SerializeField]
-    protected Skills _skills;
+    [SerializeField] protected SPECIAL _special;
 
-    [SerializeField]
-    protected int _currentLocation;
+    [SerializeField] protected Skills _skills;
+
+    [SerializeField] protected int _currentLocation;
 
     protected HexMaker _hexMaker;
     public int CurrentLocation => _currentLocation;
 
-    [SerializeField]
-    protected HexDir _facingDir;
+    [SerializeField] protected HexDir _facingDir;
 
-    [SerializeField]
-    protected float _moveSpeed;
+    [SerializeField] protected float _moveSpeed;
 
-    [SerializeField, Lockable]
-    protected float _rotationSpeed = 10;
+    [SerializeField, Lockable] protected float _rotationSpeed = 10;
 
     protected Coroutine _isMoving;
     
+    public readonly List<Coordinates> TargetPath = new List<Coordinates>();
+    public readonly Coroutine GettingPath = null;
+    
+    protected bool HasValidPath => TargetPath != null && TargetPath.Count > 0;
+
     #endregion
     private void Start()
     {
@@ -42,7 +41,8 @@ public class Creature : MonoBehaviour, IOccupier
             if (_currentLocation > -1 && _currentLocation < coords.Count)
             {
                 var coord = coords[_currentLocation];
-                coord.occupied = true;
+                EnterCoordinate(coord);
+                //coord.occupied = true;
                 transform.position = coord.pos;
                 var neighbor = coord.GetNeighbor((int) _facingDir);
                 var targetRot = GetTargetRotation(coord, coords[neighbor.index], out _facingDir);
@@ -99,8 +99,8 @@ public class Creature : MonoBehaviour, IOccupier
             _hexMaker = HexMaker.Instance;
         }
 
-        var pathToTake = _hexMaker.PathToTarget.ToArray();
-        _hexMaker.PathToTarget.Clear();
+        var pathToTake = Player.Instance.TargetPath.ToArray();
+        Player.Instance.TargetPath.Clear();
         var count = pathToTake.Length;
         for (var i = 0; i < count; i++)
         {

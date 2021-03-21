@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: SoundDatabase_ExampleMusic
   m_EditorClassIdentifier: 
   DatabaseName: Example Music
-  OutputAudioMixerGroup: {fileID: 243120066433540876, guid: bc155dfdccec1be4780029a8bd542de5, type: 2}
+  OutputAudioMixerGroup: {fileID: 243120066433540876, guid: bc155dfdccec1be4780029a8bd542de5,
+    type: 2}
   SoundNames:
   - No Sound
   - Christmas Villain Loop

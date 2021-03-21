@@ -11,14 +11,11 @@ public class HexHighlighter : MonoBehaviour
 
     public static HexHighlighter Instance { get; private set; }
 
-    [SerializeField]
-    private MeshFilter _meshFilter;
+    [SerializeField] private MeshFilter _meshFilter;
 
-    [SerializeField, HideInInspector]
-    private HexMaker _hexMaker;
+    [SerializeField, HideInInspector] private HexMaker _hexMaker;
 
-    [SerializeField]
-    private TextMeshProUGUI _textField;
+    [SerializeField] private TextMeshProUGUI _textField;
 
     private int _currentHoveredIndex = -1;
 
@@ -171,13 +168,14 @@ public class HexHighlighter : MonoBehaviour
         if (targetCoord.walkable)
         {
             _textField.SetText(string.Empty);
-            /*var player = Player.Instance;
-            if (player == null || _hexMaker == null)
+            var player = Player.Instance;
+            if (player == null)
             {
                 return;
-            }*/
+            }
 
-            _hexMaker.GetDistanceToCoord(sourceCoord, targetCoord, _showDistance);
+            _hexMaker.GetDistanceToCoord(sourceCoord, targetCoord, player.GettingPath, player.TargetPath,
+                _showDistance);
         }
         else
         {

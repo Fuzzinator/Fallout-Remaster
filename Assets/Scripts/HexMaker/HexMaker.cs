@@ -74,11 +74,6 @@ public class HexMaker : MonoBehaviour
     [SerializeField]
     private LayerMask _doorsLayer = new LayerMask();
 
-    [SerializeField]
-    private List<Coordinates> _pathToTarget = new List<Coordinates>();
-
-    public List<Coordinates> PathToTarget => _pathToTarget;
-
     [Header("Interaction")]
     [SerializeField]
     private Camera _camera;
@@ -98,7 +93,6 @@ public class HexMaker : MonoBehaviour
     private float ZOffset => _startTop ? outerRadius * 1.5f : InnerRadius * 2f;
 
     public bool UsesCollider => _createCollider;
-    public bool HasValidPath => _pathToTarget.Count > 0;
     #endregion
 
     private void OnValidate()
@@ -304,6 +298,8 @@ public class HexMaker : MonoBehaviour
             {
                 return GetCoordinates(hitInfo.point);
             }
+
+            return null;
         }
         Debug.LogWarning("Check _collider and _camera one of them is null");
         return null;
@@ -524,9 +520,13 @@ public class HexMaker : MonoBehaviour
         }
     }
 
-    public void GetDistanceToCoord(Coordinates sourceCell, Coordinates targetCell, Action<Coordinates> toDo)
+    public void GetDistanceToCoord(Coordinates sourceCell, Coordinates targetCell, Coroutine coroutine, List<Coordinates> path, Action<Coordinates> toDo)
     {
-        StopAllCoroutines();
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
 
         if (sourceCell== null || targetCell == null)
         {
@@ -534,14 +534,14 @@ public class HexMaker : MonoBehaviour
             return;
         }
 
-        StartCoroutine(FindDistanceTo(sourceCell, targetCell, toDo));
+        coroutine = StartCoroutine(FindDistanceTo(sourceCell, targetCell, path, toDo));
     }
 
     //A* search method
-    private IEnumerator FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, Action<Coordinates> toDo,
+    private IEnumerator FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, List<Coordinates> path, Action<Coordinates> toDo,
         int maxDistance = Int32.MaxValue)
     {
-        _pathToTarget.Clear();
+        path.Clear();
         yield return null;
         //_searchFrontierPhase += 2;
         foreach (var coord in _coords)
@@ -621,7 +621,7 @@ public class HexMaker : MonoBehaviour
                 {
                     foundTarget = true;
 
-                    _pathToTarget.Add(neighborCoord);
+                    path.Add(neighborCoord);
                     current = neighborCoord;
                     var count1 = 0;
                     while (current.PathFrom > -1 && current.PathFrom != sourceCell.index)
@@ -635,12 +635,12 @@ public class HexMaker : MonoBehaviour
                         if (current.PathFrom > -1 && current.PathFrom < _coords.Count)
                         {
                             current = _coords[current.PathFrom];
-                            _pathToTarget.Add(current);
+                            path.Add(current);
                             count1++;
                         }
                     }
 
-                    _pathToTarget.Reverse();
+                    path.Reverse();
                     break;
                 }
             }

@@ -28,6 +28,7 @@ public class Player : Human
 
     private void Start()
     {
+        GameManager.InputManager.Player.Enable();
         GameManager.InputManager.Player.PrimaryClick.performed += PrimaryClickHandler;
     }
 
@@ -66,7 +67,7 @@ public class Player : Human
             _hexMaker = HexMaker.Instance;
         }
 
-        if (!_hexMaker.HasValidPath)
+        if (!HasValidPath)
         {
             return;
         }
