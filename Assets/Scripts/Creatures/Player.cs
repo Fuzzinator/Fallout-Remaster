@@ -10,7 +10,10 @@ public class Player : Human
 
     public static Player Instance { get; private set; }
     
+    [SerializeField]
+    protected List<Perk> _activePerks = new List<Perk>();
 
+    protected int BaseHPIncrease => Mathf.FloorToInt(_special.Endurance * .5f) + 2;
     #endregion
 
     #region MonoBehaviours

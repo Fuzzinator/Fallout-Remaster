@@ -8,31 +8,65 @@ public class Creature : MonoBehaviour, IOccupier
 {
     #region Variables and Properties
 
-    [SerializeField] protected string _name;
+    [SerializeField]
+    protected string _name;
+    
+    [SerializeField]
+    protected int _currentHealth;
 
-    [SerializeField] protected SPECIAL _special;
+    [SerializeField]
+    protected SPECIAL _special;
 
-    [SerializeField] protected Skills _skills;
-
-    [SerializeField] protected int _currentLocation;
+    [SerializeField] 
+    protected Skills _skills;
+    
+    [SerializeField]
+    protected int _currentLocation;
 
     protected HexMaker _hexMaker;
-    public int CurrentLocation => _currentLocation;
 
-    [SerializeField] protected HexDir _facingDir;
+    [SerializeField] 
+    protected HexDir _facingDir;
 
-    [SerializeField] protected float _moveSpeed;
+    protected float _speedModifier = 1f;
+    [SerializeField] 
+    protected float _baseMoveSpeed;
 
-    [SerializeField, Lockable] protected float _rotationSpeed = 10;
+    [SerializeField, Lockable] 
+    protected float _rotationSpeed = 10;
 
     protected Coroutine _isMoving;
-    
+
     public readonly List<Coordinates> TargetPath = new List<Coordinates>();
     public readonly Coroutine GettingPath = null;
     
-    protected bool HasValidPath => TargetPath != null && TargetPath.Count > 0;
+    [SerializeField, Lockable(rememberSelection:false)]
+    protected int _hpIncrease = 0;
+    
+    #region Lists
+
+    
 
     #endregion
+    
+    #region Properties
+
+    protected float MoveSpeed => _baseMoveSpeed * _speedModifier;
+    public int CurrentLocation => _currentLocation;
+    protected bool HasValidPath => TargetPath != null && TargetPath.Count > 0;
+    protected int BaseHealth => BASEHEALTH + _special.Strength + (2 * _special.Endurance);
+    protected int MaxHealth => BaseHealth + _hpIncrease;
+
+    #endregion
+
+    #region Constants
+    private const int BASEHEALTH = 15;
+    
+
+    #endregion
+
+    #endregion
+
     private void Start()
     {
         if (HexMaker.Instance?.Coords != null)
@@ -50,6 +84,7 @@ public class Creature : MonoBehaviour, IOccupier
             }
         }
     }
+
     public virtual void EnterCoordinate(Coordinates coord)
     {
         if (coord.occupied)
@@ -69,7 +104,7 @@ public class Creature : MonoBehaviour, IOccupier
         {
             _hexMaker = HexMaker.Instance;
         }
-        
+
         if (_hexMaker != null && _currentLocation > 0 && _currentLocation < _hexMaker.Coords.Count)
         {
             var currentCoord = _hexMaker.Coords[_currentLocation];
@@ -89,7 +124,7 @@ public class Creature : MonoBehaviour, IOccupier
             }
         }
     }
-    
+
     protected IEnumerator MoveCreature()
     {
         yield return null;
@@ -111,7 +146,7 @@ public class Creature : MonoBehaviour, IOccupier
             }
 
             var t = transform;
-            
+
             var currentPos = t.position;
             var currentCoord = _hexMaker.Coords[_currentLocation];
 
@@ -119,7 +154,7 @@ public class Creature : MonoBehaviour, IOccupier
             var targetRotation = GetTargetRotation(currentCoord, coord, out var targetDir);
 
             var rotLerp = 0f;
-            for (var f = 0f; f < 1; f += _moveSpeed * Time.deltaTime)
+            for (var f = 0f; f < 1; f += MoveSpeed * Time.deltaTime)
             {
                 if (rotLerp < 1)
                 {
@@ -130,6 +165,7 @@ public class Creature : MonoBehaviour, IOccupier
                 {
                     transform.rotation = targetRotation;
                 }
+
                 transform.position = Vector3.Lerp(currentPos, coord.pos, f);
                 yield return null;
             }
@@ -142,7 +178,7 @@ public class Creature : MonoBehaviour, IOccupier
             _facingDir = targetDir;
         }
     }
-    
+
     protected Quaternion GetTargetRotation(Coordinates currentCoord, Coordinates targetCoord, out HexDir targetDir)
     {
         var targetRotation = Quaternion.LookRotation(transform.position - targetCoord.pos);
@@ -152,7 +188,7 @@ public class Creature : MonoBehaviour, IOccupier
         {
             Debug.LogWarning("The next hex is not a neighbor of the current one? Something fucked up.");
         }
-        
+
         return targetRotation;
     }
 }
