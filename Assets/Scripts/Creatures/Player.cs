@@ -9,6 +9,7 @@ public class Player : Human
     #region Variables And Properties
 
     public static Player Instance { get; private set; }
+    
 
     #endregion
 
