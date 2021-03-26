@@ -125,7 +125,7 @@ public class Creature : MonoBehaviour, IOccupier
         }
     }
 
-    protected IEnumerator MoveCreature()
+    protected virtual IEnumerator MoveCreature()
     {
         yield return null;
 

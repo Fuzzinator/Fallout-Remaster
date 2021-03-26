@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ThreePupperStudios.Lockable;
+using UnityEditor;
 using UnityEditor.Searcher;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -534,15 +535,15 @@ public class HexMaker : MonoBehaviour
             return;
         }
 
-        coroutine = StartCoroutine(FindDistanceTo(sourceCell, targetCell, path, toDo));
+        //coroutine = StartCoroutine(FindDistanceTo(sourceCell, targetCell, path, toDo));
+        FindDistanceTo(sourceCell,targetCell, path, toDo);
     }
 
     //A* search method
-    private IEnumerator FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, List<Coordinates> path, Action<Coordinates> toDo,
+    private void FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, List<Coordinates> path, Action<Coordinates> toDo,
         int maxDistance = Int32.MaxValue)
     {
         path.Clear();
-        yield return null;
         //_searchFrontierPhase += 2;
         foreach (var coord in _coords)
         {
@@ -551,7 +552,7 @@ public class HexMaker : MonoBehaviour
             //coord.QueueStatus = HexCellPriorityQueue.QueueStatus.PreQueue;
             coord.nextWithSamePriority = null;
         }
-
+            
         if (_searchFrontier == null)
         {
             _searchFrontier = new HexCellPriorityQueue();
@@ -564,7 +565,8 @@ public class HexMaker : MonoBehaviour
         if (sourceCell == null)
         {
             toDo?.Invoke(null);
-            yield break;
+            return;
+            //yield break;
         }
 
         //sourceCell.SearchPhase = _searchFrontierPhase;
@@ -614,7 +616,8 @@ public class HexMaker : MonoBehaviour
                 {
                     _searchFrontier.Clear();
                     toDo?.Invoke(null);
-                    yield break;
+                    return;
+                    //yield break;
                 }
 
                 if (neighborCoord == targetCell)
@@ -650,10 +653,10 @@ public class HexMaker : MonoBehaviour
                 break;
             }
 
-            if (count % 50 == 0)
+            /*if (count % 200 == 0)
             {
                 yield return null;
-            }
+            }*/
 
             count++;
         }
@@ -661,12 +664,13 @@ public class HexMaker : MonoBehaviour
         if (targetCell.index < 0 || targetCell.index >= _coords.Count)
         {
             toDo?.Invoke(null);
-            yield break;
+            return;
+            //yield break;
         }
-
+        
         toDo?.Invoke(targetCell);
         
-        yield return null;
+        //yield return null;
         
         _searchFrontier.Clear();
     }

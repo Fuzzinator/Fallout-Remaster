@@ -13,6 +13,8 @@ public class CameraController : MonoBehaviour
 
     [SerializeField]
     private float _moveSpeed = 5;
+    [SerializeField]
+    private UpdateWindowShader _shaderUpdater;
 
     private int _borderSize = 10;
 
@@ -123,6 +125,7 @@ public class CameraController : MonoBehaviour
             yield return null;
             _moveCamera = mousePos.x >= Screen.width - _borderSize || mousePos.x <= _borderSize ||
                           mousePos.y >= Screen.height - _borderSize || mousePos.y <= _borderSize;
+            _shaderUpdater.UpdateShaders();
         }
 
         _moveCamera = false;

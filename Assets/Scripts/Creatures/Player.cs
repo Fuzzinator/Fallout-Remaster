@@ -13,6 +13,9 @@ public class Player : Human
     [SerializeField]
     protected List<Perk> _activePerks = new List<Perk>();
 
+    [SerializeField]
+    private UpdateWindowShader _shaderUpdater;
+
     protected int BaseHPIncrease => Mathf.FloorToInt(_special.Endurance * .5f) + 2;
     #endregion
 
@@ -97,7 +100,60 @@ public class Player : Human
 
         _isMoving = StartCoroutine(MoveCreature());
     }
+    protected override IEnumerator MoveCreature()
+    {
+        yield return null;
 
+        if (_hexMaker == null)
+        {
+            _hexMaker = HexMaker.Instance;
+        }
+
+        var pathToTake = Player.Instance.TargetPath.ToArray();
+        Player.Instance.TargetPath.Clear();
+        var count = pathToTake.Length;
+        for (var i = 0; i < count; i++)
+        {
+            var coord = pathToTake[i];
+            if (coord.index == _currentLocation)
+            {
+                continue;
+            }
+
+            var t = transform;
+
+            var currentPos = t.position;
+            var currentCoord = _hexMaker.Coords[_currentLocation];
+
+            var currentRot = t.rotation;
+            var targetRotation = GetTargetRotation(currentCoord, coord, out var targetDir);
+
+            var rotLerp = 0f;
+            for (var f = 0f; f < 1; f += MoveSpeed * Time.deltaTime)
+            {
+                if (rotLerp < 1)
+                {
+                    transform.rotation = Quaternion.Lerp(currentRot, targetRotation, rotLerp);
+                    rotLerp += _rotationSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    transform.rotation = targetRotation;
+                }
+
+                transform.position = Vector3.Lerp(currentPos, coord.pos, f);
+                _shaderUpdater.UpdateShaders();
+                yield return null;
+            }
+
+            LeaveCoordinate();
+
+            transform.position = coord.pos;
+
+            EnterCoordinate(coord);
+            _facingDir = targetDir;
+        }
+    }
     public override void EnterCoordinate(Coordinates coord)
     {
         base.EnterCoordinate(coord);

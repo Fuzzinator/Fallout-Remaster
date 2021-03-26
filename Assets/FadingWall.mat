@@ -24,6 +24,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Bump:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -45,6 +49,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -77,11 +85,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_001b93c36d474fef9cda61303616d42c: 0
     - Vector1_4e43a16af69a4feda1f5030d7c89fe84: 15
     - Vector1_931adb43d0fc49abb6ca1c822e392cc0: 0.06
     - Vector1_f8570e4bc8b5471a97363be77f4cde0b: 0.5
+    - _AO: 0
     - _AlphaClip: 0
     - _Blend: 0
+    - _BumpIntensity: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -108,10 +119,10 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.28235295, g: 0.28235295, b: 0.28235295, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _PlayerScreenPos: {r: 0.69571674, g: 0.1071139, b: 18.40726, a: 0}
-    - _PlayerWorldPos: {r: -2.35, g: 0.51, b: -6.18, a: 0}
+    - _PlayerScreenPos: {r: 0.26900733, g: 0.4833639, b: 57.501064, a: 0}
+    - _PlayerWorldPos: {r: 0.55, g: 0.748, b: 15.488457, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &8709894766654212182

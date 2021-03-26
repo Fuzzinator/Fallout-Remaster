@@ -887,6 +887,9 @@
           <e p="Camera" t="Include">
             <e p="CameraController.cs" t="Include" />
           </e>
+          <e p="Character Specific" t="Include">
+            <e p="UpdateWindowShader.cs" t="Include" />
+          </e>
           <e p="Core" t="Include">
             <e p="Perk.cs" t="Include" />
             <e p="Skills.cs" t="Include" />
@@ -906,6 +909,7 @@
           </e>
           <e p="InputManager.cs" t="Include" />
           <e p="Shaders" t="Include">
+            <e p="Invisible.shader" t="Include" />
             <e p="Outline.shader" t="Include" />
             <e p="Standard Outline.shader" t="Include" />
           </e>
