@@ -903,10 +903,12 @@
             <e p="HexHighlighter.cs" t="Include" />
             <e p="HexMaker.cs" t="Include" />
             <e p="IOccupier.cs" t="Include" />
+          </e>
+          <e p="InputManager.cs" t="Include" />
+          <e p="Shaders" t="Include">
             <e p="Outline.shader" t="Include" />
             <e p="Standard Outline.shader" t="Include" />
           </e>
-          <e p="InputManager.cs" t="Include" />
         </e>
         <e p="Test.cs" t="Include" />
       </e>

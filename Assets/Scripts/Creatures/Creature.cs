@@ -30,7 +30,7 @@ public class Creature : MonoBehaviour, IOccupier
 
     protected float _speedModifier = 1f;
     [SerializeField] 
-    protected float _baseMoveSpeed;
+    protected float _baseMoveSpeed = 5;
 
     [SerializeField, Lockable] 
     protected float _rotationSpeed = 10;

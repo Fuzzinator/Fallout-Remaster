@@ -62,7 +62,7 @@ public class HexMaker : MonoBehaviour
     [SerializeField]
     private bool _displayCoordinates = true;
 
-    [SerializeField]
+    [SerializeField, HideInInspector]
     private List<Coordinates> _coords = new List<Coordinates>();
 
     public List<Coordinates> Coords => _coords;
