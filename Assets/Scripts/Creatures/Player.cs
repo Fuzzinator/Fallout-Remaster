@@ -9,14 +9,26 @@ public class Player : Human
     #region Variables And Properties
 
     public static Player Instance { get; private set; }
+
+    [SerializeField]
+    private int _currentLvl = 1;
+
+    [SerializeField]
+    private int _unspentSkillPnts = 0;
     
     [SerializeField]
-    protected List<Perk> _activePerks = new List<Perk>();
+    private Trait _trait1;
+    [SerializeField]
+    private Trait _trait2;
+    
+    [SerializeField]
+    private List<Perk> _activePerks = new List<Perk>();
 
     [SerializeField]
     private UpdateWindowShader _shaderUpdater;
 
-    protected int BaseHPIncrease => Mathf.FloorToInt(_special.Endurance * .5f) + 2;
+    private int BaseHPIncrease => Mathf.FloorToInt(_special.Endurance * .5f) + 2;
+    protected override int HealingRate => Mathf.CeilToInt(_special.Endurance * .3f)+HRModifiers();
     #endregion
 
     #region MonoBehaviours
@@ -67,6 +79,7 @@ public class Player : Human
 
     #endregion
 
+    #region Movement
     private void PrimaryClickHandler(InputAction.CallbackContext obj)
     {
         if (_hexMaker == null)
@@ -163,6 +176,21 @@ public class Player : Human
             hexHighlighter.UpdateDisplay(coord, hexHighlighter.HoveredCoord);
         }
     }
+    #endregion
+    
+    #region modifiers
 
-
+    private int HRModifiers()
+    {
+        var healRateMod = 0;
+        foreach (var perk in _activePerks)
+        {
+            if (perk.affectedProp == Perk.PropType.HPRecover)
+            {
+                healRateMod += perk.effectAmount;
+            }
+        }
+        return healRateMod;
+    }
+    #endregion
 }

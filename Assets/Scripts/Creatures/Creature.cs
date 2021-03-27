@@ -191,4 +191,14 @@ public class Creature : MonoBehaviour, IOccupier
 
         return targetRotation;
     }
+    
+    #region Enums
+
+    public enum Gender
+    {
+        Male,
+        Female,
+        NonBinary//This is not in the original
+    }
+    #endregion
 }

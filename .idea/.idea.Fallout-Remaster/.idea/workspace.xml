@@ -11,28 +11,17 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Perk.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ScriptableRendererDataEditor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexCellPriorityQueue.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ShaderGraph/Includes/UnlitPass.hlsl" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ShaderGraph/Includes/UnlitPass.hlsl" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Character Specific/UpdateWindowShader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Plugins/PlayerInput/PlayerInputEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Settings.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/IOccupier.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -40,18 +29,12 @@
         <option value="$PROJECT_DIR$/Assets/HexMaker/HexMaker.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/InputTracker.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/IOccupier.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexCellPriorityQueue.cs" />
         <option value="$PROJECT_DIR$/Assets/SetGarbage.cs" />
         <option value="$PROJECT_DIR$/Assets/NewUnlitShader.shader" />
         <option value="$PROJECT_DIR$/Assets/NewSurfaceShader.shader" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Skills.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Core/SPECIAL.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Perk.cs" />
         <option value="$PROJECT_DIR$/Assets/Test.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" />
         <option value="$PROJECT_DIR$/Temp/GeneratedFromGraph-EmptyOutline.shader" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Shaders/HLSL/BLANK.hlsl" />
@@ -60,6 +43,19 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexHighlighter.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexMaker.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Character Specific/UpdateWindowShader.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Requirement.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Perk.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/SPECIAL.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Skill.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Skills.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Trait.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Skill.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Skills.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Settings.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/SPECIAL.cs" />
       </list>
     </option>
   </component>
@@ -88,10 +84,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="35792">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="35792" />
+      <option name="pid" />
       <option name="selectedOptions">
         <set />
       </option>
@@ -113,6 +109,7 @@
       <workItem from="1615920390981" duration="32214000" />
       <workItem from="1616257644351" duration="9353000" />
       <workItem from="1616554745451" duration="27474000" />
+      <workItem from="1616810235232" duration="12727000" />
     </task>
     <servers />
   </component>
@@ -235,6 +232,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="141" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1616358066891" />
+    <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1616823731835">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1616823731835" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
