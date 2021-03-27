@@ -10,6 +10,8 @@ public class Human : Creature
     [SerializeField]
     protected int _age = 25;//This is the player default
     protected virtual int HealingRate => Mathf.CeilToInt(_special.Endurance * .3f);
+
+    protected virtual int CarryWeight => 25 + (_special.Strength * 25);
     // Start is called before the first frame update
     void Start()
     {

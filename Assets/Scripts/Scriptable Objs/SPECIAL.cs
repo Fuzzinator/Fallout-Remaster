@@ -94,6 +94,7 @@ public class SPECIAL : ScriptableObject
         Charisma = 4,
         Intelligence = 5,
         Agility = 6,
-        Luck = 7
+        Luck = 7,
+        All = 10
     }
 }

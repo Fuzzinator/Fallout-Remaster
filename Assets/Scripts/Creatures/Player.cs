@@ -26,9 +26,31 @@ public class Player : Human
 
     [SerializeField]
     private UpdateWindowShader _shaderUpdater;
+    protected override  int MaxActionPoints => Mathf.FloorToInt(_special.Agility * .5f) + APMods();
 
-    private int BaseHPIncrease => Mathf.FloorToInt(_special.Endurance * .5f) + 2;
-    protected override int HealingRate => Mathf.CeilToInt(_special.Endurance * .3f)+HRModifiers();
+    protected override int CarryWeight => 25 + CarryWeightMod();
+
+    private int BaseHPIncrease => Mathf.FloorToInt(_special.Endurance * .5f) + 2 + HPIncMod();
+    protected override int HealingRate => Mathf.CeilToInt(_special.Endurance * .3f) + HRModifiers();
+
+    protected override int MeleeDamage
+    {
+        get
+        {
+            var damage = _special.Strength - 5;
+
+            damage = MeleeDamageMod();
+            
+            if (damage < 1)
+            {
+                damage = 1;
+            }
+            return damage;
+        }
+    }
+    private int SkillRate => (_special.Intelligence * 2) + 5 + SkillRateMod();
+    protected override int Sequence => (_special.Perception*2)+SequenceMod();
+
     #endregion
 
     #region MonoBehaviours
@@ -180,17 +202,139 @@ public class Player : Human
     
     #region modifiers
 
+    private int HPIncMod()
+    {
+        var hpInc = 0;
+        foreach (var perk in _activePerks)
+        {
+            if (perk.modType == ModType.HPLvlInc)
+            {
+                hpInc += perk.EffectAmount;
+            }
+        }
+        return hpInc;
+    }
     private int HRModifiers()
     {
         var healRateMod = 0;
         foreach (var perk in _activePerks)
         {
-            if (perk.affectedProp == Perk.PropType.HPRecover)
+            if (perk.modType == ModType.HPRecover)
             {
-                healRateMod += perk.effectAmount;
+                healRateMod += perk.EffectAmount;
             }
         }
+        if (_trait1.modType == ModType.HPRecover)
+        {
+            healRateMod += _trait1.effectAmount;
+        }
+        if (_trait2.modType == ModType.HPRecover)
+        {
+            healRateMod += _trait2.effectAmount;
+        }
         return healRateMod;
+    }
+    private int SkillRateMod()
+    {
+        var skillInc = 0;
+        foreach (var perk in _activePerks)
+        {
+            if (perk.modType == ModType.SkillLvlInc)
+            {
+                skillInc += perk.EffectAmount;
+            }
+        }
+
+        if (_trait1.modType == ModType.SkillLvlInc)
+        {
+            skillInc += _trait1.effectAmount;
+        }
+        if (_trait2.modType == ModType.SkillLvlInc)
+        {
+            skillInc += _trait2.effectAmount;
+        }
+        
+        return skillInc;
+    }
+    private int SequenceMod()
+    {
+        var sequence = 0;
+        
+        foreach (var perk in _activePerks)
+        {
+            if (perk.modType == ModType.Sequence)
+            {
+                sequence += perk.EffectAmount;
+            }
+        }
+        
+        if (_trait1.modType == ModType.Sequence)
+        {
+            sequence += _trait1.effectAmount;
+        }
+        if (_trait2.modType == ModType.Sequence)
+        {
+            sequence += _trait2.effectAmount;
+        }
+
+        return sequence;
+    }
+    private int APMods()
+    {
+        var actionPoints = 0;
+        foreach (var perk in _activePerks)
+        {
+            if (perk.modType == ModType.ActionPoints)
+            {
+                actionPoints += perk.EffectAmount;
+            }
+        }
+        return actionPoints;
+    }
+    private int MeleeDamageMod()
+    {
+        var meleeDamage = 0;
+        
+        foreach (var perk in _activePerks)
+        {
+            if (perk.modType == ModType.MeleeDamage)
+            {
+                meleeDamage += perk.EffectAmount;
+            }
+        }
+        
+        if (_trait1.modType == ModType.MeleeDamage)
+        {
+            meleeDamage += _trait1.effectAmount;
+        }
+        if (_trait2.modType == ModType.MeleeDamage)
+        {
+            meleeDamage += _trait2.effectAmount;
+        }
+
+        return meleeDamage;
+    }
+    private int CarryWeightMod()
+    {
+        var carryWeight = _special.Strength;
+        if (_trait1.modType == ModType.CarryWeight || _trait2.modType == ModType.CarryWeight)
+        {
+            carryWeight *= 15;
+        }
+        else
+        {
+            carryWeight *= 25;
+        }
+
+        foreach (var perk in _activePerks)
+        {
+            if (perk.modType == ModType.CarryWeight)
+            {
+                carryWeight += perk.EffectAmount;
+            }
+        }
+        
+        return carryWeight;
     }
     #endregion
 }

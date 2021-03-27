@@ -7,6 +7,14 @@ using UnityEngine;
 public class Trait : ScriptableObject
 {
     public string traitName;
+
+    public bool affectsSkills;
+
+    public ModType modType;
+    public Skills.Type affectedSkill = Skills.Type.None;
+    public SPECIAL.Type affectedSpecial = SPECIAL.Type.None;
+    public int effectAmount;
+
     //Figure This out Later
     //Bonus
     //Penalty

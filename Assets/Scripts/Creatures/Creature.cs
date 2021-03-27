@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ThreePupperStudios.Lockable;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Creature : MonoBehaviour, IOccupier
 {
@@ -13,6 +14,9 @@ public class Creature : MonoBehaviour, IOccupier
     
     [SerializeField]
     protected int _currentHealth;
+
+    [SerializeField]
+    protected int _currentAP;
 
     [SerializeField]
     protected SPECIAL _special;
@@ -56,6 +60,9 @@ public class Creature : MonoBehaviour, IOccupier
     protected bool HasValidPath => TargetPath != null && TargetPath.Count > 0;
     protected int BaseHealth => BASEHEALTH + _special.Strength + (2 * _special.Endurance);
     protected int MaxHealth => BaseHealth + _hpIncrease;
+    protected virtual int MaxActionPoints => Mathf.FloorToInt(_special.Agility * .5f) + 5;
+    protected virtual int MeleeDamage => _special.Strength > 5 ? _special.Strength - 5 : 1;
+    protected virtual int Sequence => _special.Perception * 2;
 
     #endregion
 
@@ -191,6 +198,30 @@ public class Creature : MonoBehaviour, IOccupier
 
         return targetRotation;
     }
+
+    #region Combat
+
+    protected virtual int RandomHit()
+    {
+        return Random.Range(1, 100);
+    }
+    
+    protected virtual int ChanceToHit(int randomVal)
+    {
+        var chanceToHit = 50;//temp
+
+        chanceToHit -= randomVal;
+        
+        return chanceToHit;
+    }
+
+    protected virtual int CriticalChance(int chanceToHit)
+    {
+        var critChance = _special.Luck*1;//just matching original math used
+        critChance += Mathf.FloorToInt(chanceToHit*.1f)
+    }
+
+    #endregion
     
     #region Enums
 

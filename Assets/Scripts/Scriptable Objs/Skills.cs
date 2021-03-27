@@ -14,6 +14,7 @@ public class Skills : ScriptableObject
 
     public Type tag1;
     public Type tag2;
+    public Type tag3 = Type.None;
 
     #region Consts
 
@@ -22,9 +23,9 @@ public class Skills : ScriptableObject
 
     #endregion
 
-    public int GetSkillLvl(Type skillType)
+    public int GetSkillLvl(Type type)
     {
-        var skill = _skills.Find(i => i.skillName == skillType);
+        var skill = _skills.Find(i => i.skillName == type);
         if (skill == null)
         {
             return 0;
@@ -38,6 +39,11 @@ public class Skills : ScriptableObject
 
         skillAmount *= skill.PercentMod;
         skillAmount += skill.ModifiedLevel;
+
+        if (tag1 == type || tag2 == type || tag3 == type)
+        {
+            skillAmount += 20;
+        }
         
         return skillAmount;
 
@@ -46,7 +52,7 @@ public class Skills : ScriptableObject
     public bool IncrementSkill(Type type, bool increase)
     {
         var increment = increase ? 1 : -1;
-        if (tag1 == type || tag2 == type)
+        if (tag1 == type || tag2 == type|| tag3 == type)
         {
             increment *= 2;
         }
