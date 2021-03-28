@@ -907,12 +907,14 @@
             <e p="IOccupier.cs" t="Include" />
           </e>
           <e p="Scriptable Objs" t="Include">
+            <e p="Armor.cs" t="Include" />
             <e p="Perk.cs" t="Include" />
             <e p="Requirement.cs" t="Include" />
             <e p="Skill.cs" t="Include" />
             <e p="Skills.cs" t="Include" />
             <e p="SPECIAL.cs" t="Include" />
             <e p="Trait.cs" t="Include" />
+            <e p="Weapon.cs" t="Include" />
           </e>
           <e p="Shaders" t="Include">
             <e p="Invisible.shader" t="Include" />

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82fb00d6d1cc3a7499f7df9c348b2561, type: 3}
+  m_Name: Robes
+  m_EditorClassIdentifier: 
+  _armorName: Robes
+  _armorClass: 5
+  _weight: 10
+  _resistNormal: 20
+  _resistLaser: 25
+  _resistFire: 10
+  _resistPlasma: 10
+  _resistExplosive: 20
+  _resistElectric: 40
+  _normalThreshold: 0
+  _laserThreshold: 0
+  _fireThreshold: 0
+  _plasmaThreshold: 0
+  _explosiveThreshold: 0
+  _electricThreshold: 0

@@ -26,6 +26,7 @@ public class Player : Human
 
     [SerializeField]
     private UpdateWindowShader _shaderUpdater;
+
     protected override  int MaxActionPoints => Mathf.FloorToInt(_special.Agility * .5f) + APMods();
 
     protected override int CarryWeight => 25 + CarryWeightMod();
@@ -39,7 +40,7 @@ public class Player : Human
         {
             var damage = _special.Strength - 5;
 
-            damage = MeleeDamageMod();
+            damage += MeleeDamageMod();
             
             if (damage < 1)
             {
@@ -48,6 +49,23 @@ public class Player : Human
             return damage;
         }
     }
+    private int PerkRate
+    {
+        get
+        {
+            var perkRate = 3;
+
+            if (_trait1.modType == ModType.Skilled || _trait2.modType == ModType.Skilled)
+            {
+                perkRate = 4;
+            }
+
+            return perkRate;
+        }
+    }
+
+    protected override int PoisonResist => PoisonResistMod();
+
     private int SkillRate => (_special.Intelligence * 2) + 5 + SkillRateMod();
     protected override int Sequence => (_special.Perception*2)+SequenceMod();
 
@@ -200,14 +218,61 @@ public class Player : Human
     }
     #endregion
     
-    #region modifiers
+    #region Combat
 
+    protected override int CriticalChance(int chanceToHit)
+    {
+        var critChance = base.CriticalChance(chanceToHit);
+
+        foreach (var perk in _activePerks)
+        {
+            if (perk.ModType == ModType.CritChance)
+            {
+                critChance += perk.EffectAmount;
+            }
+            else if (perk.ModType == ModType.WeaponSpec && _activeWeapon.WeaponType == perk.AffectedWeapon)
+            {
+                critChance += perk.EffectAmount;
+            }
+        }
+
+        if (_trait1.modType == ModType.CritChance)
+        {
+            critChance += _trait1.effectAmount;
+        }
+
+        if (_trait2.modType == ModType.CritChance)
+        {
+            critChance += _trait2.effectAmount;
+        }
+        
+        return critChance;
+    }
+
+    protected override int DamageResistance(DamageType damageType)
+    {
+        var resistance = base.DamageResistance(damageType);
+
+        foreach (var perk in _activePerks)
+        {
+            if (perk.ModType == ModType.DamageResist)
+            {
+                resistance += perk.EffectAmount;
+            }
+        }
+        
+        return resistance;
+    }
+
+    #endregion
+    
+    #region modifiers
     private int HPIncMod()
     {
         var hpInc = 0;
         foreach (var perk in _activePerks)
         {
-            if (perk.modType == ModType.HPLvlInc)
+            if (perk.ModType == ModType.HPLvlInc)
             {
                 hpInc += perk.EffectAmount;
             }
@@ -219,7 +284,7 @@ public class Player : Human
         var healRateMod = 0;
         foreach (var perk in _activePerks)
         {
-            if (perk.modType == ModType.HPRecover)
+            if (perk.ModType == ModType.HPRecover)
             {
                 healRateMod += perk.EffectAmount;
             }
@@ -239,7 +304,7 @@ public class Player : Human
         var skillInc = 0;
         foreach (var perk in _activePerks)
         {
-            if (perk.modType == ModType.SkillLvlInc)
+            if (perk.ModType == ModType.SkillLvlInc)
             {
                 skillInc += perk.EffectAmount;
             }
@@ -262,7 +327,7 @@ public class Player : Human
         
         foreach (var perk in _activePerks)
         {
-            if (perk.modType == ModType.Sequence)
+            if (perk.ModType == ModType.Sequence)
             {
                 sequence += perk.EffectAmount;
             }
@@ -284,7 +349,7 @@ public class Player : Human
         var actionPoints = 0;
         foreach (var perk in _activePerks)
         {
-            if (perk.modType == ModType.ActionPoints)
+            if (perk.ModType == ModType.ActionPoints)
             {
                 actionPoints += perk.EffectAmount;
             }
@@ -297,7 +362,7 @@ public class Player : Human
         
         foreach (var perk in _activePerks)
         {
-            if (perk.modType == ModType.MeleeDamage)
+            if (perk.ModType == ModType.MeleeDamage)
             {
                 meleeDamage += perk.EffectAmount;
             }
@@ -314,6 +379,26 @@ public class Player : Human
 
         return meleeDamage;
     }
+    private int PoisonResistMod()
+    {
+        var poisonResist = 0;
+
+        foreach (var perk in _activePerks)
+        {
+            if (perk.ModType == ModType.PoisonResist)
+            {
+                poisonResist += perk.EffectAmount;
+            }
+        }
+        
+        //This is looking for the Fast Metabolism trait
+        if (_trait1.modType != ModType.PoisonResist && _trait2.modType != ModType.PoisonResist)
+        {
+            poisonResist += _special.Endurance * 5;
+        }
+        
+        return poisonResist;
+    }
     private int CarryWeightMod()
     {
         var carryWeight = _special.Strength;
@@ -328,7 +413,7 @@ public class Player : Human
 
         foreach (var perk in _activePerks)
         {
-            if (perk.modType == ModType.CarryWeight)
+            if (perk.ModType == ModType.CarryWeight)
             {
                 carryWeight += perk.EffectAmount;
             }
@@ -336,5 +421,41 @@ public class Player : Human
         
         return carryWeight;
     }
+
+    protected override int RadResistMod()
+    {
+        var radResist = base.RadResistMod();
+
+        foreach (var perk in _activePerks)
+        {
+            if (perk.ModType == ModType.RadResist)
+            {
+                radResist += perk.EffectAmount;
+            }
+        }
+        
+        return radResist;
+    }
+
+    protected override int ACMod()
+    {
+        var ac = base.ACMod();
+
+        foreach (var perk in _activePerks)
+        {
+            if (perk.ModType == ModType.ArmorClass)
+            {
+                ac += perk.EffectAmount;
+            }
+        }
+
+        if (_trait1.modType == ModType.ArmorClass || _trait2.modType == ModType.ArmorClass)
+        {
+            ac -= _special.Agility;//Checking for Kamikaze trait which sets natural AC to 0
+        }
+        
+        return ac;
+    }
+
     #endregion
 }

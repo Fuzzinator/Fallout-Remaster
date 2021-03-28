@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82fb00d6d1cc3a7499f7df9c348b2561, type: 3}
+  m_Name: Power Armor
+  m_EditorClassIdentifier: 
+  _armorName: Power Armor
+  _armorClass: 25
+  _weight: 85
+  _resistNormal: 40
+  _resistLaser: 80
+  _resistFire: 60
+  _resistPlasma: 40
+  _resistExplosive: 50
+  _resistElectric: 40
+  _normalThreshold: 12
+  _laserThreshold: 18
+  _fireThreshold: 12
+  _plasmaThreshold: 10
+  _explosiveThreshold: 20
+  _electricThreshold: 12

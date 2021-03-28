@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82fb00d6d1cc3a7499f7df9c348b2561, type: 3}
+  m_Name: Metal Armor
+  m_EditorClassIdentifier: 
+  _armorName: Metal Armor
+  _armorClass: 10
+  _weight: 35
+  _resistNormal: 30
+  _resistLaser: 75
+  _resistFire: 10
+  _resistPlasma: 20
+  _resistExplosive: 25
+  _resistElectric: 0
+  _normalThreshold: 4
+  _laserThreshold: 6
+  _fireThreshold: 4
+  _plasmaThreshold: 4
+  _explosiveThreshold: 4
+  _electricThreshold: 0

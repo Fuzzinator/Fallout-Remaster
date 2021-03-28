@@ -23,6 +23,12 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField] 
     protected Skills _skills;
+
+    [SerializeField]
+    protected Weapon _activeWeapon;
+
+    [SerializeField]
+    protected Armor _equipedArmor;
     
     [SerializeField]
     protected int _currentLocation;
@@ -46,6 +52,8 @@ public class Creature : MonoBehaviour, IOccupier
     
     [SerializeField, Lockable(rememberSelection:false)]
     protected int _hpIncrease = 0;
+
+    protected int _apToAC = 0;
     
     #region Lists
 
@@ -61,7 +69,9 @@ public class Creature : MonoBehaviour, IOccupier
     protected int BaseHealth => BASEHEALTH + _special.Strength + (2 * _special.Endurance);
     protected int MaxHealth => BaseHealth + _hpIncrease;
     protected virtual int MaxActionPoints => Mathf.FloorToInt(_special.Agility * .5f) + 5;
+    protected virtual int ArmorClass => _special.Agility + ACMod();
     protected virtual int MeleeDamage => _special.Strength > 5 ? _special.Strength - 5 : 1;
+    protected virtual int RadResistance => _special.Endurance * 2;
     protected virtual int Sequence => _special.Perception * 2;
 
     #endregion
@@ -218,7 +228,44 @@ public class Creature : MonoBehaviour, IOccupier
     protected virtual int CriticalChance(int chanceToHit)
     {
         var critChance = _special.Luck*1;//just matching original math used
-        critChance += Mathf.FloorToInt(chanceToHit*.1f)
+        critChance += Mathf.FloorToInt(chanceToHit * .1f);
+        return critChance;
+    }
+
+    protected virtual int ACMod()
+    {
+        var ac = 0;
+        if (_equipedArmor != null)
+        {
+            ac += _equipedArmor.ArmorClass;
+        }
+
+        ac += _apToAC;
+
+        return ac;
+    }
+    protected virtual int DamageResistance(DamageType damageType)
+    {
+        var resistance = 0;
+        
+        if (_equipedArmor != null)
+        {
+            resistance += _equipedArmor.GetResistance(damageType);
+        }
+        
+        return resistance;
+    }
+
+    protected virtual int DamageThreshold(DamageType damageType)
+    {
+        var threshold = 0;
+        
+        if (_equipedArmor != null)
+        {
+            threshold += _equipedArmor.GetThreshold(damageType);
+        }
+        
+        return threshold;
     }
 
     #endregion
