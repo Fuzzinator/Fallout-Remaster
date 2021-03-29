@@ -27,6 +27,8 @@ public class Player : Human
     [SerializeField]
     private UpdateWindowShader _shaderUpdater;
 
+    protected override int ArmorClass => ACMod();
+
     protected override  int MaxActionPoints => Mathf.FloorToInt(_special.Agility * .5f) + APMods();
 
     protected override int CarryWeight => 25 + CarryWeightMod();
@@ -55,9 +57,13 @@ public class Player : Human
         {
             var perkRate = 3;
 
-            if (_trait1.modType == ModType.Skilled || _trait2.modType == ModType.Skilled)
+            if (_trait1.TraitType == Trait.Type.Skilled && _trait1.Penalty == ModType.PerkRate)
             {
-                perkRate = 4;
+                perkRate = _trait1.PenaltyAmount;
+            }
+            else if (_trait2.TraitType == Trait.Type.Skilled && _trait2.Penalty == ModType.PerkRate)
+            {
+                perkRate = _trait2.PenaltyAmount;
             }
 
             return perkRate;
@@ -65,6 +71,7 @@ public class Player : Human
     }
 
     protected override int PoisonResist => PoisonResistMod();
+    protected override int RadResistance => RadResistMod();
 
     private int SkillRate => (_special.Intelligence * 2) + 5 + SkillRateMod();
     protected override int Sequence => (_special.Perception*2)+SequenceMod();
@@ -116,6 +123,101 @@ public class Player : Human
         }
     }
 #endif
+
+    #endregion
+    
+    #region General Stats
+
+    public int GetSpecial(SPECIAL.Type type)
+    {
+        var special = _special.GetSPECIALLvl(type);
+
+        special += GetTraitSpecialMods(_trait1, type);
+        special += GetTraitSpecialMods(_trait2, type);
+        
+        return special;
+    }
+
+    public int GetSkill(Skills.Type type)
+    {
+        var skill = _skills.GetSkillLvl(type);
+
+        skill += GetTraitSkillMods(_trait1, type);
+        skill += GetTraitSkillMods(_trait2, type);
+        
+        return skill;
+    }
+
+    private static int GetTraitSpecialMods(Trait trait, SPECIAL.Type type)
+    {
+        var special = 0;
+        switch (trait.TraitType)
+        {
+            case Trait.Type.Gifted:
+                special += trait.BenefitAmount;
+                break;
+            case Trait.Type.Bruiser:
+                if(type == SPECIAL.Type.Strength)
+                {
+                    special += trait.BenefitAmount;
+                }
+                break;
+            case Trait.Type.NightPerson:
+                //TODO Create Environment class and implement Environment.IsNight
+                var IsNight = false;
+                if (type == SPECIAL.Type.Intelligence || type == SPECIAL.Type.Perception)
+                {
+                    if (IsNight)
+                    {
+                        special += trait.BenefitAmount;
+                    }
+                    else
+                    {
+                        special += trait.PenaltyAmount;
+                    }
+                }
+                break;
+            case Trait.Type.SmallFrame:
+                if (type == SPECIAL.Type.Agility)
+                {
+                    special += trait.BenefitAmount;
+                }
+                break;
+            default:
+                break;
+        }
+
+        return special;
+    }
+
+    private static int GetTraitSkillMods(Trait trait, Skills.Type type)
+    {
+        var skill = 0;
+
+        switch (trait.TraitType)
+        {
+            case Trait.Type.Gifted:
+                skill += trait.PenaltyAmount;
+                break;
+            case Trait.Type.GoodNatured:
+                if (type == Skills.Type.FirstAid || type == Skills.Type.Doctor ||
+                    type == Skills.Type.Speech || type == Skills.Type.Barter)
+                {
+                    skill += trait.BenefitAmount;
+                }
+                else if (type == Skills.Type.SmallGuns || type == Skills.Type.BigGuns || type == Skills.Type.EnergyWeapons ||
+                    type == Skills.Type.Throwing || type == Skills.Type.MeleeWeapons || type == Skills.Type.Unarmed)
+                {
+                    skill += trait.PenaltyAmount;
+                }
+                break;
+            case Trait.Type.Skilled:
+                skill += trait.BenefitAmount;
+                break;
+        }
+
+        return skill;
+    }
 
     #endregion
 
@@ -236,14 +338,13 @@ public class Player : Human
             }
         }
 
-        if (_trait1.modType == ModType.CritChance)
+        if (_trait1.TraitType == Trait.Type.Finesse && _trait1.Benefit == ModType.CritChance)
         {
-            critChance += _trait1.effectAmount;
+            critChance += _trait1.BenefitAmount;
         }
-
-        if (_trait2.modType == ModType.CritChance)
+        else if (_trait2.TraitType == Trait.Type.Finesse && _trait2.Benefit == ModType.CritChance)
         {
-            critChance += _trait2.effectAmount;
+            critChance += _trait2.BenefitAmount;
         }
         
         return critChance;
@@ -289,13 +390,13 @@ public class Player : Human
                 healRateMod += perk.EffectAmount;
             }
         }
-        if (_trait1.modType == ModType.HPRecover)
+        if (_trait1.TraitType == Trait.Type.FastMetabolism && _trait1.Benefit == ModType.HPRecover)
         {
-            healRateMod += _trait1.effectAmount;
+            healRateMod += _trait1.BenefitAmount;
         }
-        if (_trait2.modType == ModType.HPRecover)
+        else if (_trait2.TraitType == Trait.Type.FastMetabolism && _trait2.Benefit == ModType.HPRecover)
         {
-            healRateMod += _trait2.effectAmount;
+            healRateMod += _trait2.BenefitAmount;
         }
         return healRateMod;
     }
@@ -310,13 +411,13 @@ public class Player : Human
             }
         }
 
-        if (_trait1.modType == ModType.SkillLvlInc)
+        if (_trait1.TraitType == Trait.Type.Gifted && _trait1.Penalty == ModType.SkillLvlInc)
         {
-            skillInc += _trait1.effectAmount;
+            skillInc += _trait1.PenaltyAmount;
         }
-        if (_trait2.modType == ModType.SkillLvlInc)
+        else if (_trait2.TraitType == Trait.Type.Gifted && _trait2.Penalty == ModType.SkillLvlInc)
         {
-            skillInc += _trait2.effectAmount;
+            skillInc += _trait2.PenaltyAmount;
         }
         
         return skillInc;
@@ -333,13 +434,13 @@ public class Player : Human
             }
         }
         
-        if (_trait1.modType == ModType.Sequence)
+        if (_trait1.TraitType == Trait.Type.Kamikaze && _trait1.Benefit == ModType.Sequence)
         {
-            sequence += _trait1.effectAmount;
+            sequence += _trait1.BenefitAmount;
         }
-        if (_trait2.modType == ModType.Sequence)
+        if (_trait2.TraitType == Trait.Type.Kamikaze && _trait2.Benefit == ModType.Sequence)
         {
-            sequence += _trait2.effectAmount;
+            sequence += _trait2.BenefitAmount;
         }
 
         return sequence;
@@ -368,13 +469,13 @@ public class Player : Human
             }
         }
         
-        if (_trait1.modType == ModType.MeleeDamage)
+        if (_trait1.TraitType == Trait.Type.HeavyHanded && _trait1.Benefit == ModType.MeleeDamage)
         {
-            meleeDamage += _trait1.effectAmount;
+            meleeDamage += _trait1.BenefitAmount;
         }
-        if (_trait2.modType == ModType.MeleeDamage)
+        else if (_trait2.TraitType == Trait.Type.HeavyHanded && _trait2.Benefit == ModType.MeleeDamage)
         {
-            meleeDamage += _trait2.effectAmount;
+            meleeDamage += _trait2.BenefitAmount;
         }
 
         return meleeDamage;
@@ -391,8 +492,7 @@ public class Player : Human
             }
         }
         
-        //This is looking for the Fast Metabolism trait
-        if (_trait1.modType != ModType.PoisonResist && _trait2.modType != ModType.PoisonResist)
+        if (_trait1.TraitType != Trait.Type.FastMetabolism && _trait2.TraitType != Trait.Type.FastMetabolism)
         {
             poisonResist += _special.Endurance * 5;
         }
@@ -402,9 +502,13 @@ public class Player : Human
     private int CarryWeightMod()
     {
         var carryWeight = _special.Strength;
-        if (_trait1.modType == ModType.CarryWeight || _trait2.modType == ModType.CarryWeight)
+        if (_trait1.TraitType == Trait.Type.SmallFrame && _trait1.Penalty == ModType.CarryWeight)
         {
-            carryWeight *= 15;
+            carryWeight *= _trait1.PenaltyAmount;
+        }
+        else if(_trait2.TraitType == Trait.Type.SmallFrame && _trait2.Penalty == ModType.CarryWeight)
+        {
+            carryWeight *= _trait2.PenaltyAmount;
         }
         else
         {
@@ -421,10 +525,14 @@ public class Player : Human
         
         return carryWeight;
     }
-
     protected override int RadResistMod()
     {
         var radResist = base.RadResistMod();
+
+        if (_trait1.TraitType != Trait.Type.FastMetabolism && _trait2.TraitType != Trait.Type.FastMetabolism)
+        {
+            radResist += _special.Endurance * 2;
+        }
 
         foreach (var perk in _activePerks)
         {
@@ -436,10 +544,14 @@ public class Player : Human
         
         return radResist;
     }
-
     protected override int ACMod()
     {
         var ac = base.ACMod();
+
+        if (_trait1.TraitType != Trait.Type.Kamikaze && _trait2.TraitType != Trait.Type.Kamikaze)
+        {
+            ac += _special.Agility;
+        }
 
         foreach (var perk in _activePerks)
         {
@@ -447,11 +559,6 @@ public class Player : Human
             {
                 ac += perk.EffectAmount;
             }
-        }
-
-        if (_trait1.modType == ModType.ArmorClass || _trait2.modType == ModType.ArmorClass)
-        {
-            ac -= _special.Agility;//Checking for Kamikaze trait which sets natural AC to 0
         }
         
         return ac;

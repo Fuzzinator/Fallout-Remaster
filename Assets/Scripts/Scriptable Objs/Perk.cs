@@ -54,11 +54,13 @@ public enum ModType
     MeleeDamage = 6,
     Sequence = 7,//Sequence is Initiative
     ArmorClass = 8,
-    Skilled = 9,
+    
     HPBase = 10,
     HPLvlInc = 11,
     HPRecover = 12,
+    PerkRate = 13,
     SkillLvlInc = 15,
+    
     
     RadResist = 17,
     DamageResist = 18,
