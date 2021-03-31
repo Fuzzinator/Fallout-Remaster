@@ -10,20 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82fb00d6d1cc3a7499f7df9c348b2561, type: 3}
-  m_Name: Robes
+  m_Name: Tesla Armor
   m_EditorClassIdentifier: 
-  _armorName: Robes
-  _armorClass: 5
-  _weight: 10
+  _armorName: Tesla Armor
+  _description: 
+  _armorClass: 15
+  _weight: 35
+  _armorType: 4
+  _radResist: 0
+  _strMod: 0
+  _value: 4500
   _resistNormal: 20
-  _resistLaser: 25
-  _resistFire: 10
-  _resistPlasma: 10
-  _resistExplosive: 20
-  _resistElectric: 40
-  _normalThreshold: 0
-  _laserThreshold: 0
-  _fireThreshold: 0
-  _plasmaThreshold: 0
-  _explosiveThreshold: 0
-  _electricThreshold: 0
+  _resistLaser: 90
+  _resistFire: 20
+  _resistPlasma: 80
+  _resistExplosive: 10
+  _resistElectric: 80
+  _normalThreshold: 4
+  _laserThreshold: 19
+  _fireThreshold: 4
+  _plasmaThreshold: 10
+  _explosiveThreshold: 4
+  _electricThreshold: 12

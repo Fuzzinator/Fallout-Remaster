@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Combat Armor
   m_EditorClassIdentifier: 
   _armorName: Combat Armor
+  _description: 
   _armorClass: 20
   _weight: 20
+  _armorType: 4
+  _radResist: 20
+  _strMod: 0
+  _value: 6500
   _resistNormal: 40
   _resistLaser: 60
   _resistFire: 30

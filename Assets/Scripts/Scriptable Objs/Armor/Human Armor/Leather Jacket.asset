@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Leather Jacket
   m_EditorClassIdentifier: 
   _armorName: Leather Jacket
+  _description: 
   _armorClass: 8
   _weight: 5
+  _armorType: 2
+  _radResist: 0
+  _strMod: 0
+  _value: 250
   _resistNormal: 20
   _resistLaser: 20
   _resistFire: 10

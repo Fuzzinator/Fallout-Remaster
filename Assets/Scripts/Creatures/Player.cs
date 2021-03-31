@@ -163,11 +163,9 @@ public class Player : Human
                 }
                 break;
             case Trait.Type.NightPerson:
-                //TODO Create Environment class and implement Environment.IsNight
-                var IsNight = false;
                 if (type == SPECIAL.Type.Intelligence || type == SPECIAL.Type.Perception)
                 {
-                    if (IsNight)
+                    if (WorldClock.Instance != null && WorldClock.Instance.IsNight)
                     {
                         special += trait.BenefitAmount;
                     }

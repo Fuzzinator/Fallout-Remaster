@@ -892,8 +892,10 @@
           </e>
           <e p="Core" t="Include">
             <e p="GameManager.cs" t="Include" />
+            <e p="GlobalVariables.cs" t="Include" />
             <e p="InputManager.cs" t="Include" />
             <e p="Settings.cs" t="Include" />
+            <e p="WorldClock.cs" t="Include" />
           </e>
           <e p="Creatures" t="Include">
             <e p="Creature.cs" t="Include" />

@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Brotherhood Armor
   m_EditorClassIdentifier: 
   _armorName: Brotherhood Armor
+  _description: 
   _armorClass: 20
   _weight: 25
+  _armorType: 4
+  _radResist: 0
+  _strMod: 0
+  _value: 4800
   _resistNormal: 40
   _resistLaser: 70
   _resistFire: 50

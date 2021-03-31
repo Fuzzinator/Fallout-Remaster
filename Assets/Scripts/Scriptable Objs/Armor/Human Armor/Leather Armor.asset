@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Leather Armor
   m_EditorClassIdentifier: 
   _armorName: Leather Armor
+  _description: 
   _armorClass: 15
   _weight: 8
+  _armorType: 2
+  _radResist: 0
+  _strMod: 0
+  _value: 700
   _resistNormal: 25
   _resistLaser: 20
   _resistFire: 20

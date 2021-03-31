@@ -13,7 +13,7 @@ public class Creature : MonoBehaviour, IOccupier
     protected string _name;
     
     [SerializeField]
-    protected int _currentHealth;
+    protected int _currentHealth; //cave rats have 6hp
 
     [SerializeField]
     protected int _currentAP;
@@ -224,7 +224,6 @@ public class Creature : MonoBehaviour, IOccupier
         
         return chanceToHit;
     }
-
     protected virtual int CriticalChance(int chanceToHit)
     {
         var critChance = _special.Luck*1;//just matching original math used

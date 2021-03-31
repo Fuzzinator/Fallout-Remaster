@@ -58,11 +58,13 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Weapons/Weapon.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Weapon.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Armor.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Perk.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Trait.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/WorldClock.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/GlobalVariables.cs" />
       </list>
     </option>
   </component>
@@ -117,6 +119,7 @@
       <workItem from="1616257644351" duration="9353000" />
       <workItem from="1616554745451" duration="27474000" />
       <workItem from="1616810235232" duration="46036000" />
+      <workItem from="1617033194327" duration="22429000" />
     </task>
     <servers />
   </component>

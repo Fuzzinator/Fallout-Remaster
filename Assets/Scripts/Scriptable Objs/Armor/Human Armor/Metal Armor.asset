@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Metal Armor
   m_EditorClassIdentifier: 
   _armorName: Metal Armor
+  _description: 
   _armorClass: 10
   _weight: 35
+  _armorType: 3
+  _radResist: 0
+  _strMod: 0
+  _value: 1100
   _resistNormal: 30
   _resistLaser: 75
   _resistFire: 10

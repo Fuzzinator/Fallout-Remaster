@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Power Armor
   m_EditorClassIdentifier: 
   _armorName: Power Armor
+  _description: 
   _armorClass: 25
   _weight: 85
+  _armorType: 5
+  _radResist: 30
+  _strMod: 3
+  _value: 12500
   _resistNormal: 40
   _resistLaser: 80
   _resistFire: 60

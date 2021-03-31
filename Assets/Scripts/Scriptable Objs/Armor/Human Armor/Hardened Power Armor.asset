@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Hardened Power Armor
   m_EditorClassIdentifier: 
   _armorName: Hardened Power Armor
+  _description: 
   _armorClass: 25
   _weight: 100
+  _armorType: 5
+  _radResist: 30
+  _strMod: 3
+  _value: 1500
   _resistNormal: 50
   _resistLaser: 90
   _resistFire: 60
