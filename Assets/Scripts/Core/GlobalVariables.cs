@@ -62,7 +62,11 @@ public static class GlobalVariables
     //ShadySands
     public static bool radscorpionSeed = false;//Is player killing radscorpions for Shady Sands?
     //Scorpion Cave
-    public static int numRadScorpions = 10;// How many RadScorpions are still around in cave TODO find out what this number should be
+    public static int totalRadScorpions = 10;// How many RadScorpions are still around in cave TODO find out what this number should be
+    
+    //Raiders
+    public static bool mistakenID = false;//Do the Raiders think you are Garl's dad?
+    public static int totalRaiders = 24;//How many Raiders are still alive TODO find out what this number should be.
     
     //Junktown
     public static bool hiredByKillian = false;//Has Killian hired the player to trap Gizmo?
@@ -73,9 +77,11 @@ public static class GlobalVariables
     
     //Hub
     public static bool hubSeed = false;//TODO find out what this is.
+    public static bool withCaravan = false;//Is the player travelling with the caravas?
     
     //Boneyard
     public static bool deathclawSeed = false;//Has the player accepted the quest to find/kill the deathclaw?
+    public static bool bladesHelp = false;//Will the Blades help you knock out the children of the Cathedral?
     
     //Brotherhood of steel
     public static bool joinBrotherhoodSeed = false;//Has the player accepted the quest to join the Brotherhood of Steel?
@@ -98,7 +104,30 @@ public static class GlobalVariables
     public static bool vatsBlown = false;//Have the Vats been destroyed?
     public static int vatsStatus = 0;//Not sure why this also exists but it also lets you check if vats have been blown. TODO possibly remove this.
     public static bool masterBlown = false; //has the Master been destroyed? also lol has he been blown?
+    public static bool deliveredBomb = false;//Has the palyer delivered the bomb?
     public static bool bombDisarmed = false;//Is the bomb disarmed
+    #endregion
+    
+    #region Quest Status
+
+    public static QuestStatus findWaterChip = QuestStatus.Unstarted;//Starts on game start
+    public static QuestStatus killRadscorpions = QuestStatus.Unstarted;//Starts in shady sands
+    public static QuestStatus rescueTandi = QuestStatus.Unstarted;//Starts in Shady Sands. Ends in Raiders
+    public static QuestStatus captureGizmo = QuestStatus.Unstarted;//In Junktown
+    public static QuestStatus killKillian = QuestStatus.Unstarted;//In Junktown
+    public static QuestStatus missingCaravan = QuestStatus.Unstarted;//Starts in Hub
+    public static QuestStatus stealNecklace = QuestStatus.Unstarted;//In Hub
+    public static QuestStatus killMerchant = QuestStatus.Unstarted;//In Hub
+    public static QuestStatus killJain = QuestStatus.Unstarted;//In Hub
+    public static QuestStatus killDeathclaw = QuestStatus.Unstarted;//Starts in Hub
+    public static QuestStatus killSuperMutants = QuestStatus.Unstarted;//In Necropolis
+    public static QuestStatus becomeInitiate = QuestStatus.Unstarted;//Starts in the Brotherhood of Steel
+    public static QuestStatus findLostInitiate = QuestStatus.Unstarted;//Starts in the Brotherhood of Steel
+    public static QuestStatus warnedBrotherhood = QuestStatus.Unstarted;//Starts in the Brotherhood of Steel
+    public static QuestStatus romeoAndJuliet = QuestStatus.Unstarted;//Romeo and Juliet quest TODO find out more about this
+
+    public static QuestStatus lostBrother = QuestStatus.Unstarted;//Look for the lost brother of the Blades in the Runners
+    public static QuestStatus destroyFollowers = QuestStatus.Unstarted;//Deliver the bomb
     #endregion
     
     #region Has X Been Invaded?
@@ -116,11 +145,42 @@ public static class GlobalVariables
     public static int tandiStatus = 0;//Is Tandi: (0 = Free, 1 = Kidnapped, 2 = Rescued, 3 = Killed)
     public static bool tandiDead => tandiStatus == 3;
     
+    //Ian from Shady Sands
+    public static bool ianDead = false;//Is Ian Dead?
+    //public static Location iansLocation = TODO make the locations system and add where ian is here
+    
+    //Seth from Shady Sands
+    public static bool sethDead = false;//Is Seth dead?
+    
+    //Tolya The Raider
+    public static bool tolyaDead = false;//Is Tolya the Raider dead?
+    
+    //Petrox The Raider
+    public static bool petroxDead = false;//Is Petrox the Raider dead?
+    
+    //Hernandex from Junktown/Hub
+    public static bool hernandexDead = false;//Is Hernandex dead?
+    
+    //Kenji the thug from Junktown/Hub
+    public static bool kenjiDead = false;//Is Kenji the Thug dead?
+    
+    //Chris the Bounty Hunter
+    public static bool chrisDead = false;//Is Chris the Bounty Hunter dead? This was HUNTER_STATUS in the original but for consistency renaming
+    
     //Killian's Status
     public static bool killianDead = false;//Is Killian dead?
     
     //Gizmo's Status
     public static bool gizmoDead = false;//Is Gizmo dead?
+    
+    //Garl
+    public static bool garlDead = false;//Is Garl dead?
+    
+    //Trent from the Hub and random encounter
+    public static bool trentDead = false;//Is Trent dead?
+    
+    //Jason from the Adytum
+    public static bool jasonDead = false;//Is Jason dead?
     
     //Mutants
     public static bool masterDead = false;//Is the master dead?
@@ -170,44 +230,17 @@ BURIED_VAULT_MAP          :=0;       //  (96)  // VAULTBUR.MAP
 VAULT_ENTRANCE            :=0;       //  (97)  // VAULTENT.MAP
 NECROP_VAULT              :=0;       //  (98)  // VAULTNEC.MAP
 WATERSHED                 :=0;       //  (99)  // WATRSHD.MAP
-KILL_DEATHCLAW            :=0;       //  (100) // Starts in Hub
-FIND_WATER_CHIP           :=0;       //  (101) // Starts in Vault 13 :=0;              //  (ends in Necropolis)
-KILL_RADSCORPIONS         :=0;       //  (102) // Starts in Shady Sands
-RESCUE_TANDI              :=0;       //  (103) // Starts in Shady Sands :=0;              //  (ends in Raiders
-CAPTURE_GIZMO             :=0;       //  (104) // In Junktown
-KILL_KILLIAN              :=0;       //  (105) // In Junktown
-MISSING_CARAVAN           :=0;       //  (106) // Starts in Hub
-STEAL_NECKLACE            :=0;       //  (107) // In The Hub
-BECOME_AN_INITIATE        :=0;       //  (108) // Starts in the Brotherhood of Steel
-FIND_LOST_INITIATE        :=0;       //  (109) // Starts in the Brotherhood of Steel
-WARNED_BROTHERHOOD        :=0;       //  (110) // Starts in the Brotherhood of Steel
-KILL_MERCHANT             :=0;       //  (111) // In the Hub
-KILL_JAIN                 :=0;       //  (112) // In the Hub
-KILL_SUPER_MUTANTS        :=0;       //  (113) // In Necropolis
-GARL_DEAD                 :=0;       //  (114) // Is Garl Dead
-TOTAL_RAIDERS             :=16;      //  (115) // The total number of raiders alive
-MISTAKEN_ID               :=0;       //  (116) // Do the Raiders think you are Garl's dad?
-WITH_CARAVAN              :=0;       //  (117) // Is the player travelling w/ caravans?
-IAN_STATUS                :=0;       //  (118) // Ian from Shady Sands :=0;              //  (Alive/Dead/Where)
-TOLYA_STATUS              :=0;       //  (119) // Tolya the Raider
-PETROX_STATUS             :=0;       //  (120) // Petrox the Raider
-HERNANDEZ_STATUS          :=0;       //  (121) // Hernandez from Junktown/Hub
-KENJI_STATUS              :=0;       //  (122) // Kenji the thug Junktow/Hub
-HUNTER_STATUS             :=0;       //  (123) // Chris, the Bounty hunter
-SETH_STATUS               :=0;       //  (124) // Seth from Shady Sands
-TRENT_STATUS              :=0;       //  (125) // Trent from the Hub and random encounter
-JASON_STATUS              :=0;       //  (126) // Jason from the Adytum
-ROMEO_JULIET              :=0;       //  (127) // Romeo and Juliet quest
+
+
 GANG_WAR                  :=0;       //  (128) // are the gangs gone?
-DESTROY_FOLLOWERS         :=0;       //  (129) // did the player deliver the bomb?
-LOST_BROTHER              :=0;       //  (130) // look for the lost brother of the Blades in the Runners
+
 BLADES_HELP               :=0;       //  (131) // will the blades help you knock out the children?
 TRAIN_FOLLOWERS           :=0;       //  (132) // did the player train the followers?
 FIND_AGENT                :=0;       //  (133) // find the double agent in the followers
 TANGLER_DEAD              :=0;       //  (134) // is Tangler dead?
 BECOME_BLADE              :=0;       //  (135) // are you a Blade?
-BLADES_LEFT               :=27;      //  (136) // How many Blades are left
-RIPPERS_LEFT              :=19;      //  (137) // How many Rippers are left
+BLADES_LEFT               :=41;      //  (136) // How many Blades are left
+RIPPERS_LEFT              :=41;      //  (137) // How many Rippers are left
 FIX_FARM                  :=0;       //  (138) // Fix the underground Farm
 START_POWER               :=0;       //  (139) // has the power been started in the Glow?
 WEAPONS_ARMED             :=0;       //  (140) // are the weapons armed in the Glow?
@@ -689,5 +722,16 @@ CHEMISTRY_BOOK            :=0;          // (615)
 ENEMY_REGULATOR           :=0;          // (616)
 ENEMY_BLADE               :=0;          // (617)  
 */
+    #endregion
+    
+    #region enums
+
+    public enum QuestStatus
+    {
+        Unstarted,
+        Started,
+        Completed,
+        Failed
+    }
     #endregion
 }

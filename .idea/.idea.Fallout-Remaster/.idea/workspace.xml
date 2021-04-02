@@ -14,6 +14,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ScriptableRendererDataEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexCellPriorityQueue.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/42A5878C-E129-4030-83AC-CCF18E43363F/19/3270a4c0/Transform.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ShaderGraph/Includes/UnlitPass.hlsl" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Armor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -24,6 +25,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Settings.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/IOccupier.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/IL/42A5878C-E129-4030-83AC-CCF18E43363F/7b/4d5f8fb9/0200027C.il" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -58,12 +60,12 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Weapons/Weapon.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Weapon.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Armor.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Perk.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Trait.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/WorldClock.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/GlobalVariables.cs" />
       </list>
     </option>
@@ -119,7 +121,7 @@
       <workItem from="1616257644351" duration="9353000" />
       <workItem from="1616554745451" duration="27474000" />
       <workItem from="1616810235232" duration="46036000" />
-      <workItem from="1617033194327" duration="22429000" />
+      <workItem from="1617033194327" duration="32751000" />
     </task>
     <servers />
   </component>
