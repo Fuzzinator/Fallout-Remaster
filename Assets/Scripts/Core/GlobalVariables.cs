@@ -82,16 +82,27 @@ public static class GlobalVariables
     //Boneyard
     public static bool deathclawSeed = false;//Has the player accepted the quest to find/kill the deathclaw?
     public static bool bladesHelp = false;//Will the Blades help you knock out the children of the Cathedral?
+    public static bool trainFollowers = false;//Has the player trained the followers?
     
     //Brotherhood of steel
     public static bool joinBrotherhoodSeed = false;//Has the player accepted the quest to join the Brotherhood of Steel?
     public static bool rescueBrotherhoodSeed = false;//Has the player accepted the quest to save the Brotherhood of Steel initiate from the Hub?
     public static bool knightWarning = false;//Will the Knight need to warn player of his manners?
     
+    //The Glow
+    public static bool weaponsArmed = false;//Have the weapons been armed?
+    public static bool foundDisk = false;//has the player found the access code disk?
+    public static bool weaponsLockerArmed = false;// are the weapon depot security systems armed?
+    
     //Necropolis
     public static bool necroWaterPumpFixed = false;//Has the Necropolis Water Pump been fixed?
     public static int signalReward = 0;//How much of a reward is Set telling Garret to give the player?
     public static int necroWaterStatus = 0;//What is the status of the water level in Necropolis?TODO find out what options this has
+    
+    //Adytum
+    public static bool gangWar = false;//Did  the gangs fight killing each other?
+    public static int bladesLeft = 41;//How many Blades are still alive?
+    public static int rippersLeft = 41;//How many Rippers are still alive?
     
     //Cathedral
     public static bool shadowPassword = false;//Has Nicole given player the 'Shadow' password? This is cut content in the original
@@ -101,6 +112,7 @@ public static class GlobalVariables
     //Final Things
     public static int waterShedStatus = 0;//Are there super mutants in the water shed?//TODO find out what options this has other than t/f
     public static bool playerCaptured = false;//Has the player been captured by the supermutants?
+    public static bool vatsAlert = false;//Are the vats on alert?
     public static bool vatsBlown = false;//Have the Vats been destroyed?
     public static int vatsStatus = 0;//Not sure why this also exists but it also lets you check if vats have been blown. TODO possibly remove this.
     public static bool masterBlown = false; //has the Master been destroyed? also lol has he been blown?
@@ -115,22 +127,33 @@ public static class GlobalVariables
     public static QuestStatus rescueTandi = QuestStatus.Unstarted;//Starts in Shady Sands. Ends in Raiders
     public static QuestStatus captureGizmo = QuestStatus.Unstarted;//In Junktown
     public static QuestStatus killKillian = QuestStatus.Unstarted;//In Junktown
+    public static QuestStatus saveSinthia = QuestStatus.Unstarted;// Cell baby held hostage in Junktown
+    public static QuestStatus bustSkullz = QuestStatus.Unstarted;// Helping Lars to bust the Skulz gang in Junktown
     public static QuestStatus missingCaravan = QuestStatus.Unstarted;//Starts in Hub
     public static QuestStatus stealNecklace = QuestStatus.Unstarted;//In Hub
     public static QuestStatus killMerchant = QuestStatus.Unstarted;//In Hub
     public static QuestStatus killJain = QuestStatus.Unstarted;//In Hub
     public static QuestStatus killDeathclaw = QuestStatus.Unstarted;//Starts in Hub
+    public static QuestStatus fixFarm = QuestStatus.Unstarted;//Fix the farm
     public static QuestStatus killSuperMutants = QuestStatus.Unstarted;//In Necropolis
     public static QuestStatus becomeInitiate = QuestStatus.Unstarted;//Starts in the Brotherhood of Steel
     public static QuestStatus findLostInitiate = QuestStatus.Unstarted;//Starts in the Brotherhood of Steel
     public static QuestStatus warnedBrotherhood = QuestStatus.Unstarted;//Starts in the Brotherhood of Steel
     public static QuestStatus romeoAndJuliet = QuestStatus.Unstarted;//Romeo and Juliet quest TODO find out more about this
 
+    public static QuestStatus startPower = QuestStatus.Unstarted;//Start the power in the Glow
+    public static QuestStatus armWeapons = QuestStatus.Unstarted;//Arm the weapons in the Glow
+    
     public static QuestStatus lostBrother = QuestStatus.Unstarted;//Look for the lost brother of the Blades in the Runners
+    public static QuestStatus becomeABlade = QuestStatus.Unstarted;//Join the Blades
+
+    public static QuestStatus findAgent = QuestStatus.Unstarted;//Find the double agent in the followers
+    
     public static QuestStatus destroyFollowers = QuestStatus.Unstarted;//Deliver the bomb
     #endregion
     
-    #region Has X Been Invaded?
+    #region Invasion Stuff
+    //Has X Been Invaded?
     public static bool vaultInvaded = false;//Has the Vault been invaded?
     public static bool shadySandsInvaded = false;//Has Shady Sands been invaded?
     public static bool necropolisInvaded = false;//Has Necropolis been invaded?
@@ -138,6 +161,16 @@ public static class GlobalVariables
     public static bool junktownInvaded = false;//Has Junktown been invaded?
     public static bool brotherhoodInvaded = false;//Has The Brotherhood of Steel been invaded?
     public static bool followersInvaded = false;//Have the Followers of the Sun been invaded? Not this is cut content or just bugged content in the original.
+    
+    //Invasion Date
+    public static int followersInvadedDate = -1;//90
+    public static int necropolisInvadedDate = -1;//110
+    public static int theHubInvadedDate = -1;//140
+    public static int brotherhoodInvadedDate = -1;//170
+    public static int junktownInvadedDate = -1;//200
+    public static int shadySandsInvadedDate = -1;//230
+    public static int vault13InvadedDate = -1;//300
+    
     #endregion
     
     #region NPC Status'
@@ -176,6 +209,9 @@ public static class GlobalVariables
     //Garl
     public static bool garlDead = false;//Is Garl dead?
     
+    //Tangler
+    public static bool tanglerDead = false;//Is Tangler dead?
+    
     //Trent from the Hub and random encounter
     public static bool trentDead = false;//Is Trent dead?
     
@@ -196,7 +232,12 @@ public static class GlobalVariables
     #endregion
 
     #region TODO
-/*
+
+    #endregion
+
+    #region enums
+
+    /*
   VAULT_13                  :=2;       //  (67)
 SHADY_SANDS               :=0;       //  (68)
 RAIDERS                   :=0;       //  (69)
@@ -234,73 +275,53 @@ WATERSHED                 :=0;       //  (99)  // WATRSHD.MAP
 
 GANG_WAR                  :=0;       //  (128) // are the gangs gone?
 
-BLADES_HELP               :=0;       //  (131) // will the blades help you knock out the children?
-TRAIN_FOLLOWERS           :=0;       //  (132) // did the player train the followers?
-FIND_AGENT                :=0;       //  (133) // find the double agent in the followers
-TANGLER_DEAD              :=0;       //  (134) // is Tangler dead?
-BECOME_BLADE              :=0;       //  (135) // are you a Blade?
-BLADES_LEFT               :=41;      //  (136) // How many Blades are left
-RIPPERS_LEFT              :=41;      //  (137) // How many Rippers are left
-FIX_FARM                  :=0;       //  (138) // Fix the underground Farm
-START_POWER               :=0;       //  (139) // has the power been started in the Glow?
-WEAPONS_ARMED             :=0;       //  (140) // are the weapons armed in the Glow?
-FOUND_DISK                :=0;       //  (141) // have you found the access code disk?
-WEAPON_LOCKER             :=0;       //  (142) // are the weapon depot security systems armed?
-SAVE_SINTHIA              :=0;       //  (143) // Cell baby held hostage in Junktown
-SAUL_QUEST                :=0;       //  (144) // some quest which still needs to be written
-TRISH_QUEST               :=0;       //  (145) // some quest not written yet
-VATS_ALERT                :=0;       //  (146) // are the Vats on Alert?
-VATS_COUNTDOWN            :=0;       //  (147)
-FOLLOWERS_INVADED_DATE    :=90;       //  (148)
-NECROPOLIS_INVADED_DATE   :=110;       //  (149)
-THE_HUB_INVADED_DATE      :=140;       //  (150)
-BROTHERHOOD_INVADED_DATE  :=170;       //  (151)
-JUNKTOWN_INVADED_DATE     :=200;       //  (152)
-SHADY_SANDS_INVADED_DATE  :=230;       //  (153)
-VAULT_13_INVADED_DATE     :=500;       //  (154)
-PLAYER_REPUATION          :=0;        //  (155)
-BERSERKER_REPUTATION      :=0;         //   (156)
-CHAMPION_REPUTATION       :=0;         //   (157)
-CHILDKILLER_REPUATION     :=0;        // (158)
-GOOD_MONSTER              :=0;       //  (159)
-BAD_MONSTER               :=0        //   (160)
-ARTIFACT_DISK             :=0;       //  (161) // Brotherhood artifact disk
-FEV_DISK                  :=0;       //  (162) // describes the FEV virus
-SECURITY_DISK             :=0;       //  (163) // has the security code to lower weapons
-ALPHA_DISK                :=0;       //  (164) // experiment. random stuff
-DELTA_DISK                :=0;       //  (165) // just another experiment
-VREE_DISK                 :=0;       //  (166) // has the autopsy of the Super Mutants
-HONOR_DISK                :=0;       //  (167) // has the honor code of the Brotherhood
-RENT_TIME                 :=0;       //  (168) // how long the player rents the room
-SAUL_STATUS               :=0;       //  (169) // What is the status of Saul?
-GIZMO_STATUS              :=0;       //  (170) // How is Gizmo doing?
-GANGS                     :=0;       //  (171)
-GANG_BEGONE               :=0;       //    (172)
-GANG_1                    :=0;      //  (173)
-GANG_2                    :=0;      //  (174)
-FOOLS_SCOUT               :=0;      //  (175)
-FSCOUT_1                  :=0;      //  (176)
-CRYPTS_SCOUT              :=0;      //  (177)
-CSCOUT_1                  :=0;      //  (178)
-POWER                     :=0;      //  (179)
-POWER_GENERATOR           :=0;      //  (180)
-GENERATOR_1               :=0;      //  (181)
-GENERATOR_2               :=0;      //  (182)
-GENERATOR_3               :=0;      //  (183)
-PEASANTS                  :=0;      //  (184)
-DOG_PHIL                  :=0;      //  (185)
-DOG_1                     :=0;      //  (186)
-DOG_2                     :=0;      //  (187)
-WATER_THIEF               :=0;       //  (188)
-NUKA_COLA_ADDICT          :=0;      //  (189)
-BUFF_OUT_ADDICT           :=0;      //      (190)
-MENTATS_ADDICT            :=0;      //      (191)
-PSYCHO_ADDICT             :=0;      //      (192)
-RADAWAY_ADDICT            :=0;      //      (193)
-ALOCHOL_ADDICT            :=0;      //      (194)               // makes the names go together better
-CATHEDRAL_ENEMY           :=0;       //       (195)
-MORPHEUS_KNOWN            :=0;          //      196
-KNOW_NIGHTKIN             :=0;          //      197
+SAUL_QUEST  // some quest which still needs to be written
+TRISH_QUEST // some quest not written yet
+
+
+PLAYER_REPUATION      
+BERSERKER_REPUTATION   )
+CHAMPION_REPUTATION    )
+CHILDKILLER_REPUATION 
+GOOD_MONSTER    (159)
+BAD_MONSTER  /   (160)
+ARTIFACT_DISK //Brotherhood artifact disk
+FEV_DISK  // describes the FEV virus
+SECURITY_DISK   // has the security code to lower weapons
+ALPHA_DISK   // experiment. random stuff
+DELTA_DISK  // just another experiment
+VREE_DISK   // has the autopsy of the Super Mutants
+HONOR_DISK  // has the honor code of the Brotherhood
+RENT_TIME   // how long the player rents the room
+SAUL_STATUS  // What is the status of Saul?
+GIZMO_STATUS  // How is Gizmo doing?
+GANGS        
+GANG_BEGONE  
+GANG_1       
+GANG_2       
+FOOLS_SCOUT  
+FSCOUT_1     
+CRYPTS_SCOUT 
+CSCOUT_1     
+POWER        
+POWER_GENERATOR
+GENERATOR_1    
+GENERATOR_2 
+GENERATOR_3 
+PEASANTS    
+DOG_PHIL    
+DOG_1       
+DOG_2       
+WATER_THIEF     
+NUKA_COLA_ADDICT
+BUFF_OUT_ADDICT 
+MENTATS_ADDICT  
+PSYCHO_ADDICT   
+RADAWAY_ADDICT  
+ALOCHOL_ADDICT  
+CATHEDRAL_ENEMY 
+MORPHEUS_KNOWN  //Does the Player know about Morphius?
+KNOW_NIGHTKIN   //Has the player encountered Nightkin?
 PC_WANTED                 :=0;          //      198
 CRIMSON_CARAVANS_STATUS   :=0;          //      199
 WATER_MERCHANTS_STATUS    :=0;          //      200
@@ -658,7 +679,7 @@ MAX_MUTANTS               :=5;          //       551
 TIME_CHIP_GONE            :=0;          //       552
 SET_DEAD                  :=0;          //       553
 MUTANTS_GONE              :=0;          //       554
-BUST_SKULZ                :=0;          //       555 // Helping Lars to bust the Skulz gang in Junktown
+
 SHERRY_TURNS              :=0;          //       556 // Sherry gives information on the Skulz.
 TRISH_STATUS		  :=0;	    //	 557 // Tells if dude has met Trish in Junktown.
 MARK_V13_1                :=1;          //       558
@@ -722,9 +743,6 @@ CHEMISTRY_BOOK            :=0;          // (615)
 ENEMY_REGULATOR           :=0;          // (616)
 ENEMY_BLADE               :=0;          // (617)  
 */
-    #endregion
-    
-    #region enums
 
     public enum QuestStatus
     {

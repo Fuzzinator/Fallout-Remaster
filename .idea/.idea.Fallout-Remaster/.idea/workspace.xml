@@ -12,20 +12,16 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ScriptableRendererDataEditor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexCellPriorityQueue.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/42A5878C-E129-4030-83AC-CCF18E43363F/19/3270a4c0/Transform.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ShaderGraph/Includes/UnlitPass.hlsl" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Armor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Character Specific/UpdateWindowShader.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/50FE65A4-93A0-4952-84F1-E3562EFBE38D/ed/267205c8/Int32.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Plugins/PlayerInput/PlayerInputEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Settings.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Plugins/PlayerInput/PlayerInputEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/IOccupier.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/IL/42A5878C-E129-4030-83AC-CCF18E43363F/7b/4d5f8fb9/0200027C.il" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ShaderGraph/Includes/UnlitPass.hlsl" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Location.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexCellPriorityQueue.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Map.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -67,6 +63,8 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/WorldClock.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/GlobalVariables.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Location.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Map.cs" />
       </list>
     </option>
   </component>
@@ -82,7 +80,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="XThreadsFramesViewSplitterKey" value="0.5004248" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C#" />
+    <property name="settings.editor.splitter.proportion" value="0.24032587" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
@@ -122,6 +121,7 @@
       <workItem from="1616554745451" duration="27474000" />
       <workItem from="1616810235232" duration="46036000" />
       <workItem from="1617033194327" duration="32751000" />
+      <workItem from="1617374702983" duration="7521000" />
     </task>
     <servers />
   </component>
@@ -240,10 +240,14 @@
     </state>
     <state x="1554" y="401" key="RiderGenerateDialog/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1615955775160" />
     <state x="578" y="113" key="RiderGenerateDialog/0.0.1280.680@0.0.1280.680" timestamp="1616258193489" />
-    <state x="141" y="0" key="SettingsEditor" timestamp="1616358066891">
+    <state x="141" y="0" width="1003" height="680" key="SettingsEditor" timestamp="1617380863261">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="141" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1616358066891" />
+    <state x="141" y="0" width="1003" height="680" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1617380863261" />
+    <state x="432" y="198" key="scopes" timestamp="1617380146106">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="432" y="198" key="scopes/0.0.1280.680@0.0.1280.680" timestamp="1617380146106" />
     <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1616902286906">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
@@ -255,29 +259,15 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexMaker.cs</url>
-          <line>587</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\HexMaker\HexMaker.cs" initialLine="586">
-            <startOffsets>
-              <option value="16900" />
-            </startOffsets>
-            <endOffsets>
-              <option value="16909" />
-            </endOffsets>
-          </properties>
+          <line>589</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\HexMaker\HexMaker.cs" initialLine="586" />
           <option name="timeStamp" value="123" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <condition expression="targetCell.distance == -1" language="C#" />
           <url>file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexMaker.cs</url>
-          <line>663</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\HexMaker\HexMaker.cs" initialLine="662">
-            <startOffsets>
-              <option value="19435" />
-            </startOffsets>
-            <endOffsets>
-              <option value="19497" />
-            </endOffsets>
-          </properties>
+          <line>666</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\HexMaker\HexMaker.cs" initialLine="662" />
           <option name="timeStamp" value="125" />
         </line-breakpoint>
       </breakpoints>
