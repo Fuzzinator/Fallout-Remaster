@@ -25,10 +25,7 @@ public class HexHighlighter : MonoBehaviour
     private bool _mouseMovedLastFrame = false;
 
     public Coordinates HoveredCoord { get; private set; }
-
-    /*private Coroutine _waitToUpdate;
-
-    private Coordinates _targetCoord;*/
+    
     private Coordinates _sourceCoord;
 
     private const string X = "x";
@@ -87,19 +84,6 @@ public class HexHighlighter : MonoBehaviour
         _mouseMovedLastFrame = false;
     }
 
-    private void Update()
-    {
-        /*if (_lastMousePos != Mouse.current.position.ReadValue())
-        {
-            _mouseMovedLastFrame = true;
-            _lastMousePos = Mouse.current.position.ReadValue();
-        }
-        else
-        {
-            _mouseMovedLastFrame = false;
-        }*/
-    }
-
     private void OnDestroy()
     {
         GameManager.InputManager.Player.Look.performed -= LookHandler;
@@ -129,31 +113,6 @@ public class HexHighlighter : MonoBehaviour
             UpdateDisplay(sourceCoord, HoveredCoord);
         }
     }
-
-    /*public void UpdateDisplayLater(Coordinates sourceCoord, Coordinates targetCoord)
-    {
-        if (_waitToUpdate != null)
-        {
-            _sourceCoord = sourceCoord;
-            _targetCoord = targetCoord;
-            return;
-        }
-
-        _waitToUpdate = StartCoroutine(WaitThenUpdateDisplay(sourceCoord, targetCoord));
-    }
-
-    private IEnumerator WaitThenUpdateDisplay(Coordinates sourceCoord, Coordinates targetCoord)
-    {
-        yield return null;
-        _textField.SetText(string.Empty);
-        _hexMaker.PathToTarget.Clear();
-        while (_mouseMovedLastFrame)
-        {
-            yield return null;
-        }
-        UpdateDisplay(_sourceCoord, _targetCoord);
-        _waitToUpdate = null;
-    }*/
 
     public void UpdateDisplay(Coordinates sourceCoord, Coordinates targetCoord)
     {

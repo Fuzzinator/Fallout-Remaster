@@ -521,7 +521,7 @@ public class HexMaker : MonoBehaviour
         }
     }
 
-    public void GetDistanceToCoord(Coordinates sourceCell, Coordinates targetCell, Coroutine coroutine, List<Coordinates> path, Action<Coordinates> toDo)
+    public void GetDistanceToCoord(Coordinates sourceCell, Coordinates targetCell, Coroutine coroutine, List<Coordinates> path, Action<Coordinates> toDo, int maxDistance = Int32.MaxValue)
     {
         if (coroutine != null)
         {
@@ -536,7 +536,7 @@ public class HexMaker : MonoBehaviour
         }
 
         //coroutine = StartCoroutine(FindDistanceTo(sourceCell, targetCell, path, toDo));
-        FindDistanceTo(sourceCell,targetCell, path, toDo);
+        FindDistanceTo(sourceCell,targetCell, path, toDo, maxDistance);
     }
 
     //A* search method

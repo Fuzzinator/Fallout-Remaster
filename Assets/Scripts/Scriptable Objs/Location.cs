@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(order = 12, fileName = "New Location", menuName = "ScriptObjs/Location")]
 public class Location : ScriptableObject
 {
     [SerializeField]
