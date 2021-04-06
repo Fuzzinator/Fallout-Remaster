@@ -74,7 +74,7 @@ public class Player : Human
     protected override int RadResistance => RadResistMod();
 
     private int SkillRate => (_special.Intelligence * 2) + 5 + SkillRateMod();
-    protected override int Sequence => (_special.Perception*2)+SequenceMod();
+    public override int Sequence => (_special.Perception*2)+SequenceMod();
 
     #endregion
 

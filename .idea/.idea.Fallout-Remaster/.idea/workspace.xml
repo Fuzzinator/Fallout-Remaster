@@ -12,23 +12,16 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ScriptableRendererDataEditor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexCellPriorityQueue.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/42A5878C-E129-4030-83AC-CCF18E43363F/19/3270a4c0/Transform.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ShaderGraph/Includes/UnlitPass.hlsl" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Armor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/CombatManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Character Specific/UpdateWindowShader.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/50FE65A4-93A0-4952-84F1-E3562EFBE38D/ed/267205c8/Int32.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Map.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Plugins/PlayerInput/PlayerInputEditor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Location.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Settings.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Plugins/PlayerInput/PlayerInputEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/IOccupier.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/IL/42A5878C-E129-4030-83AC-CCF18E43363F/7b/4d5f8fb9/0200027C.il" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ShaderGraph/Includes/UnlitPass.hlsl" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Location.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexCellPriorityQueue.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Map.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -47,6 +40,8 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Shaders/HLSL/BLANK.hlsl" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Shaders/Empty Outline Base.shader" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Shaders/Invisible.shader" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexHighlighter.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexMaker.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Character Specific/UpdateWindowShader.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Requirement.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Perk.cs" />
@@ -63,16 +58,14 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Armor.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Perk.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Trait.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/WorldClock.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/GlobalVariables.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Location.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Map.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/CombatManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexHighlighter.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexMaker.cs" />
       </list>
     </option>
   </component>
@@ -129,7 +122,7 @@
       <workItem from="1616554745451" duration="27474000" />
       <workItem from="1616810235232" duration="46036000" />
       <workItem from="1617033194327" duration="32751000" />
-      <workItem from="1617374702983" duration="7521000" />
+      <workItem from="1617374702983" duration="15557000" />
     </task>
     <servers />
   </component>
@@ -277,19 +270,6 @@
           <line>666</line>
           <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\HexMaker\HexMaker.cs" initialLine="662" />
           <option name="timeStamp" value="125" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs</url>
-          <line>148</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Player.cs" initialLine="148">
-            <startOffsets>
-              <option value="3664" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3665" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="126" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

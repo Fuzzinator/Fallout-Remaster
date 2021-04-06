@@ -11,6 +11,7 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected string _name;
+    public string Name => _name;
     
     [SerializeField]
     protected int _currentHealth; //cave rats have 6hp
@@ -72,7 +73,7 @@ public class Creature : MonoBehaviour, IOccupier
     protected virtual int ArmorClass => _special.Agility + ACMod();
     protected virtual int MeleeDamage => _special.Strength > 5 ? _special.Strength - 5 : 1;
     protected virtual int RadResistance => _special.Endurance * 2;
-    protected virtual int Sequence => _special.Perception * 2;
+    public virtual int Sequence => _special.Perception * 2;
 
     #endregion
 
@@ -210,6 +211,11 @@ public class Creature : MonoBehaviour, IOccupier
     }
 
     #region Combat
+
+    public virtual void StartTurn()
+    {
+        
+    }
 
     protected virtual int RandomHit()
     {
