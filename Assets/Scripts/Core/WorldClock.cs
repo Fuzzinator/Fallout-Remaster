@@ -89,7 +89,7 @@ public class WorldClock : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(RunClock());
+        //StartCoroutine(RunClock());
     }
 
     private IEnumerator RunClock()

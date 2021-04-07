@@ -892,6 +892,7 @@
           </e>
           <e p="Core" t="Include">
             <e p="CombatManager.cs" t="Include" />
+            <e p="FalloutSceneManager.cs" t="Include" />
             <e p="GameManager.cs" t="Include" />
             <e p="GlobalVariables.cs" t="Include" />
             <e p="InputManager.cs" t="Include" />

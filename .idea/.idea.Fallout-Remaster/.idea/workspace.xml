@@ -22,6 +22,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexCellPriorityQueue.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Map.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/FalloutSceneManager.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -58,7 +59,6 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Armor.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Perk.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Trait.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Core/WorldClock.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/GlobalVariables.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Location.cs" />
@@ -66,6 +66,9 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/CombatManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/WorldClock.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/SceneManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/FalloutSceneManager.cs" />
       </list>
     </option>
   </component>
@@ -122,7 +125,7 @@
       <workItem from="1616554745451" duration="27474000" />
       <workItem from="1616810235232" duration="46036000" />
       <workItem from="1617033194327" duration="32751000" />
-      <workItem from="1617374702983" duration="15557000" />
+      <workItem from="1617374702983" duration="19701000" />
     </task>
     <servers />
   </component>
