@@ -12,15 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ba8923b353fb8a48bb604996798ffd8, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  _baseStrength: 0
+  _baseStrength: 5
   _strMod: 0
-  _basePerception: 0
+  _basePerception: 5
   _perMod: 0
-  _baseEndurance: 0
+  _baseEndurance: 5
   _endMod: 0
-  _baseCharisma: 0
+  _baseCharisma: 5
   _chaMod: 0
-  _baseIntelligence: 0
+  _baseIntelligence: 5
   _intMod: 0
-  _baseLuck: 0
+  _baseAgility: 5
+  _agiMod: 0
+  _baseLuck: 5
   _lucMod: 0
+  unspentPoints: 10

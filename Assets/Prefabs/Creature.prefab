@@ -136,6 +136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8579911623099481102}
   - component: {fileID: 8579911623099481103}
+  - component: {fileID: 5375600392172712499}
   m_Layer: 0
   m_Name: Creature
   m_TagString: Untagged
@@ -184,3 +185,15 @@ MonoBehaviour:
   _xPValue: 0
   _hpIncrease: 0
   _baseHealth: 0
+--- !u!114 &5375600392172712499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8579911623099481100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3903280c2faef9b4fbd4f9e9058a24f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

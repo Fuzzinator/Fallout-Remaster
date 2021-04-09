@@ -11,13 +11,13 @@ public class HexHighlighter : MonoBehaviour
 
     public static HexHighlighter Instance { get; private set; }
 
-    [SerializeField] 
+    [SerializeField]
     private MeshFilter _meshFilter;
 
-    [SerializeField, HideInInspector] 
+    [SerializeField, HideInInspector]
     private HexMaker _hexMaker;
 
-    [SerializeField] 
+    [SerializeField]
     private TextMeshProUGUI _textField;
 
     private int _currentHoveredIndex = -1;
@@ -31,7 +31,7 @@ public class HexHighlighter : MonoBehaviour
     private bool _enabled = true;
 
     public Coordinates HoveredCoord { get; private set; }
-    
+
     private Coordinates _sourceCoord;
 
     private const string X = "x";
@@ -81,18 +81,25 @@ public class HexHighlighter : MonoBehaviour
             {
                 return;
             }
+
             if (coord == null || !_enabled)
             {
                 _textField.SetText(X);
             }
             else
             {
-                _textField.SetText(coord.distance <= 0 ? X : $"{coord.distance}");
+                var maxDistance = int.MaxValue;
+                if (CombatManager.Instance.CombatMode)
+                {
+                    maxDistance = Player.Instance.MaxMovement;
+                }
+
+                _textField.SetText(coord.distance <= 0 || coord.distance >= maxDistance ? X : $"{coord.distance}");
             }
         };
 
         CombatManager.stateChanged += CombatStateChanged;
-        
+
         _mouseMovedLastFrame = false;
     }
 
@@ -107,6 +114,7 @@ public class HexHighlighter : MonoBehaviour
         {
             Instance._enabled = true;
         }
+
         Instance.showHighlighter = true;
     }
 
@@ -117,6 +125,7 @@ public class HexHighlighter : MonoBehaviour
             Instance._enabled = false;
             Instance.ClearText();
         }
+
         Instance.showHighlighter = false;
     }
 
@@ -124,7 +133,7 @@ public class HexHighlighter : MonoBehaviour
     {
         _textField.SetText(string.Empty);
     }
-    
+
     private void LookHandler(InputAction.CallbackContext obj)
     {
         var newCoord = _hexMaker.TryGetCoordinates();
@@ -169,13 +178,8 @@ public class HexHighlighter : MonoBehaviour
                 return;
             }
 
-            var maxDistance = int.MaxValue;
-            if (CombatManager.Instance.CombatMode)
-            {
-                maxDistance = Player.Instance.MaxMovement;
-            }
-            _hexMaker.GetDistanceToCoord(sourceCoord, targetCoord, player.GettingPath, player.TargetPath,
-                _showDistance, maxDistance);
+            _hexMaker.GetDistanceToCoord(sourceCoord, targetCoord, player.TargetPath,
+                _showDistance);
         }
         else
         {

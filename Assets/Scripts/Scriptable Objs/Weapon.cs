@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(order = 10, fileName = "New Weapon", menuName = "ScriptObjs/Weapon")]
-public class Weapon : ScriptableObject
+public class Weapon : Item
 {
     [SerializeField]
     private string _weaponName;
@@ -30,14 +30,6 @@ public class Weapon : ScriptableObject
     [SerializeField]
     private int _ammoCost;
     public int AmmoCost => _ammoCost;
-
-    [SerializeField]
-    private int _value;
-    public int Value => _value;
-
-    [SerializeField]
-    private int _weight;
-    public int Weight => _weight;
 
     [SerializeField]
     private int _strRequired;

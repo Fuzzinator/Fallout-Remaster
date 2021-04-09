@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ba8923b353fb8a48bb604996798ffd8, type: 3}
   m_Name: Cave Rat
   m_EditorClassIdentifier: 
-  _baseStrength: 0
+  _baseStrength: 7
   _strMod: 0
-  _basePerception: 0
+  _basePerception: 6
   _perMod: 0
-  _baseEndurance: 0
+  _baseEndurance: 1
   _endMod: 0
   _baseCharisma: 0
   _chaMod: 0
   _baseIntelligence: 0
   _intMod: 0
-  _baseAgility: 0
+  _baseAgility: 4
   _agiMod: 0
-  _baseLuck: 0
+  _baseLuck: 1
   _lucMod: 0
   unspentPoints: 0

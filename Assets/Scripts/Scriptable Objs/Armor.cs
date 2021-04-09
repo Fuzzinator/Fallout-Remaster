@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(order = 11, fileName = "New Armor", menuName = "ScriptObjs/Armor")]
-public class Armor : ScriptableObject
+public class Armor : Item
 {
     [Header("Main Values")]
     [SerializeField]
@@ -18,9 +18,6 @@ public class Armor : ScriptableObject
     private int _armorClass;
     public int ArmorClass => _armorClass;
 
-    [SerializeField]
-    private int _weight;
-    public int Weight => _weight;
 
     [SerializeField]
     private Type _armorType = Type.None;
@@ -33,10 +30,6 @@ public class Armor : ScriptableObject
     [SerializeField]
     private int _strMod;
     public int StrMod => _strMod;
-
-    [SerializeField]
-    private int _value;
-    public int Value => _value;
 
     [Header("Damage Resistance")]
     [SerializeField]

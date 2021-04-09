@@ -30,6 +30,9 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected Armor _equipedArmor;
+
+    [SerializeField]
+    protected BasicAI _ai;
     
     [SerializeField]
     protected int _currentLocation;
@@ -49,7 +52,6 @@ public class Creature : MonoBehaviour, IOccupier
     protected Coroutine _isMoving;
 
     public readonly List<Coordinates> TargetPath = new List<Coordinates>();
-    public readonly Coroutine GettingPath = null;
 
     [SerializeField]
     protected int _xPValue = 0;
@@ -59,6 +61,7 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected int _baseHealth = 0;
+    
     
     protected int _apToAC = 0;
     
@@ -70,6 +73,7 @@ public class Creature : MonoBehaviour, IOccupier
     
     #region Properties
 
+    public bool Alive => _currentHealth > 0;
     public int CurrentLocation => _currentLocation;
     protected bool HasValidPath => TargetPath != null && TargetPath.Count > 0;
     
