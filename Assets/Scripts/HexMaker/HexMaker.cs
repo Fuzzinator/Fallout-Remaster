@@ -589,8 +589,7 @@ public class HexMaker : MonoBehaviour
                 }
 
                 var neighborCoord = _coords[neighbor.index];
-                if (neighborCoord == null || neighborCoord.occupied || !neighborCoord.walkable ||
-                    neighborCoord.distance>-1)
+                if (neighborCoord == null || !neighborCoord.IsWalkable || neighborCoord.distance>-1)
                 {
                     continue;
                 }
@@ -612,7 +611,7 @@ public class HexMaker : MonoBehaviour
                     _searchFrontier.Change(neighborCoord, oldPriority);
                 }*/
 
-                if (distance > maxDistance)
+                if (distance >= maxDistance)
                 {
                     _searchFrontier.Clear();
                     toDo?.Invoke(null);
@@ -712,6 +711,8 @@ public class Coordinates
 
     [Lockable]
     public HexCell coords;
+
+    public bool IsWalkable => !occupied && walkable;
 
     public bool occupied = false;
 

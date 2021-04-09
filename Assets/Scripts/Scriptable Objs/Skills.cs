@@ -10,7 +10,7 @@ public class Skills : ScriptableObject
 
     [SerializeField]
     private List<Skill> _skills = new List<Skill>();
-
+    public List<Skill> CurrentSkills => _skills;
 
     public Type tag1;
     public Type tag2;

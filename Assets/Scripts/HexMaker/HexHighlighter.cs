@@ -11,11 +11,14 @@ public class HexHighlighter : MonoBehaviour
 
     public static HexHighlighter Instance { get; private set; }
 
-    [SerializeField] private MeshFilter _meshFilter;
+    [SerializeField] 
+    private MeshFilter _meshFilter;
 
-    [SerializeField, HideInInspector] private HexMaker _hexMaker;
+    [SerializeField, HideInInspector] 
+    private HexMaker _hexMaker;
 
-    [SerializeField] private TextMeshProUGUI _textField;
+    [SerializeField] 
+    private TextMeshProUGUI _textField;
 
     private int _currentHoveredIndex = -1;
 
@@ -23,6 +26,9 @@ public class HexHighlighter : MonoBehaviour
 
     private Vector2 _lastMousePos;
     private bool _mouseMovedLastFrame = false;
+
+    [SerializeField]
+    private bool _enabled = true;
 
     public Coordinates HoveredCoord { get; private set; }
     
@@ -71,7 +77,11 @@ public class HexHighlighter : MonoBehaviour
 
         _showDistance = (coord) =>
         {
-            if (coord == null)
+            if (!CombatManager.Instance.CombatMode)
+            {
+                return;
+            }
+            if (coord == null || !_enabled)
             {
                 _textField.SetText(X);
             }
@@ -81,6 +91,8 @@ public class HexHighlighter : MonoBehaviour
             }
         };
 
+        CombatManager.stateChanged += CombatStateChanged;
+        
         _mouseMovedLastFrame = false;
     }
 
@@ -89,6 +101,30 @@ public class HexHighlighter : MonoBehaviour
         GameManager.InputManager.Player.Look.performed -= LookHandler;
     }
 
+    public static void Enable()
+    {
+        if (Instance != null)
+        {
+            Instance._enabled = true;
+        }
+        Instance.showHighlighter = true;
+    }
+
+    public static void Disable()
+    {
+        if (Instance != null)
+        {
+            Instance._enabled = false;
+            Instance.ClearText();
+        }
+        Instance.showHighlighter = false;
+    }
+
+    private void ClearText()
+    {
+        _textField.SetText(string.Empty);
+    }
+    
     private void LookHandler(InputAction.CallbackContext obj)
     {
         var newCoord = _hexMaker.TryGetCoordinates();
@@ -116,7 +152,7 @@ public class HexHighlighter : MonoBehaviour
 
     public void UpdateDisplay(Coordinates sourceCoord, Coordinates targetCoord)
     {
-        if (targetCoord == null ||
+        if (targetCoord == null || !_enabled ||
             (_currentHoveredIndex == targetCoord.index && _sourceCoord.index == sourceCoord.index))
         {
             return;
@@ -124,7 +160,7 @@ public class HexHighlighter : MonoBehaviour
 
         _sourceCoord = sourceCoord;
         _currentHoveredIndex = targetCoord.index;
-        if (targetCoord.walkable)
+        if (targetCoord.IsWalkable)
         {
             _textField.SetText(string.Empty);
             var player = Player.Instance;
@@ -133,12 +169,30 @@ public class HexHighlighter : MonoBehaviour
                 return;
             }
 
+            var maxDistance = int.MaxValue;
+            if (CombatManager.Instance.CombatMode)
+            {
+                maxDistance = Player.Instance.MaxMovement;
+            }
             _hexMaker.GetDistanceToCoord(sourceCoord, targetCoord, player.GettingPath, player.TargetPath,
-                _showDistance);
+                _showDistance, maxDistance);
         }
         else
         {
             _textField.SetText(X);
+        }
+    }
+
+    private void CombatStateChanged(bool combatStarted)
+    {
+        if (combatStarted)
+        {
+            Disable();
+        }
+        else
+        {
+            Enable();
+            ClearText();
         }
     }
 }

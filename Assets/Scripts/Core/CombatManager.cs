@@ -11,7 +11,11 @@ public class CombatManager : MonoBehaviour
     public bool CombatMode
     {
         get => _combatMode;
-        set { _combatMode = value; }
+        set
+        {
+            _combatMode = value;
+            stateChanged?.Invoke(value);
+        }
     }
 
     private List<Creature> _turnOrder = new List<Creature>();
@@ -50,7 +54,7 @@ public class CombatManager : MonoBehaviour
     {
         Instance._turnOrder.Clear();
         Instance._currentCreature = null;
-        stateChanged?.Invoke(true);
+        Instance.CombatMode = true;
         StartSurpriseRound(instigator);
     }
 
@@ -142,11 +146,12 @@ public class CombatManager : MonoBehaviour
         Instance._currentCreature = instigator;
         AddToCombat(instigator);
         Instance._surpriseRound = true;
+        Instance._currentCreature.StartTurn();
     }
 
     private static void EndCombat()
     {
-        stateChanged(false);
+        Instance.CombatMode = false;
 
         Instance._turnOrder.Clear();
         Instance._currentCreature = null;

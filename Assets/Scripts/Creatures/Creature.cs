@@ -50,10 +50,16 @@ public class Creature : MonoBehaviour, IOccupier
 
     public readonly List<Coordinates> TargetPath = new List<Coordinates>();
     public readonly Coroutine GettingPath = null;
+
+    [SerializeField]
+    protected int _xPValue = 0;
     
     [SerializeField, Lockable(rememberSelection:false)]
     protected int _hpIncrease = 0;
 
+    [SerializeField]
+    protected int _baseHealth = 0;
+    
     protected int _apToAC = 0;
     
     #region Lists
@@ -64,21 +70,24 @@ public class Creature : MonoBehaviour, IOccupier
     
     #region Properties
 
-    protected float MoveSpeed => _baseMoveSpeed * _speedModifier;
     public int CurrentLocation => _currentLocation;
     protected bool HasValidPath => TargetPath != null && TargetPath.Count > 0;
-    protected int BaseHealth => BASEHEALTH + _special.Strength + (2 * _special.Endurance);
-    protected int MaxHealth => BaseHealth + _hpIncrease;
-    protected virtual int MaxActionPoints => Mathf.FloorToInt(_special.Agility * .5f) + 5;
-    protected virtual int ArmorClass => _special.Agility + ACMod();
-    protected virtual int MeleeDamage => _special.Strength > 5 ? _special.Strength - 5 : 1;
-    protected virtual int RadResistance => _special.Endurance * 2;
+    
+    public float MoveSpeed => _baseMoveSpeed * _speedModifier;
+    protected int BaseHealth => _baseHealth + _special.Strength + (2 * _special.Endurance);
+    public int MaxHealth => BaseHealth + _hpIncrease;
+    public virtual int MaxActionPoints => Mathf.FloorToInt(_special.Agility * .5f) + 3;
+    public virtual int ArmorClass => _special.Agility + ACMod();
+    public virtual int MeleeDamage => _special.Strength > 5 ? _special.Strength - 5 : 1;
+    public virtual int RadResistance => _special.Endurance * 2;
     public virtual int Sequence => _special.Perception * 2;
+    public virtual int HealingRate => Mathf.CeilToInt(_special.Endurance * .3f);
+
+    public virtual int CriticalChance => _special.Luck;
 
     #endregion
 
     #region Constants
-    private const int BASEHEALTH = 15;
     
 
     #endregion
@@ -152,8 +161,8 @@ public class Creature : MonoBehaviour, IOccupier
             _hexMaker = HexMaker.Instance;
         }
 
-        var pathToTake = Player.Instance.TargetPath.ToArray();
-        Player.Instance.TargetPath.Clear();
+        var pathToTake = TargetPath.ToArray();
+        TargetPath.Clear();
         var count = pathToTake.Length;
         for (var i = 0; i < count; i++)
         {
@@ -163,6 +172,15 @@ public class Creature : MonoBehaviour, IOccupier
                 continue;
             }
 
+            if (CombatManager.Instance.CombatMode)
+            {
+                var willMove = TryDecrementAP(1, ActionType.Move);
+                if (!willMove)
+                {
+                    break;
+                }
+            }
+            
             var t = transform;
 
             var currentPos = t.position;
@@ -197,6 +215,18 @@ public class Creature : MonoBehaviour, IOccupier
         }
     }
 
+    protected virtual bool TryDecrementAP(int cost, ActionType type)
+    {
+        if (cost > _currentAP)
+        {
+            return false;
+        }
+
+        _currentAP -= cost;
+        
+        return true;
+    }
+
     protected Quaternion GetTargetRotation(Coordinates currentCoord, Coordinates targetCoord, out HexDir targetDir)
     {
         var targetRotation = Quaternion.LookRotation(transform.position - targetCoord.pos);
@@ -210,11 +240,37 @@ public class Creature : MonoBehaviour, IOccupier
         return targetRotation;
     }
 
+    public virtual void SetHP(int value)//Temporary probably
+    {
+        _currentHealth = value;
+    }
+
     #region Combat
+
+    public virtual void InitiateCombat()
+    {
+        CombatManager.startTurn += TryStartTurn;
+        CombatManager.StartCombat(this);
+    }
+
+    protected void TryStartTurn(Creature creature)
+    {
+        if (creature == this)
+        {
+            StartTurn();
+        }
+    }
 
     public virtual void StartTurn()
     {
-        
+        _currentAP = MaxActionPoints;
+        _apToAC = 0;
+    }
+
+    public virtual void EndTurn()
+    {
+        _apToAC = _currentAP;
+        CombatManager.ProgressCombat();
     }
 
     protected virtual int RandomHit()
@@ -230,13 +286,12 @@ public class Creature : MonoBehaviour, IOccupier
         
         return chanceToHit;
     }
-    protected virtual int CriticalChance(int chanceToHit)
+    protected virtual int GetCriticalChance(int chanceToHit)
     {
-        var critChance = _special.Luck*1;//just matching original math used
+        var critChance = CriticalChance;//just matching original math used
         critChance += Mathf.FloorToInt(chanceToHit * .1f);
         return critChance;
     }
-
     protected virtual int ACMod()
     {
         var ac = 0;
@@ -282,6 +337,15 @@ public class Creature : MonoBehaviour, IOccupier
         Male,
         Female,
         NonBinary//This is not in the original
+    }
+
+    public enum ActionType
+    {
+        None = 0,
+        ObjectInteraction,
+        Attack,
+        Move,
+        
     }
     #endregion
 }

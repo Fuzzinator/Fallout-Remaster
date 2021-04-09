@@ -67,5 +67,7 @@ public enum ModType
     PoisonResist = 19,
     
     WeaponSpec = 20,
-    ArmorSpec = 21
+    ArmorSpec = 21,
+    
+    Movement = 30
 }

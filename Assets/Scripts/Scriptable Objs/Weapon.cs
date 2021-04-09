@@ -10,8 +10,38 @@ public class Weapon : ScriptableObject
     public string WeaponName => _weaponName;
 
     [SerializeField]
+    private AttackMode _attackMode;
+    public AttackMode AttackType => _attackMode;
+
+    [SerializeField]
+    private int _minDamage;
+    [SerializeField]
+    private int _maxDamage;
+    public int WeaponDamage => GetDamage();
+
+    [SerializeField]
+    private int _actionPointCost;
+    public int ActionPointCost => _actionPointCost;
+
+    [SerializeField]
     private int _range = 1;
     public int Range => _range;
+
+    [SerializeField]
+    private int _ammoCost;
+    public int AmmoCost => _ammoCost;
+
+    [SerializeField]
+    private int _value;
+    public int Value => _value;
+
+    [SerializeField]
+    private int _weight;
+    public int Weight => _weight;
+
+    [SerializeField]
+    private int _strRequired;
+    public int StrRequired => _strRequired;
 
     [SerializeField]
     private Skills.Type _associatedSkill;
@@ -24,6 +54,13 @@ public class Weapon : ScriptableObject
     [SerializeField]
     private DamageType _dmgType;
     public DamageType DmgType => _dmgType;
+
+    private int GetDamage()
+    {
+        return Random.Range(_minDamage, _maxDamage);
+    }
+    
+    
     public enum Type
     {
         None = 0,
@@ -31,6 +68,18 @@ public class Weapon : ScriptableObject
         CloseRange = 2,
         MidRange = 3,
         LongRange = 4
+    }
+
+    public enum AttackMode
+    {
+        SingleShot,
+        AimedShot,
+        BurstFire,
+        Thrown,
+        Swing,
+        Thrust,
+        Punch,
+        Placed
     }
 
 }

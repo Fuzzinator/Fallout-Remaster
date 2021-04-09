@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\fuzzi\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\fuzzi\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_Fallout-Remaster.1612938327.00" t="ExcludeRecursive" />
-    <e p="C:\Users\fuzzi\Documents\Fallout-Remaster" t="IncludeRecursive">
+    <e p="C:\Users\Owner\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Owner\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_Fallout-Remaster.-1809804433.00" t="ExcludeRecursive" />
+    <e p="E:\Fallout-Remaster" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
@@ -903,6 +903,10 @@
             <e p="Creature.cs" t="Include" />
             <e p="Human.cs" t="Include" />
             <e p="Player.cs" t="Include" />
+          </e>
+          <e p="Editor" t="Include">
+            <e p="CombatManagerCustomEditor.cs" t="Include" />
+            <e p="CreatureCustomEditor.cs" t="Include" />
           </e>
           <e p="HexMaker" t="Include">
             <e p="HexCellPriorityQueue.cs" t="Include" />

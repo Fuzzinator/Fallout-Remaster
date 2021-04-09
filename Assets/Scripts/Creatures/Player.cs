@@ -15,42 +15,50 @@ public class Player : Human
 
     [SerializeField]
     private int _unspentSkillPnts = 0;
-    
+
     [SerializeField]
     private Trait _trait1;
+
     [SerializeField]
     private Trait _trait2;
-    
+
     [SerializeField]
     private List<Perk> _activePerks = new List<Perk>();
 
     [SerializeField]
     private UpdateWindowShader _shaderUpdater;
 
-    protected override int ArmorClass => ACMod();
+    //private int _criticalChance;
+    private int _bonusMovement = 0;
 
-    protected override  int MaxActionPoints => Mathf.FloorToInt(_special.Agility * .5f) + APMods();
+    #region Properties
+
+    public override int ArmorClass => ACMod();
+
+    public override int MaxActionPoints => Mathf.FloorToInt(_special.Agility * .5f) + 5 + APMods();
 
     protected override int CarryWeight => 25 + CarryWeightMod();
 
     private int BaseHPIncrease => Mathf.FloorToInt(_special.Endurance * .5f) + 2 + HPIncMod();
-    protected override int HealingRate => Mathf.CeilToInt(_special.Endurance * .3f) + HRModifiers();
+    public override int HealingRate => Mathf.CeilToInt(_special.Endurance * .3f) + HRModifiers();
 
-    protected override int MeleeDamage
+    public override int MeleeDamage
     {
         get
         {
             var damage = _special.Strength - 5;
 
             damage += MeleeDamageMod();
-            
+
             if (damage < 1)
             {
                 damage = 1;
             }
+
             return damage;
         }
     }
+
     private int PerkRate
     {
         get
@@ -71,10 +79,16 @@ public class Player : Human
     }
 
     protected override int PoisonResist => PoisonResistMod();
-    protected override int RadResistance => RadResistMod();
+    public override int RadResistance => RadResistMod();
 
     private int SkillRate => (_special.Intelligence * 2) + 5 + SkillRateMod();
-    public override int Sequence => (_special.Perception*2)+SequenceMod();
+    public override int Sequence => (_special.Perception * 2) + SequenceMod();
+
+    public override int CriticalChance => base.CriticalChance + CritMod();
+
+    public int MaxMovement => _currentAP + _bonusMovement;
+
+    #endregion
 
     #endregion
 
@@ -125,7 +139,7 @@ public class Player : Human
 #endif
 
     #endregion
-    
+
     #region General Stats
 
     public int GetSpecial(SPECIAL.Type type)
@@ -134,7 +148,7 @@ public class Player : Human
 
         special += GetTraitSpecialMods(_trait1, type);
         special += GetTraitSpecialMods(_trait2, type);
-        
+
         return special;
     }
 
@@ -144,7 +158,7 @@ public class Player : Human
 
         skill += GetTraitSkillMods(_trait1, type);
         skill += GetTraitSkillMods(_trait2, type);
-        
+
         return skill;
     }
 
@@ -157,10 +171,11 @@ public class Player : Human
                 special += trait.BenefitAmount;
                 break;
             case Trait.Type.Bruiser:
-                if(type == SPECIAL.Type.Strength)
+                if (type == SPECIAL.Type.Strength)
                 {
                     special += trait.BenefitAmount;
                 }
+
                 break;
             case Trait.Type.NightPerson:
                 if (type == SPECIAL.Type.Intelligence || type == SPECIAL.Type.Perception)
@@ -174,12 +189,14 @@ public class Player : Human
                         special += trait.PenaltyAmount;
                     }
                 }
+
                 break;
             case Trait.Type.SmallFrame:
                 if (type == SPECIAL.Type.Agility)
                 {
                     special += trait.BenefitAmount;
                 }
+
                 break;
             default:
                 break;
@@ -203,11 +220,14 @@ public class Player : Human
                 {
                     skill += trait.BenefitAmount;
                 }
-                else if (type == Skills.Type.SmallGuns || type == Skills.Type.BigGuns || type == Skills.Type.EnergyWeapons ||
-                    type == Skills.Type.Throwing || type == Skills.Type.MeleeWeapons || type == Skills.Type.Unarmed)
+                else if (type == Skills.Type.SmallGuns || type == Skills.Type.BigGuns ||
+                         type == Skills.Type.EnergyWeapons ||
+                         type == Skills.Type.Throwing || type == Skills.Type.MeleeWeapons ||
+                         type == Skills.Type.Unarmed)
                 {
                     skill += trait.PenaltyAmount;
                 }
+
                 break;
             case Trait.Type.Skilled:
                 skill += trait.BenefitAmount;
@@ -220,6 +240,7 @@ public class Player : Human
     #endregion
 
     #region Movement
+
     private void PrimaryClickHandler(InputAction.CallbackContext obj)
     {
         if (_hexMaker == null)
@@ -231,21 +252,21 @@ public class Player : Human
         {
             return;
         }
-        
+
         var highlighter = HexHighlighter.Instance;
 
         if (highlighter == null || highlighter.HoveredCoord == null)
         {
             return;
         }
-        
+
         var coords = highlighter.HoveredCoord;
 
         if (coords == null || !coords.walkable || coords.occupied || coords.distance < 0)
         {
             return;
         }
-        
+
         if (_isMoving != null)
         {
             StopCoroutine(_isMoving);
@@ -253,17 +274,16 @@ public class Player : Human
 
         _isMoving = StartCoroutine(MoveCreature());
     }
+
     protected override IEnumerator MoveCreature()
     {
         yield return null;
 
-        if (_hexMaker == null)
-        {
-            _hexMaker = HexMaker.Instance;
-        }
+        _hexMaker = HexMaker.Instance;
 
-        var pathToTake = Player.Instance.TargetPath.ToArray();
-        Player.Instance.TargetPath.Clear();
+        var pathToTake = TargetPath.ToArray();
+        TargetPath.Clear();
+
         var count = pathToTake.Length;
         for (var i = 0; i < count; i++)
         {
@@ -271,6 +291,15 @@ public class Player : Human
             if (coord.index == _currentLocation)
             {
                 continue;
+            }
+
+            if (CombatManager.Instance.CombatMode)
+            {
+                var willMove = TryDecrementAP(1, ActionType.Move);
+                if (!willMove)
+                {
+                    break;
+                }
             }
 
             var t = transform;
@@ -307,6 +336,7 @@ public class Player : Human
             _facingDir = targetDir;
         }
     }
+
     public override void EnterCoordinate(Coordinates coord)
     {
         base.EnterCoordinate(coord);
@@ -316,13 +346,64 @@ public class Player : Human
             hexHighlighter.UpdateDisplay(coord, hexHighlighter.HoveredCoord);
         }
     }
+
     #endregion
-    
+
     #region Combat
 
-    protected override int CriticalChance(int chanceToHit)
+    public override void StartTurn()
     {
-        var critChance = base.CriticalChance(chanceToHit);
+        _currentAP = MaxActionPoints;
+        _apToAC = 0;
+        _bonusMovement = GetBonusMovement();
+        HexHighlighter.Enable();
+    }
+
+    public override void EndTurn()
+    {
+        HexHighlighter.Disable();
+        base.EndTurn();
+    }
+
+    protected override bool TryDecrementAP(int cost, ActionType type)
+    {
+        var additional = 0;
+        switch (type)
+        {
+            case ActionType.Move:
+                additional = _bonusMovement;
+                break;
+        }
+
+        if (cost > _currentAP + additional)
+        {
+            return false;
+        }
+
+        switch (type)
+        {
+            case ActionType.Move:
+                if (cost > _bonusMovement)
+                {
+                    cost -= _bonusMovement;
+                    _bonusMovement = 0;
+                    break;
+                }
+                else
+                {
+                    _bonusMovement -= cost;
+                    return true;
+                }
+        }
+
+        _currentAP -= cost;
+
+        return true;
+    }
+
+    protected override int GetCriticalChance(int chanceToHit)
+    {
+        var critChance = base.GetCriticalChance(chanceToHit);
 
         foreach (var perk in _activePerks)
         {
@@ -344,7 +425,7 @@ public class Player : Human
         {
             critChance += _trait2.BenefitAmount;
         }
-        
+
         return critChance;
     }
 
@@ -359,13 +440,28 @@ public class Player : Human
                 resistance += perk.EffectAmount;
             }
         }
-        
+
         return resistance;
     }
 
+    private int GetBonusMovement()
+    {
+        var move = 0;
+        foreach (var perk in _activePerks)
+        {
+            if (perk.ModType == ModType.Movement)
+            {
+                move += perk.EffectAmount;
+            }
+        }
+
+        return move;
+    }
+
     #endregion
-    
+
     #region modifiers
+
     private int HPIncMod()
     {
         var hpInc = 0;
@@ -376,8 +472,10 @@ public class Player : Human
                 hpInc += perk.EffectAmount;
             }
         }
+
         return hpInc;
     }
+
     private int HRModifiers()
     {
         var healRateMod = 0;
@@ -388,16 +486,20 @@ public class Player : Human
                 healRateMod += perk.EffectAmount;
             }
         }
-        if (_trait1.TraitType == Trait.Type.FastMetabolism && _trait1.Benefit == ModType.HPRecover)
+
+        if (_trait1 != null && _trait1.TraitType == Trait.Type.FastMetabolism && _trait1.Benefit == ModType.HPRecover)
         {
             healRateMod += _trait1.BenefitAmount;
         }
-        else if (_trait2.TraitType == Trait.Type.FastMetabolism && _trait2.Benefit == ModType.HPRecover)
+        else if (_trait2 != null && _trait2.TraitType == Trait.Type.FastMetabolism &&
+                 _trait2.Benefit == ModType.HPRecover)
         {
             healRateMod += _trait2.BenefitAmount;
         }
+
         return healRateMod;
     }
+
     private int SkillRateMod()
     {
         var skillInc = 0;
@@ -409,21 +511,22 @@ public class Player : Human
             }
         }
 
-        if (_trait1.TraitType == Trait.Type.Gifted && _trait1.Penalty == ModType.SkillLvlInc)
+        if (_trait1 != null && _trait1.TraitType == Trait.Type.Gifted && _trait1.Penalty == ModType.SkillLvlInc)
         {
             skillInc += _trait1.PenaltyAmount;
         }
-        else if (_trait2.TraitType == Trait.Type.Gifted && _trait2.Penalty == ModType.SkillLvlInc)
+        else if (_trait2 != null && _trait2.TraitType == Trait.Type.Gifted && _trait2.Penalty == ModType.SkillLvlInc)
         {
             skillInc += _trait2.PenaltyAmount;
         }
-        
+
         return skillInc;
     }
+
     private int SequenceMod()
     {
         var sequence = 0;
-        
+
         foreach (var perk in _activePerks)
         {
             if (perk.ModType == ModType.Sequence)
@@ -431,18 +534,20 @@ public class Player : Human
                 sequence += perk.EffectAmount;
             }
         }
-        
-        if (_trait1.TraitType == Trait.Type.Kamikaze && _trait1.Benefit == ModType.Sequence)
+
+        if (_trait1 != null && _trait1.TraitType == Trait.Type.Kamikaze && _trait1.Benefit == ModType.Sequence)
         {
             sequence += _trait1.BenefitAmount;
         }
-        if (_trait2.TraitType == Trait.Type.Kamikaze && _trait2.Benefit == ModType.Sequence)
+
+        if (_trait2 != null && _trait2.TraitType == Trait.Type.Kamikaze && _trait2.Benefit == ModType.Sequence)
         {
             sequence += _trait2.BenefitAmount;
         }
 
         return sequence;
     }
+
     private int APMods()
     {
         var actionPoints = 0;
@@ -453,12 +558,14 @@ public class Player : Human
                 actionPoints += perk.EffectAmount;
             }
         }
+
         return actionPoints;
     }
+
     private int MeleeDamageMod()
     {
         var meleeDamage = 0;
-        
+
         foreach (var perk in _activePerks)
         {
             if (perk.ModType == ModType.MeleeDamage)
@@ -466,18 +573,20 @@ public class Player : Human
                 meleeDamage += perk.EffectAmount;
             }
         }
-        
-        if (_trait1.TraitType == Trait.Type.HeavyHanded && _trait1.Benefit == ModType.MeleeDamage)
+
+        if (_trait1 != null && _trait1.TraitType == Trait.Type.HeavyHanded && _trait1.Benefit == ModType.MeleeDamage)
         {
             meleeDamage += _trait1.BenefitAmount;
         }
-        else if (_trait2.TraitType == Trait.Type.HeavyHanded && _trait2.Benefit == ModType.MeleeDamage)
+        else if (_trait2 != null && _trait2.TraitType == Trait.Type.HeavyHanded &&
+                 _trait2.Benefit == ModType.MeleeDamage)
         {
             meleeDamage += _trait2.BenefitAmount;
         }
 
         return meleeDamage;
     }
+
     private int PoisonResistMod()
     {
         var poisonResist = 0;
@@ -489,22 +598,25 @@ public class Player : Human
                 poisonResist += perk.EffectAmount;
             }
         }
-        
-        if (_trait1.TraitType != Trait.Type.FastMetabolism && _trait2.TraitType != Trait.Type.FastMetabolism)
+
+        if ((_trait1 == null || _trait1.TraitType != Trait.Type.FastMetabolism) &&
+            (_trait2 == null || _trait2.TraitType != Trait.Type.FastMetabolism))
         {
             poisonResist += _special.Endurance * 5;
         }
-        
+
         return poisonResist;
     }
+
     private int CarryWeightMod()
     {
         var carryWeight = _special.Strength;
-        if (_trait1.TraitType == Trait.Type.SmallFrame && _trait1.Penalty == ModType.CarryWeight)
+        if (_trait1 != null && _trait1.TraitType == Trait.Type.SmallFrame && _trait1.Penalty == ModType.CarryWeight)
         {
             carryWeight *= _trait1.PenaltyAmount;
         }
-        else if(_trait2.TraitType == Trait.Type.SmallFrame && _trait2.Penalty == ModType.CarryWeight)
+        else if (_trait2 != null && _trait2.TraitType == Trait.Type.SmallFrame &&
+                 _trait2.Penalty == ModType.CarryWeight)
         {
             carryWeight *= _trait2.PenaltyAmount;
         }
@@ -520,14 +632,41 @@ public class Player : Human
                 carryWeight += perk.EffectAmount;
             }
         }
-        
+
         return carryWeight;
     }
+
+    private int CritMod()
+    {
+        var critChance = 0;
+
+        if (_trait1 != null && _trait1.Benefit == ModType.CritChance)
+        {
+            critChance += _trait1.BenefitAmount;
+        }
+
+        if (_trait2 != null && _trait2.Benefit == ModType.CritChance)
+        {
+            critChance += _trait2.BenefitAmount;
+        }
+
+        foreach (var perk in _activePerks)
+        {
+            if (perk.ModType == ModType.CritChance)
+            {
+                critChance += perk.EffectAmount;
+            }
+        }
+
+        return critChance;
+    }
+
     protected override int RadResistMod()
     {
         var radResist = base.RadResistMod();
 
-        if (_trait1.TraitType != Trait.Type.FastMetabolism && _trait2.TraitType != Trait.Type.FastMetabolism)
+        if ((_trait1 == null || _trait1.TraitType != Trait.Type.FastMetabolism) &&
+            (_trait2 == null || _trait2.TraitType != Trait.Type.FastMetabolism))
         {
             radResist += _special.Endurance * 2;
         }
@@ -539,14 +678,16 @@ public class Player : Human
                 radResist += perk.EffectAmount;
             }
         }
-        
+
         return radResist;
     }
+
     protected override int ACMod()
     {
         var ac = base.ACMod();
 
-        if (_trait1.TraitType != Trait.Type.Kamikaze && _trait2.TraitType != Trait.Type.Kamikaze)
+        if ((_trait1 == null || _trait1.TraitType != Trait.Type.Kamikaze) &&
+            (_trait2 == null || _trait2.TraitType != Trait.Type.Kamikaze))
         {
             ac += _special.Agility;
         }
@@ -558,7 +699,7 @@ public class Player : Human
                 ac += perk.EffectAmount;
             }
         }
-        
+
         return ac;
     }
 
