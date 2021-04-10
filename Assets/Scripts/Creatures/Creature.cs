@@ -87,6 +87,7 @@ public class Creature : MonoBehaviour, IOccupier
     public virtual int Sequence => _special.Perception * 2;
     public virtual int HealingRate => Mathf.CeilToInt(_special.Endurance * .3f);
 
+    public virtual int MaxCanMoveDist => _currentAP;
     public virtual int CriticalChance => _special.Luck;
 
     #endregion
@@ -97,6 +98,12 @@ public class Creature : MonoBehaviour, IOccupier
     #endregion
 
     #endregion
+
+    private void Awake()
+    {
+        //I hate putting this in Awake (trying to reserve awake for singleton stuff) but this is the best I can think of right now.
+        _currentAP = MaxActionPoints;
+    }
 
     private void Start()
     {
@@ -113,6 +120,16 @@ public class Creature : MonoBehaviour, IOccupier
                 var targetRot = GetTargetRotation(coord, coords[neighbor.index], out _facingDir);
                 transform.rotation = targetRot;
             }
+        }
+
+        CombatManager.stateChanged += CombatStateChanged;
+    }
+    
+    private void CombatStateChanged(bool isCombat)
+    {
+        if (isCombat)
+        {
+            StopAllCoroutines();
         }
     }
 
@@ -144,7 +161,7 @@ public class Creature : MonoBehaviour, IOccupier
                 Debug.LogWarning("Creature is leaving unoccupied space. This shouldn't be happening.");
             }
 
-            if (currentCoord.occupyingObject as Player == this)
+            if (currentCoord.occupyingObject as Creature == this)
             {
                 currentCoord.occupied = false;
                 currentCoord.occupyingObject = null;
@@ -156,14 +173,18 @@ public class Creature : MonoBehaviour, IOccupier
         }
     }
 
+    public virtual IEnumerator AIMoveCreature()
+    {
+        yield return MoveCreature();
+    }
     protected virtual IEnumerator MoveCreature()
     {
         yield return null;
 
-        if (_hexMaker == null)
-        {
+        //if (_hexMaker == null)
+        //{
             _hexMaker = HexMaker.Instance;
-        }
+        //}
 
         var pathToTake = TargetPath.ToArray();
         TargetPath.Clear();
@@ -176,6 +197,11 @@ public class Creature : MonoBehaviour, IOccupier
                 continue;
             }
 
+            if (!coord.IsWalkable)
+            {
+                yield break;
+            }
+            
             if (CombatManager.Instance.CombatMode)
             {
                 var willMove = TryDecrementAP(1, ActionType.Move);
@@ -331,7 +357,7 @@ public class Creature : MonoBehaviour, IOccupier
         
         return threshold;
     }
-
+    
     #endregion
     
     #region Enums

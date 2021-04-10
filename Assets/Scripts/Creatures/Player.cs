@@ -293,6 +293,11 @@ public class Player : Human
                 continue;
             }
 
+            if (!coord.IsWalkable)
+            {
+                yield break;
+            }
+            
             if (CombatManager.Instance.CombatMode)
             {
                 var willMove = TryDecrementAP(1, ActionType.Move);

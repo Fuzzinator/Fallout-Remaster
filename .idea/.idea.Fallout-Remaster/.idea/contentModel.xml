@@ -916,6 +916,9 @@
             <e p="HexMaker.cs" t="Include" />
             <e p="IOccupier.cs" t="Include" />
           </e>
+          <e p="Location Stuff" t="Include">
+            <e p="MapExit.cs" t="Include" />
+          </e>
           <e p="Scriptable Objs" t="Include">
             <e p="Armor.cs" t="Include" />
             <e p="Item.cs" t="Include" />

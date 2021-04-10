@@ -7,6 +7,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5375600392172712499, guid: 8f3f9f15efbaee54aa80a68485185b27,
+        type: 3}
+      propertyPath: _aggression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5375600392172712499, guid: 8f3f9f15efbaee54aa80a68485185b27,
+        type: 3}
+      propertyPath: _currentState
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8579911623099481100, guid: 8f3f9f15efbaee54aa80a68485185b27,
         type: 3}
       propertyPath: m_Name
@@ -87,6 +97,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _hpIncrease
       value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579911623099481103, guid: 8f3f9f15efbaee54aa80a68485185b27,
+        type: 3}
+      propertyPath: _baseMoveSpeed
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 8579911623099481103, guid: 8f3f9f15efbaee54aa80a68485185b27,
         type: 3}

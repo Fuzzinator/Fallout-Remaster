@@ -31,7 +31,7 @@ public class HexMaker : MonoBehaviour
     [SerializeField]
     private float outerRadius = 10;
 
-    private float InnerRadius => outerRadius * 0.866025404f;
+    public float InnerRadius => outerRadius * 0.866025404f;
 
     [SerializeField]
     private bool _startTop = false;
@@ -463,7 +463,7 @@ public class HexMaker : MonoBehaviour
         triangles.Add(indexOf3);
     }
 
-    private Coordinates GetCoordinates(Vector3 pos)
+    public Coordinates GetCoordinates(Vector3 pos)
     {
         pos = transform.InverseTransformPoint(pos);
         if (_centerOrig)
@@ -524,25 +524,24 @@ public class HexMaker : MonoBehaviour
         }
     }
 
-    public void GetDistanceToCoord(Coordinates sourceCell, Coordinates targetCell, List<Coordinates> path,
-        Action<Coordinates> toDo, int maxDistance = Int32.MaxValue)
+    public int GetDistanceToCoord(Coordinates sourceCell, Coordinates targetCell, List<Coordinates> path,
+        Action<Coordinates> toDo = null, int maxDistance = Int32.MaxValue)
     {
         if (sourceCell == null || targetCell == null)
         {
             toDo?.Invoke(null);
-            return;
+            return -1;
         }
 
-        //coroutine = StartCoroutine(FindDistanceTo(sourceCell, targetCell, path, toDo));
-        FindDistanceTo(sourceCell, targetCell, path, toDo, maxDistance);
+        return FindDistanceTo(sourceCell, targetCell, path, toDo, maxDistance);
     }
 
     //A* search method
-    private void FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, List<Coordinates> path,
+    private int FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, List<Coordinates> path,
         Action<Coordinates> toDo,
         int maxDistance = Int32.MaxValue)
     {
-        path.Clear();
+        path?.Clear();
         //_searchFrontierPhase += 2;
         foreach (var coord in _coords)
         {
@@ -564,7 +563,7 @@ public class HexMaker : MonoBehaviour
         if (sourceCell == null)
         {
             toDo?.Invoke(null);
-            return;
+            return -1;
             //yield break;
         }
 
@@ -614,7 +613,7 @@ public class HexMaker : MonoBehaviour
                 {
                     _searchFrontier.Clear();
                     toDo?.Invoke(null);
-                    return;
+                    return -1;
                     //yield break;
                 }
 
@@ -622,26 +621,30 @@ public class HexMaker : MonoBehaviour
                 {
                     foundTarget = true;
 
-                    path.Add(neighborCoord);
-                    current = neighborCoord;
-                    var count1 = 0;
-                    while (current.PathFrom > -1 && current.PathFrom != sourceCell.index)
+                    if (path != null)
                     {
-                        if (count1 > 10000)
+                        path.Add(neighborCoord);
+                        current = neighborCoord;
+                        var count1 = 0;
+                        while (current.PathFrom > -1 && current.PathFrom != sourceCell.index)
                         {
-                            Debug.LogError("What the fuck");
-                            break;
+                            if (count1 > 10000)
+                            {
+                                Debug.LogError("What the fuck");
+                                break;
+                            }
+
+                            if (current.PathFrom > -1 && current.PathFrom < _coords.Count)
+                            {
+                                current = _coords[current.PathFrom];
+                                path.Add(current);
+                                count1++;
+                            }
                         }
 
-                        if (current.PathFrom > -1 && current.PathFrom < _coords.Count)
-                        {
-                            current = _coords[current.PathFrom];
-                            path.Add(current);
-                            count1++;
-                        }
+                        path.Reverse();
                     }
 
-                    path.Reverse();
                     break;
                 }
             }
@@ -662,7 +665,7 @@ public class HexMaker : MonoBehaviour
         if (targetCell.index < 0 || targetCell.index >= _coords.Count)
         {
             toDo?.Invoke(null);
-            return;
+            return -1;
             //yield break;
         }
 
@@ -671,6 +674,7 @@ public class HexMaker : MonoBehaviour
         //yield return null;
 
         _searchFrontier.Clear();
+        return targetCell.distance;
     }
 
     private bool Contains(Vector3 position)

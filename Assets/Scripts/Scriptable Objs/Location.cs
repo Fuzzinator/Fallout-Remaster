@@ -21,6 +21,7 @@ public class Location : ScriptableObject
     private Map[] _maps = new Map[0];
 
     private Map _activeMap;
+    public Map ActiveMap => _activeMap;
 
     public void SetActiveMap(int index)
     {

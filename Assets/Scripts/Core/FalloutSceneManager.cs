@@ -18,6 +18,8 @@ namespace Core
 
         private static SceneType _currentSceneType;
         private static Location _currentLocation;
+        public static Location CurrentLocation => _currentLocation;
+        public static Map CurrentMap => _currentLocation?.ActiveMap;
 
         private void Awake()
         {
