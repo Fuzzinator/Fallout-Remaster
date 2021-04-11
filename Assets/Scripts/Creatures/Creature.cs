@@ -11,8 +11,9 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected string _name;
+
     public string Name => _name;
-    
+
     [SerializeField]
     protected int _currentHealth; //cave rats have 6hp
 
@@ -22,7 +23,7 @@ public class Creature : MonoBehaviour, IOccupier
     [SerializeField]
     protected SPECIAL _special;
 
-    [SerializeField] 
+    [SerializeField]
     protected Skills _skills;
 
     [SerializeField]
@@ -33,20 +34,21 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected BasicAI _ai;
-    
+
     [SerializeField]
     protected int _currentLocation;
 
     protected HexMaker _hexMaker;
 
-    [SerializeField] 
+    [SerializeField]
     protected HexDir _facingDir;
 
     protected float _speedModifier = 1f;
-    [SerializeField] 
+
+    [SerializeField]
     protected float _baseMoveSpeed = 5;
 
-    [SerializeField, Lockable] 
+    [SerializeField, Lockable]
     protected float _rotationSpeed = 10;
 
     protected Coroutine _isMoving;
@@ -55,28 +57,26 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected int _xPValue = 0;
-    
-    [SerializeField, Lockable(rememberSelection:false)]
+
+    [SerializeField, Lockable(rememberSelection: false)]
     protected int _hpIncrease = 0;
 
     [SerializeField]
     protected int _baseHealth = 0;
-    
-    
+
+
     protected int _apToAC = 0;
-    
+
     #region Lists
 
-    
-
     #endregion
-    
+
     #region Properties
 
     public bool Alive => _currentHealth > 0;
     public int CurrentLocation => _currentLocation;
     protected bool HasValidPath => TargetPath != null && TargetPath.Count > 0;
-    
+
     public float MoveSpeed => _baseMoveSpeed * _speedModifier;
     protected int BaseHealth => _baseHealth + _special.Strength + (2 * _special.Endurance);
     public int MaxHealth => BaseHealth + _hpIncrease;
@@ -93,7 +93,6 @@ public class Creature : MonoBehaviour, IOccupier
     #endregion
 
     #region Constants
-    
 
     #endregion
 
@@ -124,7 +123,7 @@ public class Creature : MonoBehaviour, IOccupier
 
         CombatManager.stateChanged += CombatStateChanged;
     }
-    
+
     private void CombatStateChanged(bool isCombat)
     {
         if (isCombat)
@@ -177,14 +176,12 @@ public class Creature : MonoBehaviour, IOccupier
     {
         yield return MoveCreature();
     }
+
     protected virtual IEnumerator MoveCreature()
     {
         yield return null;
-
-        //if (_hexMaker == null)
-        //{
-            _hexMaker = HexMaker.Instance;
-        //}
+        
+        _hexMaker = HexMaker.Instance;
 
         var pathToTake = TargetPath.ToArray();
         TargetPath.Clear();
@@ -201,7 +198,7 @@ public class Creature : MonoBehaviour, IOccupier
             {
                 yield break;
             }
-            
+
             if (CombatManager.Instance.CombatMode)
             {
                 var willMove = TryDecrementAP(1, ActionType.Move);
@@ -210,7 +207,7 @@ public class Creature : MonoBehaviour, IOccupier
                     break;
                 }
             }
-            
+
             var t = transform;
 
             var currentPos = t.position;
@@ -253,7 +250,7 @@ public class Creature : MonoBehaviour, IOccupier
         }
 
         _currentAP -= cost;
-        
+
         return true;
     }
 
@@ -270,7 +267,7 @@ public class Creature : MonoBehaviour, IOccupier
         return targetRotation;
     }
 
-    public virtual void SetHP(int value)//Temporary probably
+    public virtual void SetHP(int value) //Temporary probably
     {
         _currentHealth = value;
     }
@@ -307,21 +304,23 @@ public class Creature : MonoBehaviour, IOccupier
     {
         return Random.Range(1, 100);
     }
-    
+
     protected virtual int ChanceToHit(int randomVal)
     {
-        var chanceToHit = 50;//temp
+        var chanceToHit = 50; //temp
 
         chanceToHit -= randomVal;
-        
+
         return chanceToHit;
     }
+
     protected virtual int GetCriticalChance(int chanceToHit)
     {
-        var critChance = CriticalChance;//just matching original math used
+        var critChance = CriticalChance; //just matching original math used
         critChance += Mathf.FloorToInt(chanceToHit * .1f);
         return critChance;
     }
+
     protected virtual int ACMod()
     {
         var ac = 0;
@@ -334,39 +333,40 @@ public class Creature : MonoBehaviour, IOccupier
 
         return ac;
     }
+
     protected virtual int DamageResistance(DamageType damageType)
     {
         var resistance = 0;
-        
+
         if (_equipedArmor != null)
         {
             resistance += _equipedArmor.GetResistance(damageType);
         }
-        
+
         return resistance;
     }
 
     protected virtual int DamageThreshold(DamageType damageType)
     {
         var threshold = 0;
-        
+
         if (_equipedArmor != null)
         {
             threshold += _equipedArmor.GetThreshold(damageType);
         }
-        
+
         return threshold;
     }
-    
+
     #endregion
-    
+
     #region Enums
 
     public enum Gender
     {
         Male,
         Female,
-        NonBinary//This is not in the original
+        NonBinary //This is not in the original
     }
 
     public enum ActionType
@@ -375,7 +375,7 @@ public class Creature : MonoBehaviour, IOccupier
         ObjectInteraction,
         Attack,
         Move,
-        
     }
+
     #endregion
 }

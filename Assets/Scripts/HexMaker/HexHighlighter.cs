@@ -99,6 +99,7 @@ public class HexHighlighter : MonoBehaviour
         };
 
         CombatManager.stateChanged += CombatStateChanged;
+        CursorController.stateChanged += CursorStateChanged;
 
         _mouseMovedLastFrame = false;
     }
@@ -197,6 +198,19 @@ public class HexHighlighter : MonoBehaviour
         {
             Enable();
             ClearText();
+        }
+    }
+
+    private void CursorStateChanged(CursorController.CursorState state)
+    {
+        var shouldMove = state == CursorController.CursorState.Movement;
+        if (shouldMove)
+        {
+            Enable();
+        }
+        else
+        {
+            Disable();
         }
     }
 }

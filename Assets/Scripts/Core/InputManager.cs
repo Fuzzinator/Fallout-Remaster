@@ -174,9 +174,9 @@ public class @InputManager : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""ad0c8d18-8c3a-4213-9995-6f83c0fd35b2"",
                     ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""SecondaryClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

@@ -13,6 +13,7 @@ public class CameraController : MonoBehaviour
 
     [SerializeField]
     private float _moveSpeed = 5;
+
     [SerializeField]
     private UpdateWindowShader _shaderUpdater;
 
@@ -79,8 +80,12 @@ public class CameraController : MonoBehaviour
 
     private void CheckCursorPos(Vector2 cursorPos)
     {
-        if (cursorPos.x >= Screen.width - _borderSize || cursorPos.x <= _borderSize ||
-            cursorPos.y >= Screen.height - _borderSize || cursorPos.y <= _borderSize)
+        var cursorRight = cursorPos.x >= Screen.width - _borderSize;
+        var cursorLeft = cursorPos.x <= _borderSize;
+        var cursorUp = cursorPos.y >= Screen.height - _borderSize;
+        var cursorDown = cursorPos.y <= _borderSize;
+
+        if (cursorRight || cursorLeft || cursorUp || cursorDown)
         {
             if (!_moveCamera)
             {
@@ -90,6 +95,10 @@ public class CameraController : MonoBehaviour
         }
         else
         {
+            if (_moveCamera)
+            {
+                CursorController.ResetCursorState();
+            }
             _moveCamera = false;
             if (_movingCamera != null)
             {
@@ -103,32 +112,170 @@ public class CameraController : MonoBehaviour
     {
         yield return null;
 
-        var mousePos = Mouse.current.position.ReadValue();
         while (_moveCamera)
         {
             var screenCenter = new Vector2(Screen.width, Screen.height) * .5f;
-            mousePos = Mouse.current.position.ReadValue();
+            var mousePos = Mouse.current.position.ReadValue();
             var dir = (mousePos - screenCenter).normalized;
             var origPos = transform.localPosition;
             var newPos = origPos + (Vector3) (dir * (_moveSpeed * Time.deltaTime));
-            if (newPos.x > _actualPosLimits.x || newPos.x < _actualPosLimits.z)
+            var cantLeft = newPos.x > _actualPosLimits.x;
+            var cantRight = newPos.x < _actualPosLimits.z;
+            if (cantLeft || cantRight)
             {
                 newPos.x = origPos.x;
             }
 
-            if (newPos.y > _actualPosLimits.y || newPos.y < _actualPosLimits.w)
+            var cantUp = newPos.y > _actualPosLimits.y;
+            var cantDown = newPos.y < _actualPosLimits.w;
+            if (cantUp || cantDown)
             {
                 newPos.y = origPos.y;
             }
 
             transform.localPosition = newPos;
             yield return null;
-            _moveCamera = mousePos.x >= Screen.width - _borderSize || mousePos.x <= _borderSize ||
-                          mousePos.y >= Screen.height - _borderSize || mousePos.y <= _borderSize;
+            var cursorRight = mousePos.x >= Screen.width - _borderSize;
+            var cursorLeft = mousePos.x <= _borderSize;
+            var cursorUp = mousePos.y >= Screen.height - _borderSize;
+            var cursorDown = mousePos.y <= _borderSize;
+
+            _moveCamera = cursorRight || cursorLeft || cursorUp || cursorDown;
+
             _shaderUpdater.UpdateShaders();
+            TryUpdateCursor(cursorRight, cursorLeft, cursorUp, cursorDown, cantLeft, cantRight, cantUp, cantDown);
         }
 
         _moveCamera = false;
         _movingCamera = null;
+    }
+
+    private void TryUpdateCursor(bool moveL, bool moveR, bool moveU, bool moveD, bool cantL, bool cantR, bool cantU, bool cantD)
+    {
+        if (moveL)
+        {
+            if (moveD)
+            {
+                //leftDown
+                if (cantL && cantD)
+                {
+                    //Cant Move Left and Down
+                    CursorController.SetState(CursorController.CursorState.CantMoveCameraDownLeft);
+                }
+                else
+                {
+                    //Can Move Left and Down
+                    CursorController.SetState(CursorController.CursorState.MoveCameraDownLeft);
+                }
+            }
+            else if (moveU)
+            {
+                //leftUp
+                if (cantL && cantU)
+                {
+                    //Cant Move Left and Up
+                    CursorController.SetState(CursorController.CursorState.CantMoveCameraUpLeft);
+                }
+                else
+                {
+                    //Can Move Left and Up
+                    CursorController.SetState(CursorController.CursorState.MoveCameraUpLeft);
+                }
+            }
+            else
+            {
+                //JustLeft
+                if (cantL)
+                {
+                    //Cant Move Left
+                    CursorController.SetState(CursorController.CursorState.CantMoveCameraLeft);
+                }
+                else
+                {
+                    //Can Move Left
+                    CursorController.SetState(CursorController.CursorState.MoveCameraLeft);
+                }
+            }
+        }
+        else if (moveR)
+        {
+            if (moveD)
+            {
+                //RightDown
+                if (cantR && cantD)
+                {
+                    //Cant Move Right and Down
+                    CursorController.SetState(CursorController.CursorState.CantMoveCameraDownRight);
+                }
+                else
+                {
+                    //Can Move Right and Down
+                    CursorController.SetState(CursorController.CursorState.MoveCameraDownRight);
+                }
+            }
+            else if (moveU)
+            {
+                //RightUp
+                if (cantR && cantU)
+                {
+                    //Cant Move Right and Up
+                    CursorController.SetState(CursorController.CursorState.CantMoveCameraUpRight);
+                }
+                else
+                {
+                    //Can Move Right and Up
+                    CursorController.SetState(CursorController.CursorState.MoveCameraUpRight);
+                }
+            }
+            else
+            {
+                //JustRight
+                if (cantR)
+                {
+                    //Cant Move Right
+                    CursorController.SetState(CursorController.CursorState.CantMoveCameraRight);
+                }
+                else
+                {
+                    //Can Move Right
+                    CursorController.SetState(CursorController.CursorState.MoveCameraRight);
+                }
+            }
+        }
+        else
+        {
+            if (moveD)
+            {
+                //JustDown
+                if (cantD)
+                {
+                    //Cant Move Down
+                    CursorController.SetState(CursorController.CursorState.CantMoveCameraDown);
+                }
+                else
+                {
+                    //Can Move Down
+                    CursorController.SetState(CursorController.CursorState.MoveCameraDown);
+                }
+            }
+            else if (moveU)
+            {
+                //JustUp
+                if (cantU)
+                {
+                    //Cant Move Up
+                    CursorController.SetState(CursorController.CursorState.CantMoveCameraUp);
+                }
+                else
+                {
+                    //Can Move Up
+                    CursorController.SetState(CursorController.CursorState.MoveCameraUp);
+                }
+            }
+            else
+            {
+                CursorController.ResetCursorState();
+            }
+        }
     }
 }
