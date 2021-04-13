@@ -8,6 +8,10 @@ public class CombatManager : MonoBehaviour
     [SerializeField]
     private bool _combatMode = false;
 
+    [SerializeField]
+    private LayerMask _targetableObjs;
+    public LayerMask TargetableObjs => _targetableObjs;
+
     public bool CombatMode
     {
         get => _combatMode;
@@ -64,6 +68,11 @@ public class CombatManager : MonoBehaviour
         {
             EndCombat();
         }
+    }
+
+    public static void TryAttackCreature(Creature source, Creature target)
+    {
+        
     }
 
     public static void AddToCombat(Creature newCreature)

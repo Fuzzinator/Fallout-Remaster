@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
+    public static CameraController Instance { get; private set; }
     [SerializeField]
     private Camera _camera;
 
@@ -50,6 +51,18 @@ public class CameraController : MonoBehaviour
     {
         GameManager.InputManager.Player.Look.performed -= LookHandler;
         GameManager.InputManager.Player.ScrollWheel.performed -= ScrollWheelHandler;
+    }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
     }
 
     private void Start()

@@ -74,7 +74,12 @@ public class Creature : MonoBehaviour, IOccupier
     #region Properties
 
     public bool Alive => _currentHealth > 0;
-    public int CurrentLocation => _currentLocation;
+    public int CurrentLocation
+    {
+        get => _currentLocation;
+        set => _currentLocation = value;
+    }
+
     protected bool HasValidPath => TargetPath != null && TargetPath.Count > 0;
 
     public float MoveSpeed => _baseMoveSpeed * _speedModifier;
@@ -300,6 +305,17 @@ public class Creature : MonoBehaviour, IOccupier
         CombatManager.ProgressCombat();
     }
 
+    protected virtual bool TryGetTarget( out Creature target)
+    {
+        
+        return TryGetComponent(out )
+    }
+
+    protected void TryAttackCreature(Creature target)
+    {
+        
+    }
+    
     protected virtual int RandomHit()
     {
         return Random.Range(1, 100);

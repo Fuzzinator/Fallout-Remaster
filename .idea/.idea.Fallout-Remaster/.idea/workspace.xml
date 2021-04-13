@@ -1,7 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c2ea0e13-5cbb-47c8-a0e6-5ab7e55ef4c9" name="Default Changelist" comment="" />
+    <list default="true" id="c2ea0e13-5cbb-47c8-a0e6-5ab7e55ef4c9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/indexLayout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/projectSettingsUpdater.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Editor/Internal/ProcessorsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Editor/Internal/ProcessorsSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Editor/Internal/ProcessorsSettings.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Editor/Internal/ProcessorsSettings.asset.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Editor/Nody/Settings/NodyWindowSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Editor/Nody/Settings/NodyWindowSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Editor/Settings/DoozyWindowSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Editor/Settings/DoozyWindowSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/Soundy/SoundDatabase_General.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/Soundy/SoundDatabase_General.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/Soundy/_SoundyDatabase.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/Soundy/_SoundyDatabase.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/Themes/Theme_General.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/Themes/Theme_General.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/Themes/_ThemesDatabase.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/Themes/_ThemesDatabase.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/UIButton/_UIButtonDatabase.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/UIButton/_UIButtonDatabase.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/UICanvas/_UICanvasDatabase.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/UICanvas/_UICanvasDatabase.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/UIDrawer/_UIDrawerDatabase.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/UIDrawer/_UIDrawerDatabase.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/UIPopup/_UIPopupDatabase.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/UIPopup/_UIPopupDatabase.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/UIView/_UIViewDatabase.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/Data/UIView/_UIViewDatabase.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/DoozySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/DoozySettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/DoozySettings.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Resources/DoozySettings.asset.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Soundy/Resources/SoundySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Soundy/Resources/SoundySettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Themes/Resources/ThemesSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Themes/Resources/ThemesSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/Touchy/Resources/TouchySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/Touchy/Resources/TouchySettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Basic.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Basic.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Drop.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Drop.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Fade.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Fade.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Flip.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Flip.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Organic.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Organic.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Rotate.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Rotate.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Scale.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Scale.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Slide.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Slide.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Uncategorized.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Hide/Uncategorized.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Elastic.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Elastic.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Fade.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Fade.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Flip.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Flip.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Move.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Move.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Organic.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Organic.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Rotate.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Rotate.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Scale.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Scale.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Uncategorized.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Uncategorized.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Uncommon.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Loop/Uncommon.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Flip.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Flip.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Jump.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Jump.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Organic.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Organic.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Rotate.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Rotate.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Scale.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Scale.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Slide.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Slide.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Stretch.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Stretch.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Uncategorized.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Punch/Uncategorized.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Basic.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Basic.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Drop.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Drop.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Fade.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Fade.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Flip.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Flip.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Organic.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Organic.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Rotate.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Rotate.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Scale.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Scale.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Slide.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Slide.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Uncategorized.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/Show/Uncategorized.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Basic.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Basic.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Drop.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Drop.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Elastic.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Elastic.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Fade.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Fade.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Flip.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Flip.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Move.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Move.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Organic.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Organic.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Uncategorized.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Uncategorized.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Uncommon.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/State/Uncommon.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/_UIAnimations.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/Resources/UIAnimations/_UIAnimations.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/UIButton/Resources/UIButtonSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/UIButton/Resources/UIButtonSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/UICanvas/Resources/UICanvasSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/UICanvas/Resources/UICanvasSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/UIDrawer/Resources/UIDrawerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/UIDrawer/Resources/UIDrawerSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/UIPopup/Resources/UIPopupSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/UIPopup/Resources/UIPopupSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/UIToggle/Resources/UIToggleSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/UIToggle/Resources/UIToggleSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/UIView/Resources/UIViewSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Engine/UI/UIView/Resources/UIViewSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Examples/Resources/Soundy/SoundDatabase_ExampleAlerts.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Examples/Resources/Soundy/SoundDatabase_ExampleAlerts.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Examples/Resources/Soundy/SoundDatabase_ExampleClicks.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Examples/Resources/Soundy/SoundDatabase_ExampleClicks.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Examples/Resources/Soundy/SoundDatabase_ExampleMusic.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Examples/Resources/Soundy/SoundDatabase_ExampleMusic.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Doozy/Examples/Resources/Soundy/SoundDatabase_ExampleSlides.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Doozy/Examples/Resources/Soundy/SoundDatabase_ExampleSlides.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Fading Ceiling.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Fading Ceiling.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/FadingWall.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/FadingWall.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/DOTweenSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/DOTweenSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Vault 13/Cave Entrance.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Vault 13/Cave Entrance.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/CombatManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/CombatManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Editor/CreatureCustomEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Editor/CreatureCustomEditor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.probuilder/Settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.probuilder/Settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -11,23 +104,25 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ScriptableRendererDataEditor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Actions/InputAction.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Plugins/PlayerInput/PlayerInputEditor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Location.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexCellPriorityQueue.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/IOccupier.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Editor/SkillsCustomEditor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Editor/CreatureCustomEditor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Editor/CombatManagerCustomEditor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@10.3.2/Editor/ShaderGraph/Includes/UnlitPass.hlsl" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Location Stuff/MapExit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Map.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Plugins/PlayerInput/PlayerInputEditor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Location.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Location Stuff/MapExit.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Actions/InputAction.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexMaker.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Item.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Editor/SkillsCustomEditor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/IOccupier.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/CombatManager.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -64,10 +159,8 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Editor/NewBehaviourScript.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Perk.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Editor/CombatManagerCustomEditor.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Core/CombatManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Skills.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Editor/SkillsCustomEditor.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Editor/CreatureCustomEditor.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Armor.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Weapon.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Item.cs" />
@@ -76,12 +169,15 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Map.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Location Stuff/MapExit.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexMaker.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexHighlighter.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/CursorController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Editor/CreatureCustomEditor.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/ITargetable.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Camera/CameraController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/CombatManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
       </list>
     </option>
   </component>
@@ -95,9 +191,11 @@
     <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.29857397" />
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="TWShift.4" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="XThreadsFramesViewSplitterKey" value="0.5004248" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C#" />
+    <property name="settings.editor.selected.configurable" value="Inspections-C#" />
     <property name="settings.editor.splitter.proportion" value="0.24032587" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -106,22 +204,31 @@
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
-      <option name="selectedOptions">
-        <set />
-      </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="11808">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="11808" />
-      <option name="selectedOptions">
-        <set />
-      </option>
+      <option name="pid" />
       <method v="2" />
     </configuration>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="c2ea0e13-5cbb-47c8-a0e6-5ab7e55ef4c9" name="Default Changelist" comment="" />
@@ -142,6 +249,7 @@
       <workItem from="1617922677479" duration="28180000" />
       <workItem from="1618016534406" duration="17720000" />
       <workItem from="1618105479539" duration="11930000" />
+      <workItem from="1618270232034" duration="5860000" />
     </task>
     <servers />
   </component>
@@ -154,6 +262,14 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="552" y="179" key="#Notifications" timestamp="1618270310236">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="179" key="#Notifications/0.0.1920.1040@0.0.1920.1040" timestamp="1618270310236" />
+    <state x="709" y="357" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog" timestamp="1618282517274">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="709" y="357" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1618282517274" />
     <state width="531" height="464" key="DebuggerActiveHint" timestamp="1618031257029">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
@@ -277,10 +393,11 @@
     </state>
     <state x="1554" y="401" key="RiderGenerateDialog/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1615955775160" />
     <state x="578" y="113" key="RiderGenerateDialog/0.0.1280.680@0.0.1280.680" timestamp="1616258193489" />
-    <state x="141" y="0" width="1003" height="680" key="SettingsEditor" timestamp="1617380863261">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="212" y="0" width="1003" height="680" key="SettingsEditor" timestamp="1618283057372">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="141" y="0" width="1003" height="680" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1617380863261" />
+    <state x="212" y="0" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1618283057372" />
     <state x="432" y="198" key="scopes" timestamp="1617380146106">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

@@ -32,8 +32,23 @@ public class CreatureCustomEditor : Editor
         if (!Application.isPlaying)
         {
             _target.SetHP(_target.MaxHealth);
+            if (GUILayout.Button("Get Location"))
+            {
+                var hexMakerObj = GameObject.Find("HexMaker");
+                if (!hexMakerObj.TryGetComponent(out HexMaker hexMaker))
+                {
+                    return;
+                }
+                var coord = hexMaker.GetCoordinates(_target.transform.position);
+                if (coord == null)
+                {
+                    return;
+                }
+                _target.CurrentLocation = coord.index;
+            }
             return;
         }
+        
         if (CombatManager.Instance == null || !CombatManager.Instance.CombatMode)
         {
             return;

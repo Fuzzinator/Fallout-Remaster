@@ -370,6 +370,19 @@ public class Player : Human
         base.EndTurn();
     }
 
+    protected override bool TryGetTarget( out Creature target)
+    {
+        var cam = CameraController.Instance.TargetCamera;
+        var ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, CombatManager.Instance.TargetableObjs))
+        {
+            return hitInfo.collider.TryGetComponent(out target);
+        }
+
+        target = null;
+        return false;
+    }
+
     protected override bool TryDecrementAP(int cost, ActionType type)
     {
         var additional = 0;
