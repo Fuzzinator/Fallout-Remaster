@@ -9,60 +9,46 @@ public class Creature : MonoBehaviour, IOccupier
 {
     #region Variables and Properties
 
-    [SerializeField]
-    protected string _name;
+    [SerializeField] protected string _name;
 
     public string Name => _name;
 
-    [SerializeField]
-    protected int _currentHealth; //cave rats have 6hp
+    [SerializeField] protected int _currentHealth; //cave rats have 6hp
 
-    [SerializeField]
-    protected int _currentAP;
+    [SerializeField] protected int _currentAP;
 
-    [SerializeField]
-    protected SPECIAL _special;
+    [SerializeField] protected SPECIAL _special;
 
-    [SerializeField]
-    protected Skills _skills;
+    [SerializeField] protected Skills _skills;
 
-    [SerializeField]
-    protected Weapon _activeWeapon;
+    [SerializeField] protected Weapon _activeWeapon;
 
-    [SerializeField]
-    protected Armor _equipedArmor;
+    [SerializeField] protected Armor _equipedArmor;
 
-    [SerializeField]
-    protected BasicAI _ai;
+    [SerializeField] protected BasicAI _ai;
 
-    [SerializeField]
-    protected int _currentLocation;
+    [SerializeField] protected int _currentLocation;
 
     protected HexMaker _hexMaker;
 
-    [SerializeField]
-    protected HexDir _facingDir;
+    [SerializeField] protected HexDir _facingDir;
 
     protected float _speedModifier = 1f;
 
-    [SerializeField]
-    protected float _baseMoveSpeed = 5;
+    [SerializeField] protected float _baseMoveSpeed = 5;
 
-    [SerializeField, Lockable]
-    protected float _rotationSpeed = 10;
+    [SerializeField, Lockable] protected float _rotationSpeed = 10;
 
     protected Coroutine _isMoving;
 
     public readonly List<Coordinates> TargetPath = new List<Coordinates>();
 
-    [SerializeField]
-    protected int _xPValue = 0;
+    [SerializeField] protected int _xPValue = 0;
 
     [SerializeField, Lockable(rememberSelection: false)]
     protected int _hpIncrease = 0;
 
-    [SerializeField]
-    protected int _baseHealth = 0;
+    [SerializeField] protected int _baseHealth = 0;
 
 
     protected int _apToAC = 0;
@@ -74,6 +60,7 @@ public class Creature : MonoBehaviour, IOccupier
     #region Properties
 
     public bool Alive => _currentHealth > 0;
+
     public int CurrentLocation
     {
         get => _currentLocation;
@@ -185,7 +172,7 @@ public class Creature : MonoBehaviour, IOccupier
     protected virtual IEnumerator MoveCreature()
     {
         yield return null;
-        
+
         _hexMaker = HexMaker.Instance;
 
         var pathToTake = TargetPath.ToArray();
@@ -305,27 +292,85 @@ public class Creature : MonoBehaviour, IOccupier
         CombatManager.ProgressCombat();
     }
 
-    protected virtual bool TryGetTarget( out Creature target)
+    protected virtual bool TryGetTarget(out Creature target) //TODO flesh this out
     {
-        
-        return TryGetComponent(out )
+        target = null;
+        return false;
     }
 
     protected void TryAttackCreature(Creature target)
     {
-        
     }
-    
+
     protected virtual int RandomHit()
     {
         return Random.Range(1, 100);
     }
 
-    protected virtual int ChanceToHit(int randomVal)
+    protected virtual int GetChanceToHit(int distance, Creature target, out int randomVal)
     {
-        var chanceToHit = 50; //temp
+        randomVal = Random.Range(1, 100);
+
+        var tPos = transform.position;
+        var otPos = target.transform.position;
+        var dist = Vector3.Distance(tPos, otPos);
+        var ray = new Ray(tPos + Vector3.one, (tPos - otPos).normalized);
+        RaycastHit[] hitInfos = null;
+        var size = Physics.RaycastNonAlloc(ray, hitInfos, dist);
+        if (size > 1)
+        {
+            List<Creature> creatures = null;
+            var mask = CombatManager.Instance.TargetableObjs;
+            if (hitInfos != null)
+            {
+                foreach (var hitInfo in hitInfos)
+                {
+                    if (mask == (mask | 1 << hitInfo.collider.gameObject.layer))
+                    {
+                        if (hitInfo.collider.gameObject == target.gameObject)
+                        {
+                            continue;
+                        }
+
+                        //TODO decrement chance to hit and add these new creatures to a list of possibility to be hit if the other attack misses
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
+            }
+        }
+
+        var weaponSkill = Skills.Type.Unarmed;
+        if (_activeWeapon != null)
+        {
+            weaponSkill = _activeWeapon.AssociatedSkill;
+
+            if (distance > _activeWeapon.Range)
+            {
+                return -1;
+            }
+        }
+        else
+        {
+            if (distance > 1)
+            {
+                return -1;
+            }
+        }
+
+        var chanceToHit = _skills.GetSkillLvl(weaponSkill) - 30;
+        chanceToHit += ((_special.Perception - 2) * 16);
+        chanceToHit -= (distance * 4);
+        chanceToHit -= (target.ArmorClass);
+        if (WorldClock.Instance != null && WorldClock.Instance.IsNight && distance > 5)
+        {
+            chanceToHit -= 10;
+        }
 
         chanceToHit -= randomVal;
+        //chanceToHit -= randomVal;
 
         return chanceToHit;
     }

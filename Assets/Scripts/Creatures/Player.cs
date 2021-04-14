@@ -110,6 +110,7 @@ public class Player : Human
     {
         GameManager.InputManager.Player.Enable();
         GameManager.InputManager.Player.PrimaryClick.performed += PrimaryClickHandler;
+        //CursorController.stateChanged += CursorStateChanged;
     }
 
     private void OnDestroy()
@@ -241,7 +242,7 @@ public class Player : Human
 
     #region Movement
 
-    private void PrimaryClickHandler(InputAction.CallbackContext obj)
+    private void TryMove()
     {
         if (_hexMaker == null)
         {
@@ -274,7 +275,7 @@ public class Player : Human
 
         _isMoving = StartCoroutine(MoveCreature());
     }
-
+    
     protected override IEnumerator MoveCreature()
     {
         yield return null;
@@ -370,6 +371,21 @@ public class Player : Human
         base.EndTurn();
     }
 
+    private void TryAttack()
+    {
+        if (TryGetTarget(out var target))
+        {
+            var distance = HexMaker.Instance.GetDistanceToCoord(HexMaker.GetCoord(_currentLocation),
+                HexMaker.GetCoord(target.CurrentLocation), TargetPath);
+            var chanceToHit = GetChanceToHit(distance, target, out var randomVal);
+            if (chanceToHit < 0)//Did the attack miss?
+            {
+                return;
+            }
+            
+        }
+    }
+    
     protected override bool TryGetTarget( out Creature target)
     {
         var cam = CameraController.Instance.TargetCamera;
@@ -417,6 +433,11 @@ public class Player : Human
         _currentAP -= cost;
 
         return true;
+    }
+
+    protected override int GetChanceToHit(int distance, Creature target, out int randomVal)
+    {
+        return base.GetChanceToHit(distance, target, out randomVal);
     }
 
     protected override int GetCriticalChance(int chanceToHit)
@@ -721,5 +742,26 @@ public class Player : Human
         return ac;
     }
 
+    #endregion
+    
+    #region Listeners
+
+    private void PrimaryClickHandler(InputAction.CallbackContext obj)
+    {
+        switch (CursorController.Instance.CurrentState)
+        {
+            case CursorController.CursorState.Movement:
+                TryMove();
+                break;
+            case CursorController.CursorState.Targeting:
+                TryAttack();
+                break;
+        }
+    }
+    
+    /*private void CursorStateChanged(CursorController.CursorState state)
+    {
+        
+    }*/
     #endregion
 }
