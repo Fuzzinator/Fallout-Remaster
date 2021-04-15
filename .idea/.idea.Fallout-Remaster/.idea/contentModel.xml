@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Asus WebStorage\fuzzinator12@gmail.com\MySyncFolder\Fallout-Remaster" t="IncludeRecursive">
+    <e p="C:\Users\Owner\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Owner\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_Fallout-Remaster.-1809804433.00" t="ExcludeRecursive" />
+    <e p="E:\Fallout-Remaster" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
@@ -944,8 +946,5 @@
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\Bin" t="ExcludeRecursive" />
     </e>
-    <e p="C:\Users\Fuzzy\.Rider2019.3\config\Extensions" t="IncludeRecursive" />
-    <e p="C:\Users\Fuzzy\.Rider2019.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Fuzzy\.Rider2019.3\system\resharper-host\Local\Transient\ReSharperHost\v193\SolutionCaches\_Fallout-Remaster.471394149.00" t="ExcludeRecursive" />
   </component>
 </project>

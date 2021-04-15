@@ -13,43 +13,61 @@ public class Creature : MonoBehaviour, IOccupier
 
     public string Name => _name;
 
-    [SerializeField] protected int _currentHealth; //cave rats have 6hp
+    [SerializeField]
+    protected int _currentHealth; //cave rats have 6hp
 
-    [SerializeField] protected int _currentAP;
+    [SerializeField]
+    protected int _currentAP;
 
-    [SerializeField] protected SPECIAL _special;
+    [SerializeField]
+    protected SPECIAL _special;
 
-    [SerializeField] protected Skills _skills;
+    [SerializeField]
+    protected Skills _skills;
 
-    [SerializeField] protected Weapon _activeWeapon;
+    [SerializeField]
+     protected Weapon _activeWeapon;
 
-    [SerializeField] protected Armor _equipedArmor;
+     [SerializeField]
+     protected bool _isAimedShot = false;
 
-    [SerializeField] protected BasicAI _ai;
+    [SerializeField]
+    protected Armor _equipedArmor;
 
-    [SerializeField] protected int _currentLocation;
+    [SerializeField]
+    protected BasicAI _ai;
+
+    [SerializeField] 
+    protected int _currentLocation;
 
     protected HexMaker _hexMaker;
 
-    [SerializeField] protected HexDir _facingDir;
+    [SerializeField]
+    protected HexDir _facingDir;
 
     protected float _speedModifier = 1f;
 
-    [SerializeField] protected float _baseMoveSpeed = 5;
+    [SerializeField] 
+    protected float _baseMoveSpeed = 5;
 
-    [SerializeField, Lockable] protected float _rotationSpeed = 10;
+    [SerializeField, Lockable] 
+    protected float _rotationSpeed = 10;
 
     protected Coroutine _isMoving;
 
     public readonly List<Coordinates> TargetPath = new List<Coordinates>();
 
-    [SerializeField] protected int _xPValue = 0;
+    [SerializeField] 
+    protected int _xPValue = 0;
 
     [SerializeField, Lockable(rememberSelection: false)]
     protected int _hpIncrease = 0;
 
-    [SerializeField] protected int _baseHealth = 0;
+    [SerializeField]
+    protected int _baseHealth = 0;
 
+    protected Creature _currentTarget;
+    protected int _chanceHitTarget;
 
     protected int _apToAC = 0;
 
@@ -81,6 +99,9 @@ public class Creature : MonoBehaviour, IOccupier
 
     public virtual int MaxCanMoveDist => _currentAP;
     public virtual int CriticalChance => _special.Luck;
+
+    public Creature TargetCreature => _currentTarget;
+    public int ChanceToHitTarget => _chanceHitTarget;
 
     #endregion
 
@@ -307,15 +328,13 @@ public class Creature : MonoBehaviour, IOccupier
         return Random.Range(1, 100);
     }
 
-    protected virtual int GetChanceToHit(int distance, Creature target, out int randomVal)
+    protected virtual int GetChanceToHit(int distance, Creature target)
     {
-        randomVal = Random.Range(1, 100);
-
         var tPos = transform.position;
         var otPos = target.transform.position;
         var dist = Vector3.Distance(tPos, otPos);
         var ray = new Ray(tPos + Vector3.one, (tPos - otPos).normalized);
-        RaycastHit[] hitInfos = null;
+        RaycastHit[] hitInfos = new RaycastHit[0];
         var size = Physics.RaycastNonAlloc(ray, hitInfos, dist);
         if (size > 1)
         {
@@ -369,9 +388,11 @@ public class Creature : MonoBehaviour, IOccupier
             chanceToHit -= 10;
         }
 
-        chanceToHit -= randomVal;
-        //chanceToHit -= randomVal;
-
+        if (_isAimedShot)
+        {
+            
+        }
+        
         return chanceToHit;
     }
 

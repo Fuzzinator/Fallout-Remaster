@@ -1,4 +1,4 @@
-using System;
+//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -110,12 +110,15 @@ public class Player : Human
     {
         GameManager.InputManager.Player.Enable();
         GameManager.InputManager.Player.PrimaryClick.performed += PrimaryClickHandler;
+        CursorController.stateChanged += CursorStateChanged;
         //CursorController.stateChanged += CursorStateChanged;
     }
 
     private void OnDestroy()
     {
         GameManager.InputManager.Player.PrimaryClick.performed -= PrimaryClickHandler;
+        GameManager.InputManager.Player.Look.performed -= LookHandler;
+        CursorController.stateChanged -= CursorStateChanged;
     }
 #if UNITY_EDITOR
     private void OnDrawGizmos()
@@ -377,7 +380,10 @@ public class Player : Human
         {
             var distance = HexMaker.Instance.GetDistanceToCoord(HexMaker.GetCoord(_currentLocation),
                 HexMaker.GetCoord(target.CurrentLocation), TargetPath);
-            var chanceToHit = GetChanceToHit(distance, target, out var randomVal);
+            var chanceToHit = GetChanceToHit(distance, target);
+            
+            var randomVal = Random.Range(1, 100);
+            
             if (chanceToHit < 0)//Did the attack miss?
             {
                 return;
@@ -435,9 +441,9 @@ public class Player : Human
         return true;
     }
 
-    protected override int GetChanceToHit(int distance, Creature target, out int randomVal)
+    protected override int GetChanceToHit(int distance, Creature target)
     {
-        return base.GetChanceToHit(distance, target, out randomVal);
+        return base.GetChanceToHit(distance, target);
     }
 
     protected override int GetCriticalChance(int chanceToHit)
@@ -758,10 +764,34 @@ public class Player : Human
                 break;
         }
     }
-    
-    /*private void CursorStateChanged(CursorController.CursorState state)
+
+    private void LookHandler(InputAction.CallbackContext obj)
     {
-        
-    }*/
+        if (CursorController.Instance.CurrentState != CursorController.CursorState.Targeting)
+        {
+            return;
+        }
+
+        if (!TryGetTarget(out _currentTarget))
+        {
+            return;
+        }
+
+        var distance = HexMaker.Instance.GetDistanceToCoord(HexMaker.GetCoord(_currentLocation),
+                HexMaker.GetCoord(_currentTarget.CurrentLocation), TargetPath);
+        _chanceHitTarget = GetChanceToHit(distance, _currentTarget);
+    }
+
+    private void CursorStateChanged(CursorController.CursorState state)
+    {
+        if (state == CursorController.CursorState.Targeting)
+        {
+            GameManager.InputManager.Player.Look.performed += LookHandler;
+        }
+        else
+        {
+            GameManager.InputManager.Player.Look.performed -= LookHandler;
+        }
+    }
     #endregion
 }
