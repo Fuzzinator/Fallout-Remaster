@@ -28,6 +28,14 @@ public class Weapon : Item
     public int Range => _range;
 
     [SerializeField]
+    private AmmoType _ammoType = AmmoType.None;
+    public AmmoType Ammo => _ammoType;
+    
+    [SerializeField]
+    private int _magSize;
+    public int MagSize => _magSize;
+    
+    [SerializeField]
     private int _ammoCost;
     public int AmmoCost => _ammoCost;
 
@@ -46,6 +54,7 @@ public class Weapon : Item
     [SerializeField]
     private DamageType _dmgType;
     public DamageType DmgType => _dmgType;
+
 
     private int GetDamage()
     {
@@ -72,6 +81,19 @@ public class Weapon : Item
         Thrust,
         Punch,
         Placed
+    }
+
+    //Mostly just a naming convention but here's what we've got
+    //Starts with B means bullet.
+    //Starts with S means shell.
+    
+    public enum AmmoType
+    {
+        None = 0,
+        B223 = 1, //.223 FMJ
+        B44Magnum = 2, //.44 Magnum FMJ and .44 Magnum JHP
+        B10mm = 3, //10mm AP and 10mm JHP
+        S12Gauge = 4, //12 gauge shotgun shell
     }
 
 }

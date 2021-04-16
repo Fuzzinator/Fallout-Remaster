@@ -1,4 +1,5 @@
 //using System;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -111,7 +112,6 @@ public class Player : Human
         GameManager.InputManager.Player.Enable();
         GameManager.InputManager.Player.PrimaryClick.performed += PrimaryClickHandler;
         CursorController.stateChanged += CursorStateChanged;
-        //CursorController.stateChanged += CursorStateChanged;
     }
 
     private void OnDestroy()
@@ -278,7 +278,7 @@ public class Player : Human
 
         _isMoving = StartCoroutine(MoveCreature());
     }
-    
+
     protected override IEnumerator MoveCreature()
     {
         yield return null;
@@ -301,7 +301,7 @@ public class Player : Human
             {
                 yield break;
             }
-            
+
             if (CombatManager.Instance.CombatMode)
             {
                 var willMove = TryDecrementAP(1, ActionType.Move);
@@ -379,20 +379,19 @@ public class Player : Human
         if (TryGetTarget(out var target))
         {
             var distance = HexMaker.Instance.GetDistanceToCoord(HexMaker.GetCoord(_currentLocation),
-                HexMaker.GetCoord(target.CurrentLocation), TargetPath);
+                HexMaker.GetCoord(target.CurrentLocation), TargetPath, wantToMove: false);
             var chanceToHit = GetChanceToHit(distance, target);
-            
+
             var randomVal = Random.Range(1, 100);
-            
-            if (chanceToHit < 0)//Did the attack miss?
+
+            if (chanceToHit < 0) //Did the attack miss?
             {
                 return;
             }
-            
         }
     }
-    
-    protected override bool TryGetTarget( out Creature target)
+
+    protected override bool TryGetTarget(out Creature target)
     {
         var cam = CameraController.Instance.TargetCamera;
         var ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -749,7 +748,7 @@ public class Player : Human
     }
 
     #endregion
-    
+
     #region Listeners
 
     private void PrimaryClickHandler(InputAction.CallbackContext obj)
@@ -778,8 +777,12 @@ public class Player : Human
         }
 
         var distance = HexMaker.Instance.GetDistanceToCoord(HexMaker.GetCoord(_currentLocation),
-                HexMaker.GetCoord(_currentTarget.CurrentLocation), TargetPath);
+            HexMaker.GetCoord(_currentTarget.CurrentLocation), TargetPath, wantToMove: false);
         _chanceHitTarget = GetChanceToHit(distance, _currentTarget);
+        if (_currentTarget != null && _chanceHitTarget > 0)
+        {
+            Debug.Log($"Temp\n Chance to hit is {_chanceHitTarget} ");
+        }
     }
 
     private void CursorStateChanged(CursorController.CursorState state)
@@ -793,5 +796,6 @@ public class Player : Human
             GameManager.InputManager.Player.Look.performed -= LookHandler;
         }
     }
+
     #endregion
 }

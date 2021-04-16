@@ -525,7 +525,7 @@ public class HexMaker : MonoBehaviour
     }
 
     public int GetDistanceToCoord(Coordinates sourceCell, Coordinates targetCell, List<Coordinates> path,
-        Action<Coordinates> toDo = null, int maxDistance = Int32.MaxValue)
+        Action<Coordinates> toDo = null, int maxDistance = Int32.MaxValue, bool wantToMove = true)
     {
         if (sourceCell == null || targetCell == null)
         {
@@ -533,13 +533,12 @@ public class HexMaker : MonoBehaviour
             return -1;
         }
 
-        return FindDistanceTo(sourceCell, targetCell, path, toDo, maxDistance);
+        return FindDistanceTo(sourceCell, targetCell, path, toDo, maxDistance, wantToMove);
     }
 
     //A* search method
     private int FindDistanceTo(Coordinates sourceCell, Coordinates targetCell, List<Coordinates> path,
-        Action<Coordinates> toDo,
-        int maxDistance = Int32.MaxValue)
+        Action<Coordinates> toDo, int maxDistance = Int32.MaxValue, bool wantToMove = true)
     {
         path?.Clear();
         //_searchFrontierPhase += 2;
@@ -587,7 +586,8 @@ public class HexMaker : MonoBehaviour
                 }
 
                 var neighborCoord = _coords[neighbor.index];
-                if (neighborCoord == null || !neighborCoord.IsWalkable || neighborCoord.distance > -1)
+                if (neighborCoord == null || !neighborCoord.walkable || (wantToMove && neighborCoord.occupied) ||
+                    neighborCoord.distance > -1)
                 {
                     continue;
                 }
