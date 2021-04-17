@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [CreateAssetMenu(order = 10, fileName = "New Weapon", menuName = "ScriptObjs/Weapon")]
 public class Weapon : Item
@@ -10,34 +12,32 @@ public class Weapon : Item
     public string WeaponName => _weaponName;
 
     [SerializeField]
-    private AttackMode _attackMode;
-    public AttackMode AttackType => _attackMode;
-
-    [SerializeField]
     private int _minDamage;
     [SerializeField]
     private int _maxDamage;
     public int WeaponDamage => GetDamage();
 
     [SerializeField]
-    private int _actionPointCost;
-    public int ActionPointCost => _actionPointCost;
+    private AttackTypeInfo[] _typeAndInfo;
 
     [SerializeField]
-    private int _range = 1;
-    public int Range => _range;
+    private bool _usesAmmo;
 
     [SerializeField]
-    private AmmoType _ammoType = AmmoType.None;
-    public AmmoType Ammo => _ammoType;
-    
+    private Ammo.Type _ammoType = Ammo.Type.None;
+    public Ammo.Type UsedAmmoType => _ammoType;
+
+    [SerializeField]
+    private Ammo _currentAmmo;
+    public Ammo CurrentAmmo;
+
+    [SerializeField]
+    private int _ammoInClip = 0;
+    public int AmmoInClip => _ammoInClip;
+
     [SerializeField]
     private int _magSize;
     public int MagSize => _magSize;
-    
-    [SerializeField]
-    private int _ammoCost;
-    public int AmmoCost => _ammoCost;
 
     [SerializeField]
     private int _strRequired;
@@ -55,13 +55,40 @@ public class Weapon : Item
     private DamageType _dmgType;
     public DamageType DmgType => _dmgType;
 
+    [SerializeField]
+    private bool _oneHanded = true;
+    public bool OneHanded => _oneHanded;
 
-    private int GetDamage()
+    public bool TryUseWeapon()
+    {
+        if (_usesAmmo && _ammoInClip > 0)
+        {
+            _ammoInClip--;
+            return true;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public int GetDamage()
     {
         return Random.Range(_minDamage, _maxDamage);
     }
-    
-    
+
+    public AttackTypeInfo GetAttackTypeInfo(AttackMode mode)
+    {
+        foreach (var info in _typeAndInfo)
+        {
+            if (info.CurrentAttackMode == mode)
+            {
+                return info;
+            }
+        }
+        return new AttackTypeInfo();
+    }
+
     public enum Type
     {
         None = 0,
@@ -83,19 +110,23 @@ public class Weapon : Item
         Placed
     }
 
-    //Mostly just a naming convention but here's what we've got
-    //Starts with B means bullet.
-    //Starts with S means shell.
-    
-    public enum AmmoType
+    [System.Serializable]
+    public struct AttackTypeInfo
     {
-        None = 0,
-        B223 = 1, //.223 FMJ
-        B44Magnum = 2, //.44 Magnum FMJ and .44 Magnum JHP
-        B10mm = 3, //10mm AP and 10mm JHP
-        S12Gauge = 4, //12 gauge shotgun shell
-    }
+        [SerializeField]
+        private AttackMode _attackMode;
+        public AttackMode CurrentAttackMode => _attackMode;
 
+        [SerializeField]
+        private int _range;
+        public int Range => _range;
+        [SerializeField]
+        private int _actionPointCost;
+        public int ActionPointCost => _actionPointCost;
+        [SerializeField]
+        private int _ammoCost;
+        public int AmmoCost => _ammoCost;
+    }
 }
 public enum DamageType
 {

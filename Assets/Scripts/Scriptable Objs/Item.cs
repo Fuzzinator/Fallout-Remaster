@@ -13,6 +13,6 @@ public class Item : ScriptableObject
     public int Value => _value;
 
     [SerializeField]
-    private bool _stackable;
-    public bool Stackable => _stackable;
+    private int _maxStackSize = 0;
+    public int MaxStackSize => _maxStackSize;
 }

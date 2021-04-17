@@ -374,24 +374,18 @@ public class Player : Human
         base.EndTurn();
     }
 
-    private void TryAttack()
+    protected override void TryAttackCreature()
     {
-        if (TryGetTarget(out var target))
+        base.TryAttackCreature();
+        if (string.IsNullOrWhiteSpace(_messageToPrint))
         {
-            var distance = HexMaker.Instance.GetDistanceToCoord(HexMaker.GetCoord(_currentLocation),
-                HexMaker.GetCoord(target.CurrentLocation), TargetPath, wantToMove: false);
-            var chanceToHit = GetChanceToHit(distance, target);
-
-            var randomVal = Random.Range(1, 100);
-
-            if (chanceToHit < 0) //Did the attack miss?
-            {
-                return;
-            }
+            return;
         }
+        Debug.Log(_messageToPrint);
+        _messageToPrint = string.Empty;
     }
 
-    protected override bool TryGetTarget(out Creature target)
+    protected override bool TryGetTargetCreature(out Creature target)
     {
         var cam = CameraController.Instance.TargetCamera;
         var ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -406,13 +400,11 @@ public class Player : Human
 
     protected override bool TryDecrementAP(int cost, ActionType type)
     {
-        var additional = 0;
-        switch (type)
+        var additional = type switch
         {
-            case ActionType.Move:
-                additional = _bonusMovement;
-                break;
-        }
+            ActionType.Move => _bonusMovement,
+            _ => 0
+        };
 
         if (cost > _currentAP + additional)
         {
@@ -486,6 +478,11 @@ public class Player : Human
         }
 
         return resistance;
+    }
+
+    private void RequestAimedShot()
+    {
+        
     }
 
     private int GetBonusMovement()
@@ -759,7 +756,14 @@ public class Player : Human
                 TryMove();
                 break;
             case CursorController.CursorState.Targeting:
-                TryAttack();
+                if (_isAimedShot)
+                {
+                    RequestAimedShot();
+                }
+                else
+                {
+                    TryAttackCreature();
+                }
                 break;
         }
     }
@@ -771,13 +775,14 @@ public class Player : Human
             return;
         }
 
-        if (!TryGetTarget(out _currentTarget))
+        if (!TryGetTargetCreature(out _currentTarget))
         {
+            _chanceHitTarget = -1;
             return;
         }
 
         var distance = HexMaker.Instance.GetDistanceToCoord(HexMaker.GetCoord(_currentLocation),
-            HexMaker.GetCoord(_currentTarget.CurrentLocation), TargetPath, wantToMove: false);
+                                                            HexMaker.GetCoord(_currentTarget.CurrentLocation), TargetPath, wantToMove: false);
         _chanceHitTarget = GetChanceToHit(distance, _currentTarget);
         if (_currentTarget != null && _chanceHitTarget > 0)
         {

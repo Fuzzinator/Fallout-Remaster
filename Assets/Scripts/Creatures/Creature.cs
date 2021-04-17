@@ -26,10 +26,12 @@ public class Creature : MonoBehaviour, IOccupier
     protected Skills _skills;
 
     [SerializeField]
-     protected Weapon _activeWeapon;
+    protected Weapon _activeWeapon;
+    [SerializeField]
+    protected Weapon.AttackMode _activeWeaponMode;
 
-     [SerializeField]
-     protected bool _isAimedShot = false;
+    [SerializeField]
+    protected bool _isAimedShot = false;
 
     [SerializeField]
     protected Armor _equipedArmor;
@@ -37,7 +39,7 @@ public class Creature : MonoBehaviour, IOccupier
     [SerializeField]
     protected BasicAI _ai;
 
-    [SerializeField] 
+    [SerializeField]
     protected int _currentLocation;
 
     protected HexMaker _hexMaker;
@@ -47,17 +49,17 @@ public class Creature : MonoBehaviour, IOccupier
 
     protected float _speedModifier = 1f;
 
-    [SerializeField] 
+    [SerializeField]
     protected float _baseMoveSpeed = 5;
 
-    [SerializeField, Lockable] 
+    [SerializeField, Lockable]
     protected float _rotationSpeed = 10;
 
     protected Coroutine _isMoving;
 
     public readonly List<Coordinates> TargetPath = new List<Coordinates>();
 
-    [SerializeField] 
+    [SerializeField]
     protected int _xPValue = 0;
 
     [SerializeField, Lockable(rememberSelection: false)]
@@ -65,9 +67,13 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected int _baseHealth = 0;
+#region Combat Targeting Things
 
     protected Creature _currentTarget;
     protected int _chanceHitTarget;
+    protected string _messageToPrint;
+
+  #endregion
 
     protected int _apToAC = 0;
 
@@ -106,6 +112,13 @@ public class Creature : MonoBehaviour, IOccupier
     #endregion
 
     #region Constants
+
+    private const string OUTOFRANGE = "Target out of range.";
+    private const string TARGETBLOCKED = "Your aim is blocked.";
+    private const string ATTACKMISSED = "'s attack missed";
+    private const string NEEDMOREAP1 = "You need ";
+    private const string NEEDMOREAP2 = " AP to attack";
+    protected const int UNARMEDAPCOST = 3;
 
     #endregion
 
@@ -313,14 +326,45 @@ public class Creature : MonoBehaviour, IOccupier
         CombatManager.ProgressCombat();
     }
 
-    protected virtual bool TryGetTarget(out Creature target) //TODO flesh this out
+    protected virtual bool TryGetTargetCreature(out Creature target) //TODO flesh this out
     {
         target = null;
         return false;
     }
 
-    protected void TryAttackCreature(Creature target)
+    protected virtual void TryAttackCreature()
     {
+        var apCost = UNARMEDAPCOST;
+        if (_activeWeapon != null)
+        {
+            var weaponInfo = _activeWeapon.GetAttackTypeInfo(_activeWeaponMode);
+
+            apCost = weaponInfo.ActionPointCost;
+        }
+        var canAttack = TryDecrementAP(apCost, ActionType.Attack);
+        if (!canAttack)
+        {
+            _messageToPrint = $"{NEEDMOREAP1}{apCost}{NEEDMOREAP2}";
+            return;
+        }
+        if (_chanceHitTarget > 0 && _currentTarget != null)
+        {
+
+            var randomVal = Random.Range(1, 100);
+            var toHit = _chanceHitTarget - randomVal;
+            if (toHit < 0) //Did the attack miss?
+            {
+                _messageToPrint = $"{_name}{ATTACKMISSED}";
+                return;
+            }
+            ProcessAttack();
+        }
+    }
+
+    protected virtual void ProcessAttack()
+    {
+        var baseDamage = MeleeDamage+Random.Range(1,2);
+        
     }
 
     protected virtual int RandomHit()
@@ -355,6 +399,7 @@ public class Creature : MonoBehaviour, IOccupier
                     }
                     else
                     {
+                        _messageToPrint = TARGETBLOCKED;
                         return -1;
                     }
                 }
@@ -366,8 +411,11 @@ public class Creature : MonoBehaviour, IOccupier
         {
             weaponSkill = _activeWeapon.AssociatedSkill;
 
-            if (distance > _activeWeapon.Range)
+            var weaponInfo = _activeWeapon.GetAttackTypeInfo(_activeWeaponMode);
+
+            if (distance > weaponInfo.Range)
             {
+                _messageToPrint = OUTOFRANGE;
                 return -1;
             }
         }
@@ -375,6 +423,7 @@ public class Creature : MonoBehaviour, IOccupier
         {
             if (distance > 1)
             {
+                _messageToPrint = OUTOFRANGE;
                 return -1;
             }
         }
@@ -388,11 +437,8 @@ public class Creature : MonoBehaviour, IOccupier
             chanceToHit -= 10;
         }
 
-        if (_isAimedShot)
-        {
-            
-        }
-        
+        if (_isAimedShot) { }
+
         return chanceToHit;
     }
 
