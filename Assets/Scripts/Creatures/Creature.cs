@@ -364,6 +364,11 @@ public class Creature : MonoBehaviour, IOccupier
     protected virtual void ProcessAttack()
     {
         var baseDamage = MeleeDamage+Random.Range(1,2);
+        if (_activeWeapon != null)
+        {
+            baseDamage = _activeWeapon.GetDamage();
+            baseDamage *= _activeWeapon.CurrentAmmo.DamageMod;
+        }
         
     }
 

@@ -8,10 +8,6 @@ using Random = UnityEngine.Random;
 public class Weapon : Item
 {
     [SerializeField]
-    private string _weaponName;
-    public string WeaponName => _weaponName;
-
-    [SerializeField]
     private int _minDamage;
     [SerializeField]
     private int _maxDamage;

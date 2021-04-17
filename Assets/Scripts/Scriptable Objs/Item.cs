@@ -5,6 +5,10 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     [SerializeField]
+    private string _name;
+    private string Name => _name;
+    
+    [SerializeField]
     private int _weight;
     public int Weight => _weight;
     

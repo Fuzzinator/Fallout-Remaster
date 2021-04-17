@@ -4,7 +4,27 @@ using UnityEngine;
 
 public class Ammo : Item
 {
+    [SerializeField]
+    private int _acMod;
+
+    public int ACMod => _acMod;
+
+    [SerializeField]
+    private int _damageMult;
+
+    //public int DamageMultiplier => _damageMult;
+
+    [SerializeField]
+    private int _damageDiv;
+
+    //public int DamageDivisor => _damageDiv;
+
+    public int DamageMod => _damageMult / _damageDiv;
     
+    [SerializeField]
+    private int _drMod;
+
+    public int DRMod => _drMod;
     public enum Type
     {
         None = 0,

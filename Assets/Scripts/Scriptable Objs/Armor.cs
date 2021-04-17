@@ -7,10 +7,6 @@ public class Armor : Item
 {
     [Header("Main Values")]
     [SerializeField]
-    private string _armorName;
-    public string ArmorName => _armorName;
-
-    [SerializeField]
     private string _description;
     public string Description => _description;
 
