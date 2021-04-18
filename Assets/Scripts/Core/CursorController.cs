@@ -43,6 +43,7 @@ public class CursorController : MonoBehaviour
     private void Start()
     {
         GameManager.InputManager.Player.SecondaryClick.performed += SecondaryClickHandler;
+        CombatManager.stateChanged += CombatStateChanged;
     }
 
     private void SecondaryClickHandler(InputAction.CallbackContext context)
@@ -79,6 +80,18 @@ public class CursorController : MonoBehaviour
             {
                 stateChanged(_currentState);
             }
+        }
+    }
+
+    private void CombatStateChanged(bool combat)
+    {
+        if (combat)
+        {
+            SetState(CursorState.Targeting);
+        }
+        else
+        {
+            SetState(CursorState.Movement);
         }
     }
 

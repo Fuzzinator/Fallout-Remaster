@@ -94,7 +94,7 @@ public class Creature : MonoBehaviour, IOccupier
     }
 
     public int XPValue => _xPValue;
-    
+
     protected bool HasValidPath => TargetPath != null && TargetPath.Count > 0;
 
     public float MoveSpeed => _baseMoveSpeed * _speedModifier;
@@ -126,6 +126,7 @@ public class Creature : MonoBehaviour, IOccupier
     private const string PERIOD = ".";
     private const string NEEDMOREAP1 = "You need ";
     private const string NEEDMOREAP2 = " AP to attack";
+    protected const string NOAMMO = "Out of ammo.";
     protected const int UNARMEDAPCOST = 3;
 
     #endregion
@@ -353,11 +354,18 @@ public class Creature : MonoBehaviour, IOccupier
         if (_chanceHitTarget > 0)
         {
             var apCost = UNARMEDAPCOST;
+            var numOfAttacks = 1;
             if (_activeWeapon != null)
             {
                 var weaponInfo = _activeWeapon.GetAttackTypeInfo(_activeWeaponMode);
 
                 apCost = weaponInfo.ActionPointCost;
+                numOfAttacks = weaponInfo.AmmoCost;
+                if (!_activeWeapon.CanUseWeapon)
+                {
+                    _messageToPrint = NOAMMO;
+                    return;
+                }
             }
 
             var canAttack = TryDecrementAP(apCost, ActionType.Attack);
@@ -367,15 +375,32 @@ public class Creature : MonoBehaviour, IOccupier
                 return;
             }
 
-            var randomVal = RandomHit();
-            var toHit = _chanceHitTarget - randomVal;
-            if (toHit >= 0) //Did the attack miss?
+            var allMissed = true;
+            var totalDamage = 0;
+            for (int i = 0; i < numOfAttacks; i++)
             {
-                ProcessAttack(toHit);
+                if (_activeWeapon != null && !_activeWeapon.TryUseWeapon(1))
+                {
+                    break;
+                }
+
+                var randomVal = RandomHit();
+                var toHit = _chanceHitTarget - randomVal;
+                if (toHit >= 0) //Did the attack miss?
+                {
+                    allMissed = false;
+                    totalDamage += ProcessAttack(toHit);
+                }
+            }
+
+            if (allMissed)
+            {
+                _messageToPrint = $"{_name}{ATTACKMISSED}";
             }
             else
             {
-                _messageToPrint = $"{_name}{ATTACKMISSED}";
+                _messageToPrint =
+                    $"{_currentTarget}{HIT}{totalDamage}{HP}{(_currentTarget.Alive ? string.Empty : DIED)}{PERIOD}";
             }
         }
 
@@ -386,13 +411,11 @@ public class Creature : MonoBehaviour, IOccupier
     }
 
 
-    protected virtual void ProcessAttack(int toHit)
+    protected virtual int ProcessAttack(int toHit)
     {
         var damage = GetDamage(toHit);
-
         _currentTarget.TakeDamage(damage);
-
-        _messageToPrint = $"{_currentTarget}{HIT}{damage}{HP}{(_currentTarget.Alive ? string.Empty : DIED)}{PERIOD}";
+        return damage;
     }
 
     protected virtual int GetDamage(int toHit)
@@ -470,6 +493,40 @@ public class Creature : MonoBehaviour, IOccupier
     {
         var tPos = transform.position;
         var otPos = target.transform.position;
+
+        var weaponSkill = Skills.Type.Unarmed;
+        var ammoACMod = 0;
+
+        if (_activeWeapon != null)
+        {
+            weaponSkill = _activeWeapon.AssociatedSkill;
+
+            var weaponInfo = _activeWeapon.GetAttackTypeInfo(_activeWeaponMode);
+            if (!_activeWeapon.CanUseWeapon)
+            {
+                return -1;
+            }
+
+            if (_activeWeapon.CurrentAmmo != null)
+            {
+                ammoACMod = _activeWeapon.CurrentAmmo.ACMod;
+            }
+
+            if (distance > weaponInfo.Range)
+            {
+                _messageToPrint = OUTOFRANGE;
+                return -1;
+            }
+        }
+        else
+        {
+            if (distance > 1)
+            {
+                _messageToPrint = OUTOFRANGE;
+                return -1;
+            }
+        }
+
         var dist = Vector3.Distance(tPos, otPos);
         var ray = new Ray(tPos + Vector3.one, (tPos - otPos).normalized);
         RaycastHit[] hitInfos = new RaycastHit[0];
@@ -500,32 +557,6 @@ public class Creature : MonoBehaviour, IOccupier
             }
         }
 
-        var weaponSkill = Skills.Type.Unarmed;
-        var ammoACMod = 0;
-        if (_activeWeapon != null)
-        {
-            weaponSkill = _activeWeapon.AssociatedSkill;
-
-            var weaponInfo = _activeWeapon.GetAttackTypeInfo(_activeWeaponMode);
-            if (_activeWeapon.CurrentAmmo != null)
-            {
-                ammoACMod = _activeWeapon.CurrentAmmo.ACMod;
-            }
-
-            if (distance > weaponInfo.Range)
-            {
-                _messageToPrint = OUTOFRANGE;
-                return -1;
-            }
-        }
-        else
-        {
-            if (distance > 1)
-            {
-                _messageToPrint = OUTOFRANGE;
-                return -1;
-            }
-        }
 
         var chanceToHit = _skills.GetSkillLvl(weaponSkill) - 30;
         chanceToHit += ((_special.Perception - 2) * 16);

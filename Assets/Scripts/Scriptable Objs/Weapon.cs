@@ -55,12 +55,21 @@ public class Weapon : Item
     private bool _oneHanded = true;
     public bool OneHanded => _oneHanded;
 
-    public bool TryUseWeapon()
+    public bool CanUseWeapon => (_usesAmmo && _ammoInClip>0) || !_usesAmmo;
+    
+    public bool TryUseWeapon(int cost)
     {
-        if (_usesAmmo && _ammoInClip > 0)
+        if (_usesAmmo)
         {
-            _ammoInClip--;
-            return true;
+            if (_ammoInClip >= cost)
+            {
+                _ammoInClip -= cost;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {

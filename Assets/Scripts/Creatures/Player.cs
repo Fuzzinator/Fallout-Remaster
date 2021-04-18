@@ -37,6 +37,7 @@ public class Player : Human
     //private int _criticalChance;
     private int _bonusMovement = 0;
     private bool _canGetPerk = false;
+    private int _xpGainedDuringCombat = 0;
 
     #region Properties
 
@@ -125,6 +126,7 @@ public class Player : Human
     {
         GameManager.InputManager.Player.Enable();
         GameManager.InputManager.Player.PrimaryClick.performed += PrimaryClickHandler;
+        CombatManager.stateChanged += CombatStateChanged;
         CursorController.stateChanged += CursorStateChanged;
     }
 
@@ -132,6 +134,7 @@ public class Player : Human
     {
         GameManager.InputManager.Player.PrimaryClick.performed -= PrimaryClickHandler;
         GameManager.InputManager.Player.Look.performed -= LookHandler;
+        CombatManager.stateChanged -= CombatStateChanged;
         CursorController.stateChanged -= CursorStateChanged;
     }
 #if UNITY_EDITOR
@@ -433,7 +436,13 @@ public class Player : Human
 
     protected override void TryAttackCreature()
     {
+        if (_currentTarget == null == !_currentTarget.Alive)
+        {
+            return;
+        }
+        
         base.TryAttackCreature();
+        
         if (string.IsNullOrWhiteSpace(_messageToPrint))
         {
             return;
@@ -445,9 +454,9 @@ public class Player : Human
         {
             return;
         }
-        IncreaseXP(_currentTarget.XPValue);
-        _messageToPrint = $"{FORCRUSHING}{_currentTarget.XPValue}{EXPPOINTS}";
-        Debug.Log(_messageToPrint);
+
+        _xpGainedDuringCombat += _currentTarget.XPValue;
+        _currentTarget = null;
     }
 
     protected override bool TryGetTargetCreature(out Creature target)
@@ -830,6 +839,21 @@ public class Player : Human
                 }
 
                 break;
+        }
+    }
+
+    private void CombatStateChanged(bool isCombat)
+    {
+        if (!isCombat)
+        {
+            if (_xpGainedDuringCombat > 0)
+            {
+                
+                IncreaseXP(_xpGainedDuringCombat);
+                _messageToPrint = $"{FORCRUSHING}{_xpGainedDuringCombat}{EXPPOINTS}";
+                Debug.Log(_messageToPrint);
+                _xpGainedDuringCombat = 0;
+            }
         }
     }
 

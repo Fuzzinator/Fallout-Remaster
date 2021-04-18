@@ -70,11 +70,6 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public static void TryAttackCreature(Creature source, Creature target)
-    {
-        
-    }
-
     public static void AddToCombat(Creature newCreature)
     {
         if (Instance._surpriseRound && Instance._victim == null)
