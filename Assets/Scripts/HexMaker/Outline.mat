@@ -8,13 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Outline
-  m_Shader: {fileID: -6465566751694194690, guid: af5687087d6d2384a9df25f25a15255c,
-    type: 3}
+  m_Shader: {fileID: 4800000, guid: f4082f5d4a5bda54b87588173515d5fd, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 5000
+  m_CustomRenderQueue: 3450
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
