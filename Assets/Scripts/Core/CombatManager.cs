@@ -77,14 +77,14 @@ public class CombatManager : MonoBehaviour
 
     public static void AddToCombat(Creature newCreature)
     {
-        if (Instance._surpriseRound)
+        if (Instance._surpriseRound && Instance._victim == null)
         {
             Instance._victim = newCreature;
         }
 
         if (Instance._turnOrder.Contains(newCreature))
         {
-            Debug.LogWarning($"{newCreature.Name} Already in turn order. Why are you trying to add it again?");
+            //Debug.LogWarning($"{newCreature.Name} Already in turn order. Why are you trying to add it again?");
             return;
         }
 
@@ -116,9 +116,11 @@ public class CombatManager : MonoBehaviour
             Debug.LogWarning("Turn order empty but trying to progress.");
             return;
         }
+        TryEndCombat();
         if (Instance._surpriseRound && Instance._victim != null)
         {
             Instance._currentCreature = Instance._victim;
+            Instance._victim = null;
             Instance._surpriseRound = false;
         }
         else if (Instance._victim != null)
@@ -164,5 +166,15 @@ public class CombatManager : MonoBehaviour
 
         Instance._turnOrder.Clear();
         Instance._currentCreature = null;
+    }
+
+    public static bool IsMyTurn(Creature creature)
+    {
+        if (Instance == null)
+        {
+            return false;
+        }
+
+        return Instance._currentCreature == creature;
     }
 }

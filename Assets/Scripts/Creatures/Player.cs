@@ -1,15 +1,18 @@
-//using System;
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Action = System.Action;
 
 public class Player : Human
 {
     #region Variables And Properties
 
     public static Player Instance { get; private set; }
+
+    [SerializeField]
+    private int _currentXP = 0;
 
     [SerializeField]
     private int _currentLvl = 1;
@@ -29,8 +32,11 @@ public class Player : Human
     [SerializeField]
     private UpdateWindowShader _shaderUpdater;
 
+    public Action leveledUp;
+
     //private int _criticalChance;
     private int _bonusMovement = 0;
+    private bool _canGetPerk = false;
 
     #region Properties
 
@@ -66,11 +72,11 @@ public class Player : Human
         {
             var perkRate = 3;
 
-            if (_trait1.TraitType == Trait.Type.Skilled && _trait1.Penalty == ModType.PerkRate)
+            if (_trait1 != null && _trait1.TraitType == Trait.Type.Skilled && _trait1.Penalty == ModType.PerkRate)
             {
                 perkRate = _trait1.PenaltyAmount;
             }
-            else if (_trait2.TraitType == Trait.Type.Skilled && _trait2.Penalty == ModType.PerkRate)
+            else if (_trait2 != null && _trait2.TraitType == Trait.Type.Skilled && _trait2.Penalty == ModType.PerkRate)
             {
                 perkRate = _trait2.PenaltyAmount;
             }
@@ -89,6 +95,14 @@ public class Player : Human
 
     public int MaxMovement => _currentAP + _bonusMovement;
 
+    #endregion
+
+    #region Const
+
+    private const string FORCRUSHING = "For crushing your enemies, you earn ";
+    private const string EXPPOINTS = " exp. points.";
+    private const int LVLCAP = 21;
+    private const int XPINCREMENT = 1000;
     #endregion
 
     #endregion
@@ -241,6 +255,49 @@ public class Player : Human
         return skill;
     }
 
+
+    #endregion
+    
+    #region Leveling
+
+    private void IncreaseXP(int increase)
+    {
+        _currentXP += increase;
+        if (!ShouldLvlUp())
+        {
+            return;
+        }
+
+        TriggerLvlUp();
+    }
+
+    private bool ShouldLvlUp()
+    {
+        var shouldLvl = false;
+
+        var nxtLvl = _currentLvl + 1;
+        if (_currentXP >= (nxtLvl * (nxtLvl - 1) * .5 * XPINCREMENT))
+        {
+            return _currentLvl < LVLCAP;
+        }
+
+        return shouldLvl;
+    }
+
+    private void TriggerLvlUp()
+    {
+        _currentLvl++;
+        if (_currentLvl >= PerkRate && _currentLvl % PerkRate == 0)
+        {
+            _canGetPerk = true;
+        }
+
+        _unspentSkillPnts += SkillRate;
+        _hpIncrease += BaseHPIncrease;
+
+        leveledUp?.Invoke();
+    }
+    
     #endregion
 
     #region Movement
@@ -365,7 +422,7 @@ public class Player : Human
         _currentAP = MaxActionPoints;
         _apToAC = 0;
         _bonusMovement = GetBonusMovement();
-        HexHighlighter.Enable();
+        HexHighlighter.TryEnable();
     }
 
     public override void EndTurn()
@@ -381,8 +438,16 @@ public class Player : Human
         {
             return;
         }
+
         Debug.Log(_messageToPrint);
         _messageToPrint = string.Empty;
+        if (_currentTarget == null || _currentTarget.Alive)
+        {
+            return;
+        }
+        IncreaseXP(_currentTarget.XPValue);
+        _messageToPrint = $"{FORCRUSHING}{_currentTarget.XPValue}{EXPPOINTS}";
+        Debug.Log(_messageToPrint);
     }
 
     protected override bool TryGetTargetCreature(out Creature target)
@@ -453,11 +518,11 @@ public class Player : Human
             }
         }
 
-        if (_trait1.TraitType == Trait.Type.Finesse && _trait1.Benefit == ModType.CritChance)
+        if (_trait1 != null && _trait1.TraitType == Trait.Type.Finesse && _trait1.Benefit == ModType.CritChance)
         {
             critChance += _trait1.BenefitAmount;
         }
-        else if (_trait2.TraitType == Trait.Type.Finesse && _trait2.Benefit == ModType.CritChance)
+        else if (_trait2 != null && _trait2.TraitType == Trait.Type.Finesse && _trait2.Benefit == ModType.CritChance)
         {
             critChance += _trait2.BenefitAmount;
         }
@@ -482,7 +547,6 @@ public class Player : Human
 
     private void RequestAimedShot()
     {
-        
     }
 
     private int GetBonusMovement()
@@ -764,6 +828,7 @@ public class Player : Human
                 {
                     TryAttackCreature();
                 }
+
                 break;
         }
     }
@@ -782,7 +847,7 @@ public class Player : Human
         }
 
         var distance = HexMaker.Instance.GetDistanceToCoord(HexMaker.GetCoord(_currentLocation),
-                                                            HexMaker.GetCoord(_currentTarget.CurrentLocation), TargetPath, wantToMove: false);
+            HexMaker.GetCoord(_currentTarget.CurrentLocation), TargetPath, wantToMove: false);
         _chanceHitTarget = GetChanceToHit(distance, _currentTarget);
         if (_currentTarget != null && _chanceHitTarget > 0)
         {
@@ -795,11 +860,41 @@ public class Player : Human
         if (state == CursorController.CursorState.Targeting)
         {
             GameManager.InputManager.Player.Look.performed += LookHandler;
+            LookHandler(new InputAction.CallbackContext());
         }
         else
         {
             GameManager.InputManager.Player.Look.performed -= LookHandler;
         }
+    }
+
+    #endregion
+
+    #region Enums
+
+    public enum Reputation
+    {
+        VaultDweller = 1,
+        VaultScion = 2,
+        VaultVeteran = 3,
+        VaultElite = 4,
+        Wanderer = 5,
+        DesertWanderer = 6,
+        WandererOfTheWastes = 7,
+        EliteWanderer = 8,
+        Strider = 9,
+        DesertStrider = 10,
+        StriderOfTheWastes = 11,
+        StriderElite = 12,
+        VaultHero = 13,
+        WanderingHero = 14,
+        StridingHero = 15,
+        HeroOfTheDesert = 16,
+        HeroOfTheWastes = 17,
+        HeroOfTheGlowingLands = 18,
+        Paragon = 19,
+        LivingLegend = 20,
+        LastBestHopeForHumanity = 21
     }
 
     #endregion

@@ -109,7 +109,18 @@ public class HexHighlighter : MonoBehaviour
         GameManager.InputManager.Player.Look.performed -= LookHandler;
     }
 
-    public static void Enable()
+    public static void TryEnable()
+    {
+        if (CursorController.Instance == null ||
+            CursorController.Instance.CurrentState != CursorController.CursorState.Movement)
+        {
+            return;
+        }
+
+        Enable();
+    }
+
+    private static void Enable()
     {
         if (Instance != null)
         {
@@ -196,7 +207,8 @@ public class HexHighlighter : MonoBehaviour
         }
         else
         {
-            Enable();
+            CursorController.SetState(CursorController.CursorState.Movement);
+            /*Enable();*/
             ClearText();
         }
     }

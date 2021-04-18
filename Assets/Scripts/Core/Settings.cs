@@ -26,6 +26,23 @@ public static class Settings
     public static int speechVolume = 16;//Same
     public static int brightnessLvl = 1;//1-25, 1 = Normal, 25 = Brighter
     public static int mouseSensitivity = 1;//1-25, 1 = Normal, 25 = Faster
+
+
+    public static float CombatMultiplier
+    {
+        get
+        {
+            var toHit = combatDifficulty switch
+            {
+                Difficulty.Easy => .75f,
+                Difficulty.Normal => 1f,
+                Difficulty.Hard => 1.25f,
+                _ => 1f
+            };
+
+            return toHit;
+        }
+    }
     
     #region Enums
     public enum Difficulty

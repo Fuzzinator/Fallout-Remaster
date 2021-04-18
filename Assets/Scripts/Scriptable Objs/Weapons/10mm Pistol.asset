@@ -10,19 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4855a0d7509f1674085805f112957e5b, type: 3}
-  m_Name: New Weapon
+  m_Name: 10mm Pistol
   m_EditorClassIdentifier: 
-  _weight: 0
-  _value: 0
-  _stackable: 0
-  _weaponName: 
-  _attackMode: 0
-  _minDamage: 0
-  _maxDamage: 0
-  _actionPointCost: 0
-  _range: 1
-  _ammoCost: 0
-  _strRequired: 0
-  _associatedSkill: 0
-  _weaponType: 0
-  _dmgType: 0
+  _name: 10mm Pistol
+  _weight: 3
+  _value: 2500
+  _maxStackSize: 0
+  _minDamage: 5
+  _maxDamage: 12
+  _typeAndInfo:
+  - _attackMode: 0
+    _range: 25
+    _actionPointCost: 5
+    _ammoCost: 1
+  - _attackMode: 1
+    _range: 25
+    _actionPointCost: 6
+    _ammoCost: 1
+  _usesAmmo: 1
+  _ammoType: 3
+  _currentAmmo: {fileID: 11400000, guid: 9a075e297ce48c546bb9dc7d05d2a349, type: 2}
+  _ammoInClip: 12
+  _magSize: 12
+  _strRequired: 3
+  _associatedSkill: 1
+  _weaponType: 3
+  _dmgType: 1
+  _oneHanded: 1

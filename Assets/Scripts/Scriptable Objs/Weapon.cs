@@ -25,7 +25,7 @@ public class Weapon : Item
 
     [SerializeField]
     private Ammo _currentAmmo;
-    public Ammo CurrentAmmo;
+    public Ammo CurrentAmmo => _currentAmmo;
 
     [SerializeField]
     private int _ammoInClip = 0;

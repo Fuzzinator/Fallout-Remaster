@@ -2,24 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(order = 15, fileName = "New Ammo", menuName = "ScriptObjs/Ammo")]
 public class Ammo : Item
 {
     [SerializeField]
     private int _acMod;
-
     public int ACMod => _acMod;
 
     [SerializeField]
     private int _damageMult;
-
-    //public int DamageMultiplier => _damageMult;
-
     [SerializeField]
     private int _damageDiv;
+    public float DamageMod => _damageMult / (float)_damageDiv;
 
-    //public int DamageDivisor => _damageDiv;
-
-    public int DamageMod => _damageMult / _damageDiv;
+    [SerializeField]
+    private int _magSize;
+    public int MagSize => _magSize;
     
     [SerializeField]
     private int _drMod;

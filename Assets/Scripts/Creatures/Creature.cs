@@ -27,6 +27,7 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected Weapon _activeWeapon;
+
     [SerializeField]
     protected Weapon.AttackMode _activeWeaponMode;
 
@@ -67,13 +68,14 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected int _baseHealth = 0;
-#region Combat Targeting Things
+
+    #region Combat Targeting Things
 
     protected Creature _currentTarget;
     protected int _chanceHitTarget;
     protected string _messageToPrint;
 
-  #endregion
+    #endregion
 
     protected int _apToAC = 0;
 
@@ -91,6 +93,8 @@ public class Creature : MonoBehaviour, IOccupier
         set => _currentLocation = value;
     }
 
+    public int XPValue => _xPValue;
+    
     protected bool HasValidPath => TargetPath != null && TargetPath.Count > 0;
 
     public float MoveSpeed => _baseMoveSpeed * _speedModifier;
@@ -116,6 +120,10 @@ public class Creature : MonoBehaviour, IOccupier
     private const string OUTOFRANGE = "Target out of range.";
     private const string TARGETBLOCKED = "Your aim is blocked.";
     private const string ATTACKMISSED = "'s attack missed";
+    private const string HIT = " was hit for ";
+    private const string HP = " hit points";
+    private const string DIED = " and was killed";
+    private const string PERIOD = ".";
     private const string NEEDMOREAP1 = "You need ";
     private const string NEEDMOREAP2 = " AP to attack";
     protected const int UNARMEDAPCOST = 3;
@@ -323,7 +331,10 @@ public class Creature : MonoBehaviour, IOccupier
     public virtual void EndTurn()
     {
         _apToAC = _currentAP;
-        CombatManager.ProgressCombat();
+        if (CombatManager.IsMyTurn(this))
+        {
+            CombatManager.ProgressCombat();
+        }
     }
 
     protected virtual bool TryGetTargetCreature(out Creature target) //TODO flesh this out
@@ -334,42 +345,120 @@ public class Creature : MonoBehaviour, IOccupier
 
     protected virtual void TryAttackCreature()
     {
-        var apCost = UNARMEDAPCOST;
-        if (_activeWeapon != null)
+        if (_currentTarget == null)
         {
-            var weaponInfo = _activeWeapon.GetAttackTypeInfo(_activeWeaponMode);
-
-            apCost = weaponInfo.ActionPointCost;
-        }
-        var canAttack = TryDecrementAP(apCost, ActionType.Attack);
-        if (!canAttack)
-        {
-            _messageToPrint = $"{NEEDMOREAP1}{apCost}{NEEDMOREAP2}";
             return;
         }
-        if (_chanceHitTarget > 0 && _currentTarget != null)
-        {
 
-            var randomVal = Random.Range(1, 100);
-            var toHit = _chanceHitTarget - randomVal;
-            if (toHit < 0) //Did the attack miss?
+        if (_chanceHitTarget > 0)
+        {
+            var apCost = UNARMEDAPCOST;
+            if (_activeWeapon != null)
             {
-                _messageToPrint = $"{_name}{ATTACKMISSED}";
+                var weaponInfo = _activeWeapon.GetAttackTypeInfo(_activeWeaponMode);
+
+                apCost = weaponInfo.ActionPointCost;
+            }
+
+            var canAttack = TryDecrementAP(apCost, ActionType.Attack);
+            if (!canAttack)
+            {
+                _messageToPrint = $"{NEEDMOREAP1}{apCost}{NEEDMOREAP2}";
                 return;
             }
-            ProcessAttack();
+
+            var randomVal = RandomHit();
+            var toHit = _chanceHitTarget - randomVal;
+            if (toHit >= 0) //Did the attack miss?
+            {
+                ProcessAttack(toHit);
+            }
+            else
+            {
+                _messageToPrint = $"{_name}{ATTACKMISSED}";
+            }
+        }
+
+        if (_currentTarget.Alive)
+        {
+            CombatManager.AddToCombat(_currentTarget);
         }
     }
 
-    protected virtual void ProcessAttack()
+
+    protected virtual void ProcessAttack(int toHit)
     {
-        var baseDamage = MeleeDamage+Random.Range(1,2);
+        var damage = GetDamage(toHit);
+
+        _currentTarget.TakeDamage(damage);
+
+        _messageToPrint = $"{_currentTarget}{HIT}{damage}{HP}{(_currentTarget.Alive ? string.Empty : DIED)}{PERIOD}";
+    }
+
+    protected virtual int GetDamage(int toHit)
+    {
+        var baseDamage = (float) MeleeDamage + Random.Range(1, 2);
+        var armorThreshold = 0;
+        var armorResist = 0;
+        var ammoDRMod = 0;
         if (_activeWeapon != null)
         {
             baseDamage = _activeWeapon.GetDamage();
             baseDamage *= _activeWeapon.CurrentAmmo.DamageMod;
+
+            if (_currentTarget._equipedArmor != null)
+            {
+                armorThreshold = _currentTarget._equipedArmor.GetThreshold(_activeWeapon.DmgType);
+                armorResist = _currentTarget._equipedArmor.GetResistance(_activeWeapon.DmgType);
+            }
+
+            if (_activeWeapon.CurrentAmmo != null)
+            {
+                ammoDRMod = _activeWeapon.CurrentAmmo.DRMod;
+            }
         }
-        
+        else if (_currentTarget._equipedArmor != null)
+        {
+            armorThreshold = _currentTarget._equipedArmor.GetThreshold(DamageType.Normal);
+            armorResist = _currentTarget._equipedArmor.GetResistance(DamageType.Normal);
+        }
+
+        var critChance = GetCriticalChance(toHit);
+        var wasCrit = false; //TODO flesh out the critical stuff
+        var armorIgnore = 1f;
+        if (wasCrit)
+        {
+            armorIgnore = 5f;
+        }
+
+        baseDamage *= Settings.CombatMultiplier;
+
+        baseDamage -= armorThreshold / armorIgnore;
+
+        var resistance = 100f;
+
+        resistance -= Mathf.Max((armorResist / armorIgnore) + ammoDRMod, 0);
+
+        var finalDamage = Mathf.RoundToInt(baseDamage * resistance / 100f);
+        return finalDamage;
+    }
+
+    public virtual void TakeDamage(int damage)
+    {
+        _currentHealth -= damage;
+        if (_currentHealth > 0)
+        {
+            return;
+        }
+        else
+        {
+            TriggerDeath();
+        }
+    }
+
+    protected virtual void TriggerDeath()
+    {
+        CombatManager.RemoveFromCombat(this);
     }
 
     protected virtual int RandomHit()
@@ -412,11 +501,16 @@ public class Creature : MonoBehaviour, IOccupier
         }
 
         var weaponSkill = Skills.Type.Unarmed;
+        var ammoACMod = 0;
         if (_activeWeapon != null)
         {
             weaponSkill = _activeWeapon.AssociatedSkill;
 
             var weaponInfo = _activeWeapon.GetAttackTypeInfo(_activeWeaponMode);
+            if (_activeWeapon.CurrentAmmo != null)
+            {
+                ammoACMod = _activeWeapon.CurrentAmmo.ACMod;
+            }
 
             if (distance > weaponInfo.Range)
             {
@@ -436,13 +530,15 @@ public class Creature : MonoBehaviour, IOccupier
         var chanceToHit = _skills.GetSkillLvl(weaponSkill) - 30;
         chanceToHit += ((_special.Perception - 2) * 16);
         chanceToHit -= (distance * 4);
-        chanceToHit -= (target.ArmorClass);
+        chanceToHit -= (target.ArmorClass + ammoACMod); //Not positive ammoACMod should be used this way
         if (WorldClock.Instance != null && WorldClock.Instance.IsNight && distance > 5)
         {
             chanceToHit -= 10;
         }
 
-        if (_isAimedShot) { }
+        if (_isAimedShot)
+        {
+        }
 
         return chanceToHit;
     }
