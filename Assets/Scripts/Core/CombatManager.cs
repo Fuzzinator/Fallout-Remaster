@@ -54,6 +54,29 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    private List<Creature> GetEnemies(BasicAI.Aggression aggression)
+    {
+        List<Creature> enemies = null;
+        var enemiesNull = true;
+
+        var targetAggression = aggression == BasicAI.Aggression.Friendly ? BasicAI.Aggression.Hostile : BasicAI.Aggression.Friendly;
+
+        foreach (var creature in _turnOrder)
+        {
+            if (creature.Aggression == targetAggression)
+            {
+                if (enemiesNull)
+                {
+                    enemies = new List<Creature>();
+                    enemiesNull = false;
+                }
+                enemies.Add(creature);
+            }
+        }
+
+        return enemies;
+    }
+
     public static void StartCombat(Creature instigator)
     {
         Instance._turnOrder.Clear();

@@ -96,6 +96,8 @@ public class Player : Human
 
     public int MaxMovement => _currentAP + _bonusMovement;
 
+    public override BasicAI.Aggression Aggression => BasicAI.Aggression.Friendly;
+
     #endregion
 
     #region Const

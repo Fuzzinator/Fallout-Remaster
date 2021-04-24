@@ -14,7 +14,7 @@ public class Creature : MonoBehaviour, IOccupier
     public string Name => _name;
 
     [SerializeField]
-    protected int _currentHealth; //cave rats have 6hp
+    protected int _currentHealth;
 
     [SerializeField]
     protected int _currentAP;
@@ -85,6 +85,8 @@ public class Creature : MonoBehaviour, IOccupier
 
     #region Properties
 
+    public int CurrentHealth => _currentHealth;
+
     public bool Alive => _currentHealth > 0;
 
     public int CurrentLocation
@@ -113,6 +115,8 @@ public class Creature : MonoBehaviour, IOccupier
     public Creature TargetCreature => _currentTarget;
     public int ChanceToHitTarget => _chanceHitTarget;
 
+    public virtual BasicAI.Aggression Aggression => _ai != null ? _ai.CurrentAggression : BasicAI.Aggression.Neutral;
+
     #endregion
 
     #region Constants
@@ -128,6 +132,7 @@ public class Creature : MonoBehaviour, IOccupier
     private const string NEEDMOREAP2 = " AP to attack";
     protected const string NOAMMO = "Out of ammo.";
     protected const int UNARMEDAPCOST = 3;
+    protected const int INVENTORYAPCOST = 4;
 
     #endregion
 
@@ -277,16 +282,24 @@ public class Creature : MonoBehaviour, IOccupier
         }
     }
 
-    protected virtual bool TryDecrementAP(int cost, ActionType type)
+    public virtual bool TryOpenInventory()
     {
-        if (cost > _currentAP)
+        if (CombatManager.Instance != null)
         {
-            return false;
+            var canOpenInventory = !CombatManager.Instance.CombatMode || TryDecrementAP(INVENTORYAPCOST, ActionType.None);
+            if (canOpenInventory)
+            {
+                OpenInventory();
+            }
+
+            return canOpenInventory;
         }
+        return false;
+    }
 
-        _currentAP -= cost;
-
-        return true;
+    protected virtual void OpenInventory()
+    {
+        
     }
 
     protected Quaternion GetTargetRotation(Coordinates currentCoord, Coordinates targetCoord, out HexDir targetDir)
@@ -309,6 +322,17 @@ public class Creature : MonoBehaviour, IOccupier
 
     #region Combat
 
+    protected virtual bool TryDecrementAP(int cost, ActionType type)
+    {
+        if (cost > _currentAP)
+        {
+            return false;
+        }
+
+        _currentAP -= cost;
+
+        return true;
+    }
     public virtual void InitiateCombat()
     {
         CombatManager.startTurn += TryStartTurn;
@@ -327,6 +351,7 @@ public class Creature : MonoBehaviour, IOccupier
     {
         _currentAP = MaxActionPoints;
         _apToAC = 0;
+        _ai?.StartTurn();
     }
 
     public virtual void EndTurn()

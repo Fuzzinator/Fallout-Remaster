@@ -177,7 +177,10 @@ MonoBehaviour:
   _special: {fileID: 0}
   _skills: {fileID: 0}
   _activeWeapon: {fileID: 0}
+  _activeWeaponMode: 0
+  _isAimedShot: 0
   _equipedArmor: {fileID: 0}
+  _ai: {fileID: 5375600392172712499}
   _currentLocation: 0
   _facingDir: 0
   _baseMoveSpeed: 5
@@ -197,3 +200,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3903280c2faef9b4fbd4f9e9058a24f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _creature: {fileID: 8579911623099481103}
+  _currentState: 0
+  _aggression: 0
+  _waitTime: 2
+  _waypoints: 
+  _targetCreature: {fileID: 0}
