@@ -69,6 +69,9 @@ public class Creature : MonoBehaviour, IOccupier
     [SerializeField]
     protected int _baseHealth = 0;
 
+    [SerializeField]
+    private AnimatorController animatorController;
+
     #region Combat Targeting Things
 
     protected Creature _currentTarget;
@@ -95,6 +98,8 @@ public class Creature : MonoBehaviour, IOccupier
         set => _currentLocation = value;
     }
 
+    public Coordinates Coord => HexMaker.GetCoord(_currentLocation);
+
     public int XPValue => _xPValue;
 
     protected bool HasValidPath => TargetPath != null && TargetPath.Count > 0;
@@ -114,6 +119,8 @@ public class Creature : MonoBehaviour, IOccupier
 
     public Creature TargetCreature => _currentTarget;
     public int ChanceToHitTarget => _chanceHitTarget;
+    
+    public AnimatorController AnimController => animatorController;
 
     public virtual BasicAI.Aggression Aggression => _ai != null ? _ai.CurrentAggression : BasicAI.Aggression.Neutral;
 
@@ -514,7 +521,7 @@ public class Creature : MonoBehaviour, IOccupier
         return Random.Range(1, 100);
     }
 
-    protected virtual int GetChanceToHit(int distance, Creature target)
+    public virtual int GetChanceToHit(int distance, Creature target)
     {
         var tPos = transform.position;
         var otPos = target.transform.position;
@@ -552,36 +559,12 @@ public class Creature : MonoBehaviour, IOccupier
             }
         }
 
-        var dist = Vector3.Distance(tPos, otPos);
-        var ray = new Ray(tPos + Vector3.one, (tPos - otPos).normalized);
-        RaycastHit[] hitInfos = new RaycastHit[0];
-        var size = Physics.RaycastNonAlloc(ray, hitInfos, dist);
-        if (size > 1)
+        var viewUnobscured = CombatManager.ViewUnobscured(this, target);
+        if (!viewUnobscured)
         {
-            List<Creature> creatures = null;
-            var mask = CombatManager.Instance.TargetableObjs;
-            if (hitInfos != null)
-            {
-                foreach (var hitInfo in hitInfos)
-                {
-                    if (mask == (mask | 1 << hitInfo.collider.gameObject.layer))
-                    {
-                        if (hitInfo.collider.gameObject == target.gameObject)
-                        {
-                            continue;
-                        }
-
-                        //TODO decrement chance to hit and add these new creatures to a list of possibility to be hit if the other attack misses
-                    }
-                    else
-                    {
-                        _messageToPrint = TARGETBLOCKED;
-                        return -1;
-                    }
-                }
-            }
+            _messageToPrint = TARGETBLOCKED;
+            return -1;
         }
-
 
         var chanceToHit = _skills.GetSkillLvl(weaponSkill) - 30;
         chanceToHit += ((_special.Perception - 2) * 16);
@@ -641,6 +624,21 @@ public class Creature : MonoBehaviour, IOccupier
         }
 
         return threshold;
+    }
+
+    public virtual Weapon.AttackTypeInfo GetAttackTypeInfo()
+    {
+        Weapon.AttackTypeInfo weaponInfo;
+        if (_activeWeapon != null)
+        {
+            weaponInfo = _activeWeapon.GetAttackTypeInfo(_activeWeaponMode);
+        }
+        else
+        {
+            var apCost = _activeWeaponMode == Weapon.AttackMode.AimedShot ? UNARMEDAPCOST + 1 : UNARMEDAPCOST;
+            weaponInfo = new Weapon.AttackTypeInfo(_activeWeaponMode, 1, apCost, 0);
+        }
+        return weaponInfo;
     }
 
     #endregion

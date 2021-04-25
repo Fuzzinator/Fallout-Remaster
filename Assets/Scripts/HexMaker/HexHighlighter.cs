@@ -166,8 +166,7 @@ public class HexHighlighter : MonoBehaviour
         var player = Player.Instance;
         if (player != null)
         {
-            var sourceCoord = _hexMaker.Coords[player.CurrentLocation];
-            UpdateDisplay(sourceCoord, HoveredCoord);
+            UpdateDisplay(player.Coord, HoveredCoord);
         }
     }
 

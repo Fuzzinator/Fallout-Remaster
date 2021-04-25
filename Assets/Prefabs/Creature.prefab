@@ -175,7 +175,7 @@ MonoBehaviour:
   _currentHealth: 0
   _currentAP: 0
   _special: {fileID: 0}
-  _skills: {fileID: 0}
+  _skills: {fileID: 11400000, guid: a273fe76c95bb0f41bd94e654746facb, type: 2}
   _activeWeapon: {fileID: 0}
   _activeWeaponMode: 0
   _isAimedShot: 0
@@ -188,6 +188,7 @@ MonoBehaviour:
   _xPValue: 0
   _hpIncrease: 0
   _baseHealth: 0
+  animatorController: {fileID: 0}
 --- !u!114 &5375600392172712499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,3 +207,5 @@ MonoBehaviour:
   _waitTime: 2
   _waypoints: 
   _targetCreature: {fileID: 0}
+  _tryHealAtLow: 0
+  _tryHealAtVLow: 1

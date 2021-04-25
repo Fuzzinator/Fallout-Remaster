@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b67351d547de540a4460f0c3a640e5, type: 3}
+  m_Name: Cave Rat
+  m_EditorClassIdentifier: 
+  _specials: {fileID: 11400000, guid: fc0d1f5ad82111249b96514bab97af18, type: 2}
+  _skills:
+  - {fileID: 11400000, guid: 4592461c784a3b84e80dc7eacc9125dc, type: 2}
+  tag1: 0
+  tag2: 0
+  tag3: 0

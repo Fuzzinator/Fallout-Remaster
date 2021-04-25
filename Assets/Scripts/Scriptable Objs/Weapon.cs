@@ -131,6 +131,14 @@ public class Weapon : Item
         [SerializeField]
         private int _ammoCost;
         public int AmmoCost => _ammoCost;
+
+        public AttackTypeInfo(AttackMode attackMode, int range, int actionPointCost, int ammoCost)
+        {
+            _attackMode = attackMode;
+            _range = range;
+            _actionPointCost = actionPointCost;
+            _ammoCost = ammoCost;
+        }
     }
 }
 public enum DamageType

@@ -17,6 +17,7 @@ public class BasicAI : MonoBehaviour
 
     [SerializeField]
     private Aggression _aggression;
+
     public Aggression CurrentAggression => _aggression;
 
     [SerializeField]
@@ -37,6 +38,7 @@ public class BasicAI : MonoBehaviour
     [Header("Combat")]
     [SerializeField]
     private bool _tryHealAtLow = false;
+
     [SerializeField]
     private bool _tryHealAtVLow = true;
 
@@ -44,12 +46,14 @@ public class BasicAI : MonoBehaviour
 
     #region const
 
-    private const int FULLHEALTH = 100;//This is a percent
-    private const int MEDIUMHEALTH = 75;//This is a percent
-    private const int LOWHEALTH = 50;//This is a percent
+    private const int FULLHEALTH = 100; //This is a percent
+    private const int MEDIUMHEALTH = 75; //This is a percent
+    private const int LOWHEALTH = 50; //This is a percent
     private const int VERYLOWHEALTH = 25; //This is a percent
+    private const int MINCHANCETOHIT = 20;
 
     #endregion
+
     #region Unity Event Functions
 
     private void OnValidate()
@@ -111,7 +115,24 @@ public class BasicAI : MonoBehaviour
 
     protected virtual IEnumerator RunCombatLogicTree()
     {
-        var foundTarget = TryGetTarget();
+        switch (_currentState)
+        {
+            case State.Fleeing:
+                GetPath();
+                yield return _creature.AIMoveCreature();
+                _creature.EndTurn();
+                yield break;
+            case State.Dead:
+                yield break;
+            /*case State.Idle:
+            case State.Wander:
+            case State.Patrol:
+            case State.Guard:
+            case State.Chase:
+            default:
+                break;*/
+        }
+
         if (WantsToHeal())
         {
             var healed = TryToHeal();
@@ -119,19 +140,100 @@ public class BasicAI : MonoBehaviour
             {
                 _currentState = State.Fleeing;
                 GetPath();
+                yield return _creature.AIMoveCreature();
+                _creature.EndTurn();
+            }
+            else if (healed)
+            {
+                yield return _creature.AnimController.UseAnimWait;
             }
         }
-        yield return null;
+
+        if (_aggression == Aggression.Hostile)
+        {
+            var chanceToHit = _creature.GetChanceToHit(1, Player.Instance);
+            if (chanceToHit < MINCHANCETOHIT)
+            {
+                _currentState = State.Fleeing;
+                GetPath();
+                yield return _creature.AIMoveCreature();
+                _creature.EndTurn();
+                yield break;
+            }
+        }
+
+        var foundTarget = TryGetTarget(out var distToTarget);
+
+        if (!foundTarget)
+        {
+            _creature.EndTurn();
+            yield break;
+        }
+
+        //If not possible for AI to get to target
+        if (distToTarget < 0)
+        {
+            _currentState = State.Fleeing;
+            GetPath();
+            yield return _creature.AIMoveCreature();
+            _creature.EndTurn();
+            yield break;
+        }
+
+        var weaponInfo = _creature.GetAttackTypeInfo();
+        var path = _creature.TargetPath.ToArray();
+        _creature.TargetPath.Clear();
+        for (var i = 0; i < path.Length; i++)
+        {
+            _creature.TargetPath.Add(path[i]);
+            if (weaponInfo.Range < distToTarget)
+            {
+                yield return _creature.AIMoveCreature();
+            }
+            else
+            {
+                if (CombatManager.ViewUnobscured(_creature, _targetCreature))
+                {
+                    break;
+                }
+
+                yield return _creature.AIMoveCreature();
+            }
+
+            _creature.TargetPath.Remove(path[i]);
+        }
+        _creature.TargetPath.Clear();
         
+
+        yield return null;
+        _creature.EndTurn();
     }
 
-    protected virtual bool TryGetTarget()
+    protected virtual bool TryGetTarget(out int distance)
     {
         var foundTarget = false;
+        distance = -1;
         if (CombatManager.Instance != null)
         {
-            var enemies = CombatManager.Instance.
+            var enemies = CombatManager.Instance.GetEnemies(_aggression);
+            var closestDist = int.MaxValue;
+            foreach (var enemy in enemies)
+            {
+                var dist = HexMaker.Instance.GetDistanceToCoord(_creature.Coord, enemy.Coord,
+                    _creature.TargetPath, null, closestDist, false);
+
+                if (dist >= closestDist || dist < 0)
+                {
+                    continue;
+                }
+
+                closestDist = dist;
+                distance = dist;
+                _targetCreature = enemy;
+                foundTarget = true;
+            }
         }
+
         return foundTarget;
     }
 
@@ -139,26 +241,28 @@ public class BasicAI : MonoBehaviour
     {
         if (_tryHealAtLow || _tryHealAtVLow)
         {
-            var percent = Mathf.Max((FULLHEALTH / (float) _creature.MaxHealth)*_creature.CurrentHealth, 1);
+            var percent = Mathf.Max((FULLHEALTH / (float) _creature.MaxHealth) * _creature.CurrentHealth, 1);
             if (_tryHealAtLow && percent <= LOWHEALTH)
             {
                 return true;
             }
+
             if (_tryHealAtVLow && percent <= VERYLOWHEALTH)
             {
                 return true;
             }
         }
+
         return false;
     }
 
     private bool HealthVeryLow()
     {
-        var percent = Mathf.Max((FULLHEALTH / (float) _creature.MaxHealth)*_creature.CurrentHealth, 1);
+        var percent = Mathf.Max((FULLHEALTH / (float) _creature.MaxHealth) * _creature.CurrentHealth, 1);
         return percent <= VERYLOWHEALTH;
     }
 
-    private bool TryToHeal()//TODO once inventory is set up, flesh this out
+    private bool TryToHeal() //TODO once inventory is set up, flesh this out
     {
         var creatureHasStimPackInInventory = false;
         if (creatureHasStimPackInInventory)
@@ -170,11 +274,17 @@ public class BasicAI : MonoBehaviour
                 return true;
             }
         }
+
         return false;
     }
-    
 
     #endregion
+
+    public void ChangeAggression(Aggression aggression)
+    {
+        CombatManager.ChangeAggression(_creature, aggression);
+        _aggression = aggression;
+    }
 
     public void GetPath()
     {
@@ -191,7 +301,7 @@ public class BasicAI : MonoBehaviour
                 if (_waypoints.Length == 0)
                 {
                     Debug.LogWarning($"{_creature.Name}'s AI is set to Patrol, but it doesn't have any waypoints.",
-                                     this);
+                        this);
                     return;
                 }
 
@@ -204,8 +314,8 @@ public class BasicAI : MonoBehaviour
                     _currentWaypoint = 0;
                 }
 
-                HexMaker.Instance.GetDistanceToCoord(HexMaker.GetCoord(_creature.CurrentLocation),
-                                                     HexMaker.GetCoord(_waypoints[_currentWaypoint]), _creature.TargetPath);
+                HexMaker.Instance.GetDistanceToCoord(_creature.Coord, HexMaker.GetCoord(_waypoints[_currentWaypoint]),
+                    _creature.TargetPath);
                 break;
             case State.Chase:
                 if (_targetCreature == null)
@@ -214,8 +324,7 @@ public class BasicAI : MonoBehaviour
                     break;
                 }
 
-                HexMaker.Instance.GetDistanceToCoord(HexMaker.GetCoord(_creature.CurrentLocation),
-                                                     HexMaker.GetCoord(_targetCreature.CurrentLocation), _creature.TargetPath);
+                HexMaker.Instance.GetDistanceToCoord(_creature.Coord, _targetCreature.Coord, _creature.TargetPath);
                 break;
             case State.Fleeing:
                 if (_targetCreature == null)
@@ -236,9 +345,9 @@ public class BasicAI : MonoBehaviour
         {
             var randOption = coordOptions[Random.Range(0, coordOptions.Count)];
 
-            HexMaker.Instance.GetDistanceToCoord(HexMaker.GetCoord(_creature.CurrentLocation),
-                                                 randOption, _creature.TargetPath);
+            HexMaker.Instance.GetDistanceToCoord(_creature.Coord, randOption, _creature.TargetPath);
         }
+
         /*while (true)
         {
             var curentPos = transform.position;
@@ -273,19 +382,17 @@ public class BasicAI : MonoBehaviour
     {
         var foundPath = false;
         var coordOptions = GetWalkableMaxDistCoords();
-        var currentPos = HexMaker.GetCoord(_creature.CurrentLocation);
 
         Coordinates furthestCoord = null;
         var furthestDist = -1;
-        var creatureCoord = HexMaker.GetCoord(_creature.CurrentLocation);
 
         foreach (var coord in coordOptions)
         {
-            var dist = HexMaker.Instance.GetDistanceToCoord(creatureCoord, coord, null);
+            var dist = HexMaker.Instance.GetDistanceToCoord(_creature.Coord, coord, null);
             if (dist > furthestDist)
             {
                 var creatureDist =
-                    HexMaker.Instance.GetDistanceToCoord(currentPos, furthestCoord, _creature.TargetPath);
+                    HexMaker.Instance.GetDistanceToCoord(_creature.Coord, furthestCoord, _creature.TargetPath);
 
                 if (creatureDist > 0)
                 {
@@ -295,20 +402,22 @@ public class BasicAI : MonoBehaviour
                 }
             }
         }
+
         return foundPath;
     }
 
     private List<Coordinates> GetWalkableMaxDistCoords()
     {
         var coordOptions = new List<Coordinates>();
-        var currentPos = HexMaker.GetCoord(_creature.CurrentLocation);
         //Getting actualStartPos
-        var nextPos = GetSequentialNeighbors(currentPos, HexDir.N, coordOptions, _creature.MaxCanMoveDist, false);
+        var nextPos = GetSequentialNeighbors(_creature.Coord, HexDir.N, coordOptions,
+            _creature.MaxCanMoveDist, false);
         if (nextPos == null)
         {
             Debug.LogWarning("The starting point for max dist is null. Is the creatures AP 0?", this);
             return coordOptions;
         }
+
         coordOptions.Add(nextPos);
 
         //SE
@@ -328,8 +437,8 @@ public class BasicAI : MonoBehaviour
     }
 
     private static Coordinates GetSequentialNeighbors(Coordinates startingPoint, HexDir direction,
-                                                      List<Coordinates> coords,
-                                                      int dist, bool shouldAdd = true)
+        List<Coordinates> coords,
+        int dist, bool shouldAdd = true)
     {
         var neighbor = startingPoint.GetNeighbor((int) direction);
         Coordinates neighborCoord = null;

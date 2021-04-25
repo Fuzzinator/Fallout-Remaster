@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -106,6 +105,7 @@ public class Player : Human
     private const string EXPPOINTS = " exp. points.";
     private const int LVLCAP = 21;
     private const int XPINCREMENT = 1000;
+
     #endregion
 
     #endregion
@@ -260,9 +260,8 @@ public class Player : Human
         return skill;
     }
 
-
     #endregion
-    
+
     #region Leveling
 
     private void IncreaseXP(int increase)
@@ -302,7 +301,7 @@ public class Player : Human
 
         leveledUp?.Invoke();
     }
-    
+
     #endregion
 
     #region Movement
@@ -438,13 +437,13 @@ public class Player : Human
 
     protected override void TryAttackCreature()
     {
-        if (_currentTarget == null == !_currentTarget.Alive)
+        if (_currentTarget == null || !_currentTarget.Alive)
         {
             return;
         }
-        
+
         base.TryAttackCreature();
-        
+
         if (string.IsNullOrWhiteSpace(_messageToPrint))
         {
             return;
@@ -508,7 +507,7 @@ public class Player : Human
         return true;
     }
 
-    protected override int GetChanceToHit(int distance, Creature target)
+    public override int GetChanceToHit(int distance, Creature target)
     {
         return base.GetChanceToHit(distance, target);
     }
@@ -850,7 +849,6 @@ public class Player : Human
         {
             if (_xpGainedDuringCombat > 0)
             {
-                
                 IncreaseXP(_xpGainedDuringCombat);
                 _messageToPrint = $"{FORCRUSHING}{_xpGainedDuringCombat}{EXPPOINTS}";
                 Debug.Log(_messageToPrint);
@@ -872,8 +870,7 @@ public class Player : Human
             return;
         }
 
-        var distance = HexMaker.Instance.GetDistanceToCoord(HexMaker.GetCoord(_currentLocation),
-            HexMaker.GetCoord(_currentTarget.CurrentLocation), TargetPath, wantToMove: false);
+        var distance = HexMaker.Instance.GetDistanceToCoord(Coord, _currentTarget.Coord, TargetPath, wantToMove: false);
         _chanceHitTarget = GetChanceToHit(distance, _currentTarget);
         if (_currentTarget != null && _chanceHitTarget > 0)
         {

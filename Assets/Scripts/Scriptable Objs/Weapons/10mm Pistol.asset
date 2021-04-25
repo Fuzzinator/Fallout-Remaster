@@ -30,7 +30,7 @@ MonoBehaviour:
   _usesAmmo: 1
   _ammoType: 3
   _currentAmmo: {fileID: 11400000, guid: 9a075e297ce48c546bb9dc7d05d2a349, type: 2}
-  _ammoInClip: 12
+  _ammoInClip: 9
   _magSize: 12
   _strRequired: 3
   _associatedSkill: 1

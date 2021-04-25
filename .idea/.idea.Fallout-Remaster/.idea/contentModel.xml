@@ -866,6 +866,7 @@
               <e p="TMP_SDF Overlay.shader" t="Include" />
               <e p="TMP_SDF SSD.shader" t="Include" />
               <e p="TMP_SDF-Mobile Masking.shader" t="Include" />
+              <e p="TMP_SDF-Mobile OnTop.shader" t="Include" />
               <e p="TMP_SDF-Mobile Overlay.shader" t="Include" />
               <e p="TMP_SDF-Mobile SSD.shader" t="Include" />
               <e p="TMP_SDF-Mobile.shader" t="Include" />
@@ -901,6 +902,7 @@
             <e p="WorldClock.cs" t="Include" />
           </e>
           <e p="Creatures" t="Include">
+            <e p="AnimatorController.cs" t="Include" />
             <e p="BasicAI.cs" t="Include" />
             <e p="Creature.cs" t="Include" />
             <e p="Human.cs" t="Include" />
@@ -935,6 +937,7 @@
             <e p="Weapon.cs" t="Include" />
           </e>
           <e p="Shaders" t="Include">
+            <e p="HexHighlighter.shader" t="Include" />
             <e p="Invisible.shader" t="Include" />
             <e p="Outline.shader" t="Include" />
             <e p="Standard Outline.shader" t="Include" />
