@@ -370,12 +370,16 @@ public class Creature : MonoBehaviour, IOccupier
         }
     }
 
-    protected virtual bool TryGetTargetCreature(out Creature target) //TODO flesh this out
+    public virtual void SetTargetCreature(Creature target) //TODO flesh this out
     {
-        target = null;
-        return false;
+        _currentTarget = target;
     }
 
+    public virtual IEnumerator StartTryAttack()
+    {
+        GetChanceToHit()
+    }
+    
     protected virtual void TryAttackCreature()
     {
         if (_currentTarget == null)

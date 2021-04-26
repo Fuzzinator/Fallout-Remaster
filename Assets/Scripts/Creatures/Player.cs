@@ -460,7 +460,7 @@ public class Player : Human
         _currentTarget = null;
     }
 
-    protected override bool TryGetTargetCreature(out Creature target)
+    protected bool TryGetTargetCreature(out Creature target)
     {
         var cam = CameraController.Instance.TargetCamera;
         var ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
