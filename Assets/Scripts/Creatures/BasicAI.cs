@@ -183,11 +183,11 @@ public class BasicAI : MonoBehaviour
         var weaponInfo = _creature.GetAttackTypeInfo();
         var path = _creature.TargetPath.ToArray();
         _creature.TargetPath.Clear();
+        var dist = distToTarget - weaponInfo.Range;
         for (var i = 0; i < path.Length; i++)
         {
             _creature.TargetPath.Add(path[i]);
-            var dist = distToTarget - weaponInfo.Range;
-            if (weaponInfo.Range < dist)
+            if (dist>0)
             {
                 yield return _creature.AIMoveCreature();
             }
@@ -200,15 +200,28 @@ public class BasicAI : MonoBehaviour
 
                 yield return _creature.AIMoveCreature();
             }
-            distToTarget = HexMaker.Instance.GetDistanceToCoord(_creature.Coord, enemy.Coord,
-                _creature.TargetPath, null, closestDist, false);
+            dist--;
+            distToTarget--;
             _creature.TargetPath.Remove(path[i]);
+            
+            if (_creature.MaxCanMoveDist <= 0)
+            {
+                _creature.TargetPath.Clear();
+                _creature.EndTurn();
+                yield break;
+            }
         }
         _creature.TargetPath.Clear();
-
+            
+        if (_creature.MaxCanMoveDist <= 0)
+        {
+            _creature.EndTurn();
+            yield break;
+        }
+        
         if (_creature.TargetCreature != null)
         {
-            yield return _creature.StartTryAttack();
+            yield return _creature.StartTryAttack(distToTarget);
         }
 
         yield return null;

@@ -30,6 +30,15 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected Weapon.AttackMode _activeWeaponMode;
+    
+    [SerializeField]
+    protected Item _primaryItem;
+    
+    [SerializeField]
+    protected Weapon _secondaryItem;
+
+    [SerializeField]
+    protected Weapon.AttackMode _secondaryWeaponMode;
 
     [SerializeField]
     protected bool _isAimedShot = false;
@@ -375,16 +384,62 @@ public class Creature : MonoBehaviour, IOccupier
         _currentTarget = target;
     }
 
-    public virtual IEnumerator StartTryAttack()
+    public virtual IEnumerator StartTryAttack(int distance)
     {
-        GetChanceToHit()
+        var chanceToHit = GetChanceToHit(distance, _currentTarget);
+        var attackSuccess = TryAttackCreature();
+        var firstAttack = true;
+        while (firstAttack || attackSuccess != AttackSuccess.NotEnoutAP)
+        {
+            switch (attackSuccess)
+            {
+                case AttackSuccess.None:
+                case AttackSuccess.NoTarget:
+                case AttackSuccess.NoChanceToHit:
+                    yield break;
+                case AttackSuccess.NotEnoutAP:
+                    if (firstAttack)
+                    {
+                        //Check if secondary cost little enough AP
+                        //If so, switch to secondary.
+                        //wait for anim to finish}
+                        break;
+                    }
+                    else
+                    {
+                        yield break;
+                    }
+                case AttackSuccess.NoAmmo:
+                    //Check if can reload
+                    //If can, reload
+                    //wait for anim to finish
+                    //If so, try attack again
+                    break;
+                case AttackSuccess.AttackMissed:
+                    //wait for anim to finish
+                    break;
+                case AttackSuccess.AttackHit:
+                case AttackSuccess.AttackCritical:
+                    //wait for anim to finish
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+            firstAttack = false;
+            attackSuccess = TryAttackCreature();
+        }
+        yield return null;
     }
     
-    protected virtual void TryAttackCreature()
+    protected virtual AttackSuccess TryAttackCreature()
     {
+        var attackSuccess = AttackSuccess.AttackMissed;
         if (_currentTarget == null)
         {
-            return;
+            attackSuccess = AttackSuccess.NoTarget;
+            return attackSuccess;
         }
 
         if (_chanceHitTarget > 0)
@@ -400,7 +455,8 @@ public class Creature : MonoBehaviour, IOccupier
                 if (!_activeWeapon.CanUseWeapon)
                 {
                     _messageToPrint = NOAMMO;
-                    return;
+                    attackSuccess = AttackSuccess.NoAmmo;
+                    return attackSuccess;
                 }
             }
 
@@ -408,7 +464,8 @@ public class Creature : MonoBehaviour, IOccupier
             if (!canAttack)
             {
                 _messageToPrint = $"{NEEDMOREAP1}{apCost}{NEEDMOREAP2}";
-                return;
+                attackSuccess = AttackSuccess.NotEnoutAP;
+                return attackSuccess;
             }
 
             var allMissed = true;
@@ -426,12 +483,14 @@ public class Creature : MonoBehaviour, IOccupier
                 {
                     allMissed = false;
                     totalDamage += ProcessAttack(toHit);
+                    attackSuccess = AttackSuccess.AttackHit;
                 }
             }
 
             if (allMissed)
             {
                 _messageToPrint = $"{_name}{ATTACKMISSED}";
+                attackSuccess = AttackSuccess.AttackMissed;
             }
             else
             {
@@ -439,11 +498,16 @@ public class Creature : MonoBehaviour, IOccupier
                     $"{_currentTarget}{HIT}{totalDamage}{HP}{(_currentTarget.Alive ? string.Empty : DIED)}{PERIOD}";
             }
         }
+        else
+        {
+            attackSuccess = AttackSuccess.NoChanceToHit;
+        }
 
         if (_currentTarget.Alive)
         {
             CombatManager.AddToCombat(_currentTarget);
         }
+        return attackSuccess;
     }
 
 
@@ -662,6 +726,18 @@ public class Creature : MonoBehaviour, IOccupier
         ObjectInteraction,
         Attack,
         Move,
+    }
+
+    public enum AttackSuccess
+    {
+        None = 0, 
+        NoTarget = 1,
+        NoAmmo = 2,
+        NotEnoutAP = 3,
+        NoChanceToHit = 4,
+        AttackMissed = 5,
+        AttackHit = 6,
+        AttackCritical = 7
     }
 
     #endregion

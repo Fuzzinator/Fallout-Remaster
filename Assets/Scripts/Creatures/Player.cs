@@ -435,29 +435,32 @@ public class Player : Human
         base.EndTurn();
     }
 
-    protected override void TryAttackCreature()
+    protected override AttackSuccess TryAttackCreature()
     {
+        var attackSuccess = AttackSuccess.None;
         if (_currentTarget == null || !_currentTarget.Alive)
         {
-            return;
+            attackSuccess = AttackSuccess.NoTarget;
+            return attackSuccess;
         }
 
-        base.TryAttackCreature();
+        attackSuccess = base.TryAttackCreature();
 
         if (string.IsNullOrWhiteSpace(_messageToPrint))
         {
-            return;
+            return attackSuccess;
         }
 
         Debug.Log(_messageToPrint);
         _messageToPrint = string.Empty;
         if (_currentTarget == null || _currentTarget.Alive)
         {
-            return;
+            return attackSuccess;
         }
 
         _xpGainedDuringCombat += _currentTarget.XPValue;
         _currentTarget = null;
+        return attackSuccess;
     }
 
     protected bool TryGetTargetCreature(out Creature target)
