@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using AttackSuccess = Creature.AttackSuccess;
 
 public class BasicAI : MonoBehaviour
 {
@@ -187,7 +187,7 @@ public class BasicAI : MonoBehaviour
         for (var i = 0; i < path.Length; i++)
         {
             _creature.TargetPath.Add(path[i]);
-            if (dist>0)
+            if (dist > 0)
             {
                 yield return _creature.AIMoveCreature();
             }
@@ -200,10 +200,11 @@ public class BasicAI : MonoBehaviour
 
                 yield return _creature.AIMoveCreature();
             }
+
             dist--;
             distToTarget--;
             _creature.TargetPath.Remove(path[i]);
-            
+
             if (_creature.MaxCanMoveDist <= 0)
             {
                 _creature.TargetPath.Clear();
@@ -211,17 +212,81 @@ public class BasicAI : MonoBehaviour
                 yield break;
             }
         }
+
         _creature.TargetPath.Clear();
-            
+
         if (_creature.MaxCanMoveDist <= 0)
         {
             _creature.EndTurn();
             yield break;
         }
-        
+
         if (_creature.TargetCreature != null)
         {
-            yield return _creature.StartTryAttack(distToTarget);
+            var chanceToHit = _creature.GetChanceToHit(distToTarget, _targetCreature);
+            var attackSuccess = _creature.TryAttackCreature();
+            var firstAttack = true;
+            var tryAgain = attackSuccess != AttackSuccess.NotEnoutAP;
+            while (firstAttack || tryAgain)
+            {
+                switch (attackSuccess)
+                {
+                    case AttackSuccess.None:
+                    case AttackSuccess.NoTarget:
+                    case AttackSuccess.NoChanceToHit:
+                        tryAgain = false;
+                        break;
+                    case AttackSuccess.NotEnoutAP:
+                        if (firstAttack)
+                        {
+                            var seconaryNull = _creature.SecondaryItem == null;
+                            if (seconaryNull || _creature.SecondaryItem is Weapon)
+                            {
+                                var secondaryWeapon = _creature.SecondaryItem as Weapon;
+                                var info = _creature.GetAttackTypeInfo(false);
+                                if (!info.IsValidWeapon || _creature.MaxCanMoveDist < info.ActionPointCost || (!seconaryNull && !secondaryWeapon.CanUseWeapon))
+                                {
+                                    yield return null;
+                                    tryAgain = false;
+                                    break;
+                                }
+
+                                yield return _creature.SwapQuickbarItems();
+                                tryAgain = true;
+                                break;
+                            }
+                        }
+
+                        tryAgain = false;
+                        break;
+                    case AttackSuccess.NoAmmo:
+                        
+                        //Check if can reload
+                        //If can, reload
+                        //wait for anim to finish
+                        //If so, try attack again
+                        break;
+                    case AttackSuccess.AttackMissed:
+                        //wait for anim to finish
+                        yield return null;
+                        break;
+                    case AttackSuccess.AttackHit:
+                    case AttackSuccess.AttackCritical:
+                        //wait for anim to finish
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                firstAttack = false;
+                if (tryAgain)
+                {
+                    attackSuccess = _creature.TryAttackCreature();
+                }
+            }
+
+            yield return null;
         }
 
         yield return null;
@@ -232,10 +297,10 @@ public class BasicAI : MonoBehaviour
     {
         var foundTarget = false;
         distance = -1;
-        
+
         _targetCreature = null;
         _creature.SetTargetCreature(null);
-        
+
         if (CombatManager.Instance != null)
         {
             var enemies = CombatManager.Instance.GetEnemies(_aggression);
@@ -257,7 +322,7 @@ public class BasicAI : MonoBehaviour
                 foundTarget = true;
             }
         }
-        
+
         return foundTarget;
     }
 

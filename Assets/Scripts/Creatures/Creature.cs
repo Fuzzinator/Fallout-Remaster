@@ -26,16 +26,13 @@ public class Creature : MonoBehaviour, IOccupier
     protected Skills _skills;
 
     [SerializeField]
-    protected Weapon _activeWeapon;
+    protected Weapon.AttackMode _activeWeaponMode;
 
     [SerializeField]
-    protected Weapon.AttackMode _activeWeaponMode;
-    
-    [SerializeField]
     protected Item _primaryItem;
-    
+
     [SerializeField]
-    protected Weapon _secondaryItem;
+    protected Item _secondaryItem;
 
     [SerializeField]
     protected Weapon.AttackMode _secondaryWeaponMode;
@@ -128,10 +125,15 @@ public class Creature : MonoBehaviour, IOccupier
 
     public Creature TargetCreature => _currentTarget;
     public int ChanceToHitTarget => _chanceHitTarget;
-    
+
     public AnimatorController AnimController => animatorController;
 
     public virtual BasicAI.Aggression Aggression => _ai != null ? _ai.CurrentAggression : BasicAI.Aggression.Neutral;
+
+    protected Weapon ActiveWeapon => _primaryItem as Weapon;
+
+    public Item PrimaryItem => _primaryItem;
+    public Item SecondaryItem => _secondaryItem;
 
     #endregion
 
@@ -302,7 +304,8 @@ public class Creature : MonoBehaviour, IOccupier
     {
         if (CombatManager.Instance != null)
         {
-            var canOpenInventory = !CombatManager.Instance.CombatMode || TryDecrementAP(INVENTORYAPCOST, ActionType.None);
+            var canOpenInventory =
+                !CombatManager.Instance.CombatMode || TryDecrementAP(INVENTORYAPCOST, ActionType.None);
             if (canOpenInventory)
             {
                 OpenInventory();
@@ -310,12 +313,12 @@ public class Creature : MonoBehaviour, IOccupier
 
             return canOpenInventory;
         }
+
         return false;
     }
 
     protected virtual void OpenInventory()
     {
-        
     }
 
     protected Quaternion GetTargetRotation(Coordinates currentCoord, Coordinates targetCoord, out HexDir targetDir)
@@ -349,6 +352,7 @@ public class Creature : MonoBehaviour, IOccupier
 
         return true;
     }
+
     public virtual void InitiateCombat()
     {
         CombatManager.startTurn += TryStartTurn;
@@ -384,56 +388,7 @@ public class Creature : MonoBehaviour, IOccupier
         _currentTarget = target;
     }
 
-    public virtual IEnumerator StartTryAttack(int distance)
-    {
-        var chanceToHit = GetChanceToHit(distance, _currentTarget);
-        var attackSuccess = TryAttackCreature();
-        var firstAttack = true;
-        while (firstAttack || attackSuccess != AttackSuccess.NotEnoutAP)
-        {
-            switch (attackSuccess)
-            {
-                case AttackSuccess.None:
-                case AttackSuccess.NoTarget:
-                case AttackSuccess.NoChanceToHit:
-                    yield break;
-                case AttackSuccess.NotEnoutAP:
-                    if (firstAttack)
-                    {
-                        //Check if secondary cost little enough AP
-                        //If so, switch to secondary.
-                        //wait for anim to finish}
-                        break;
-                    }
-                    else
-                    {
-                        yield break;
-                    }
-                case AttackSuccess.NoAmmo:
-                    //Check if can reload
-                    //If can, reload
-                    //wait for anim to finish
-                    //If so, try attack again
-                    break;
-                case AttackSuccess.AttackMissed:
-                    //wait for anim to finish
-                    break;
-                case AttackSuccess.AttackHit:
-                case AttackSuccess.AttackCritical:
-                    //wait for anim to finish
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            
-            firstAttack = false;
-            attackSuccess = TryAttackCreature();
-        }
-        yield return null;
-    }
-    
-    protected virtual AttackSuccess TryAttackCreature()
+    public virtual AttackSuccess TryAttackCreature()
     {
         var attackSuccess = AttackSuccess.AttackMissed;
         if (_currentTarget == null)
@@ -446,13 +401,13 @@ public class Creature : MonoBehaviour, IOccupier
         {
             var apCost = UNARMEDAPCOST;
             var numOfAttacks = 1;
-            if (_activeWeapon != null)
+            if (ActiveWeapon != null)
             {
-                var weaponInfo = _activeWeapon.GetAttackTypeInfo(_activeWeaponMode);
+                var weaponInfo = ActiveWeapon.GetAttackTypeInfo(_activeWeaponMode);
 
                 apCost = weaponInfo.ActionPointCost;
                 numOfAttacks = weaponInfo.AmmoCost;
-                if (!_activeWeapon.CanUseWeapon)
+                if (!ActiveWeapon.CanUseWeapon)
                 {
                     _messageToPrint = NOAMMO;
                     attackSuccess = AttackSuccess.NoAmmo;
@@ -472,7 +427,7 @@ public class Creature : MonoBehaviour, IOccupier
             var totalDamage = 0;
             for (int i = 0; i < numOfAttacks; i++)
             {
-                if (_activeWeapon != null && !_activeWeapon.TryUseWeapon(1))
+                if (ActiveWeapon != null && !ActiveWeapon.TryUseWeapon(1))
                 {
                     break;
                 }
@@ -507,10 +462,24 @@ public class Creature : MonoBehaviour, IOccupier
         {
             CombatManager.AddToCombat(_currentTarget);
         }
+
         return attackSuccess;
     }
 
-
+    public virtual IEnumerator SwapQuickbarItems()
+    {
+        var primary = _primaryItem;
+        var primaryMode = _activeWeaponMode;
+        var secondary = _secondaryItem;
+        var secondaryMode = _secondaryWeaponMode;
+        
+        _primaryItem = secondary;
+        _activeWeaponMode = secondaryMode;
+        _secondaryItem = primary;
+        _secondaryWeaponMode = primaryMode;
+        yield return null;
+        //Play animation
+    }
     protected virtual int ProcessAttack(int toHit)
     {
         var damage = GetDamage(toHit);
@@ -524,20 +493,20 @@ public class Creature : MonoBehaviour, IOccupier
         var armorThreshold = 0;
         var armorResist = 0;
         var ammoDRMod = 0;
-        if (_activeWeapon != null)
+        if (ActiveWeapon != null)
         {
-            baseDamage = _activeWeapon.GetDamage();
-            baseDamage *= _activeWeapon.CurrentAmmo.DamageMod;
+            baseDamage = ActiveWeapon.GetDamage();
+            baseDamage *= ActiveWeapon.CurrentAmmo.DamageMod;
 
             if (_currentTarget._equipedArmor != null)
             {
-                armorThreshold = _currentTarget._equipedArmor.GetThreshold(_activeWeapon.DmgType);
-                armorResist = _currentTarget._equipedArmor.GetResistance(_activeWeapon.DmgType);
+                armorThreshold = _currentTarget._equipedArmor.GetThreshold(ActiveWeapon.DmgType);
+                armorResist = _currentTarget._equipedArmor.GetResistance(ActiveWeapon.DmgType);
             }
 
-            if (_activeWeapon.CurrentAmmo != null)
+            if (ActiveWeapon.CurrentAmmo != null)
             {
-                ammoDRMod = _activeWeapon.CurrentAmmo.DRMod;
+                ammoDRMod = ActiveWeapon.CurrentAmmo.DRMod;
             }
         }
         else if (_currentTarget._equipedArmor != null)
@@ -597,19 +566,19 @@ public class Creature : MonoBehaviour, IOccupier
         var weaponSkill = Skills.Type.Unarmed;
         var ammoACMod = 0;
 
-        if (_activeWeapon != null)
+        if (ActiveWeapon != null)
         {
-            weaponSkill = _activeWeapon.AssociatedSkill;
+            weaponSkill = ActiveWeapon.AssociatedSkill;
 
-            var weaponInfo = _activeWeapon.GetAttackTypeInfo(_activeWeaponMode);
-            if (!_activeWeapon.CanUseWeapon)
+            var weaponInfo = ActiveWeapon.GetAttackTypeInfo(_activeWeaponMode);
+            if (!ActiveWeapon.CanUseWeapon)
             {
                 return -1;
             }
 
-            if (_activeWeapon.CurrentAmmo != null)
+            if (ActiveWeapon.CurrentAmmo != null)
             {
-                ammoACMod = _activeWeapon.CurrentAmmo.ACMod;
+                ammoACMod = ActiveWeapon.CurrentAmmo.ACMod;
             }
 
             if (distance > weaponInfo.Range)
@@ -694,18 +663,39 @@ public class Creature : MonoBehaviour, IOccupier
         return threshold;
     }
 
-    public virtual Weapon.AttackTypeInfo GetAttackTypeInfo()
+    public virtual Weapon.AttackTypeInfo GetAttackTypeInfo(bool primary = true)
     {
         Weapon.AttackTypeInfo weaponInfo;
-        if (_activeWeapon != null)
+        if (primary)
         {
-            weaponInfo = _activeWeapon.GetAttackTypeInfo(_activeWeaponMode);
+            var weapon = _primaryItem as Weapon;
+            if (weapon != null)
+            {
+                weaponInfo = weapon.GetAttackTypeInfo(_activeWeaponMode);
+            }
+            else if (_primaryItem == null)
+            {
+                var apCost = _activeWeaponMode == Weapon.AttackMode.AimedShot ? UNARMEDAPCOST + 1 : UNARMEDAPCOST;
+                weaponInfo = new Weapon.AttackTypeInfo(_activeWeaponMode, 1, apCost, 0);
+            }
+            else
+            {
+                weaponInfo = new Weapon.AttackTypeInfo(false);
+            }
         }
         else
         {
-            var apCost = _activeWeaponMode == Weapon.AttackMode.AimedShot ? UNARMEDAPCOST + 1 : UNARMEDAPCOST;
-            weaponInfo = new Weapon.AttackTypeInfo(_activeWeaponMode, 1, apCost, 0);
+            var weapon = _secondaryItem as Weapon;
+            if (weapon != null)
+            {
+                weaponInfo = weapon.GetAttackTypeInfo(_activeWeaponMode);
+            }
+            else
+            {
+                weaponInfo = new Weapon.AttackTypeInfo(false);
+            }
         }
+
         return weaponInfo;
     }
 
@@ -730,7 +720,7 @@ public class Creature : MonoBehaviour, IOccupier
 
     public enum AttackSuccess
     {
-        None = 0, 
+        None = 0,
         NoTarget = 1,
         NoAmmo = 2,
         NotEnoutAP = 3,

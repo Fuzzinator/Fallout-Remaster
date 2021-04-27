@@ -435,7 +435,7 @@ public class Player : Human
         base.EndTurn();
     }
 
-    protected override AttackSuccess TryAttackCreature()
+    public override AttackSuccess TryAttackCreature()
     {
         var attackSuccess = AttackSuccess.None;
         if (_currentTarget == null || !_currentTarget.Alive)
@@ -525,7 +525,7 @@ public class Player : Human
             {
                 critChance += perk.EffectAmount;
             }
-            else if (perk.ModType == ModType.WeaponSpec && _activeWeapon.WeaponType == perk.AffectedWeapon)
+            else if (perk.ModType == ModType.WeaponSpec && ActiveWeapon.WeaponType == perk.AffectedWeapon)
             {
                 critChance += perk.EffectAmount;
             }

@@ -131,6 +131,8 @@ public class Weapon : Item
         [SerializeField]
         private int _ammoCost;
         public int AmmoCost => _ammoCost;
+        
+        public bool IsValidWeapon => _range>=0;
 
         public AttackTypeInfo(AttackMode attackMode, int range, int actionPointCost, int ammoCost)
         {
@@ -138,6 +140,13 @@ public class Weapon : Item
             _range = range;
             _actionPointCost = actionPointCost;
             _ammoCost = ammoCost;
+        }
+        public AttackTypeInfo(bool valid)
+        {
+            _attackMode = AttackMode.SingleShot;
+            _range = -1;
+            _actionPointCost = 0;
+            _ammoCost = 0;
         }
     }
 }

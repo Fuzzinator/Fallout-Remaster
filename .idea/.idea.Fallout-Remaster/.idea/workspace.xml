@@ -56,12 +56,12 @@
       <list>
         <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexHighlighter.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/AnimController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Weapon.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/CombatManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/AnimatorController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Weapon.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs" />
       </list>
     </option>
   </component>
@@ -134,7 +134,7 @@
       <workItem from="1618614947778" duration="2000" />
       <workItem from="1618615428829" duration="11115000" />
       <workItem from="1618637315874" duration="31684000" />
-      <workItem from="1619311417304" duration="22030000" />
+      <workItem from="1619311417304" duration="28728000" />
     </task>
     <servers />
   </component>
@@ -252,10 +252,10 @@
           <line>117</line>
           <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\BasicAI.cs" initialLine="117">
             <startOffsets>
-              <option value="2530" />
+              <option value="2564" />
             </startOffsets>
             <endOffsets>
-              <option value="2552" />
+              <option value="2586" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="7" />
