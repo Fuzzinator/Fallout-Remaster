@@ -18,6 +18,7 @@ public class Weapon : Item
 
     [SerializeField]
     private bool _usesAmmo;
+    public bool UsesAmmo => _usesAmmo;
 
     [SerializeField]
     private Ammo.Type _ammoType = Ammo.Type.None;

@@ -260,11 +260,17 @@ public class BasicAI : MonoBehaviour
                         tryAgain = false;
                         break;
                     case AttackSuccess.NoAmmo:
-                        
-                        //Check if can reload
-                        //If can, reload
-                        //wait for anim to finish
-                        //If so, try attack again
+                        var canReload = _creature.TryReloadWeapon();
+                        if (canReload)
+                        {
+                            //wait for anim to finish
+                            yield return null;
+                            tryAgain = true;
+                        }
+                        else
+                        {
+                            tryAgain = false;
+                        }
                         break;
                     case AttackSuccess.AttackMissed:
                         //wait for anim to finish
@@ -273,6 +279,7 @@ public class BasicAI : MonoBehaviour
                     case AttackSuccess.AttackHit:
                     case AttackSuccess.AttackCritical:
                         //wait for anim to finish
+                        yield return null;
                         break;
 
                     default:

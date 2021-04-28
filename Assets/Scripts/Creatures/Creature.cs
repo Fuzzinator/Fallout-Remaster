@@ -134,7 +134,7 @@ public class Creature : MonoBehaviour, IOccupier
 
     public Item PrimaryItem => _primaryItem;
     public Item SecondaryItem => _secondaryItem;
-
+    
     #endregion
 
     #region Constants
@@ -321,6 +321,29 @@ public class Creature : MonoBehaviour, IOccupier
     {
     }
 
+    public virtual bool TryReloadWeapon()
+    {
+        var canReload = false;
+
+        if (ActiveWeapon != null)
+        {
+            var hasMatchingAmmoInInventory = false;//TODO Once inventory has been updated, make this work
+            if (ActiveWeapon.UsesAmmo && hasMatchingAmmoInInventory)
+            {
+                canReload = !CombatManager.Instance.CombatMode || TryDecrementAP(INVENTORYAPCOST, ActionType.None);
+                ReloadWeapon(ActiveWeapon);
+                //TriggerAnimation
+            }
+        }
+        
+        return canReload;
+    }
+
+    protected virtual void ReloadWeapon(Weapon weapon)
+    {
+        
+    }
+    
     protected Quaternion GetTargetRotation(Coordinates currentCoord, Coordinates targetCoord, out HexDir targetDir)
     {
         var targetRotation = Quaternion.LookRotation(transform.position - targetCoord.pos);
