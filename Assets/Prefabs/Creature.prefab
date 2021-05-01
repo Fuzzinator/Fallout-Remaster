@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 635467972220566126}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Art
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 2762034440063023189}
   - component: {fileID: 3470351226954768909}
   - component: {fileID: 7138241168562579426}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,6 +126,55 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &8301240207470398550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2830489317075015707}
+  - component: {fileID: 838343355261076802}
+  m_Layer: 16
+  m_Name: FOV
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2830489317075015707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8301240207470398550}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8579911623099481102}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &838343355261076802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8301240207470398550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b0ba4d1bc12f64f97b6764b50c407a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _creature: {fileID: 8579911623099481103}
+  _viewDistance: 5
+  _fov: 83
+  _collider: {fileID: 0}
+  _mesh: {fileID: 0}
+  _shouldUpdate: 0
 --- !u!1 &8579911623099481100
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +186,7 @@ GameObject:
   - component: {fileID: 8579911623099481102}
   - component: {fileID: 8579911623099481103}
   - component: {fileID: 5375600392172712499}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Creature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,6 +205,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 635467972220566126}
+  - {fileID: 2830489317075015707}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -176,8 +226,10 @@ MonoBehaviour:
   _currentAP: 0
   _special: {fileID: 0}
   _skills: {fileID: 11400000, guid: a273fe76c95bb0f41bd94e654746facb, type: 2}
-  _activeWeapon: {fileID: 0}
   _activeWeaponMode: 0
+  _primaryItem: {fileID: 0}
+  _secondaryItem: {fileID: 0}
+  _secondaryWeaponMode: 0
   _isAimedShot: 0
   _equipedArmor: {fileID: 0}
   _ai: {fileID: 5375600392172712499}

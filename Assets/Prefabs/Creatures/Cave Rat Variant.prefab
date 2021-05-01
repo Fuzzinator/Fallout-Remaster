@@ -20,6 +20,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 838343355261076802, guid: 8f3f9f15efbaee54aa80a68485185b27,
+        type: 3}
+      propertyPath: _fov
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 5375600392172712499, guid: 8f3f9f15efbaee54aa80a68485185b27,
         type: 3}
       propertyPath: _aggression

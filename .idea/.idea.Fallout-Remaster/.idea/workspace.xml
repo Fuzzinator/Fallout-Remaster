@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2ea0e13-5cbb-47c8-a0e6-5ab7e55ef4c9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Fading Ceiling.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Fading Ceiling.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/FadingWall.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/FadingWall.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Vault 13/Cave Entrance.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Vault 13/Cave Entrance.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/LoggingManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/LoggingManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Individual Skills/Creatures/CaveRatUnarmed.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Individual Skills/Creatures/CaveRatUnarmed.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Creature.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Creature.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexHighlighter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexHighlighter.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +24,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Ammo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Location Stuff/MapExit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Editor/SkillsCustomEditor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/FOVControl.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexMaker.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
@@ -58,6 +54,8 @@
     <changedPaths>
       <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Core/LoggingManager.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/HexMaker/HexHighlighter.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/FOVControl.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pawPlAWun1GTbNUgMp5K1PegZV" />

@@ -25,7 +25,6 @@ public class HexHighlighter : MonoBehaviour
     private Action<Coordinates> _showDistance = null;
 
     private Vector2 _lastMousePos;
-    private bool _mouseMovedLastFrame = false;
 
     [SerializeField]
     private bool _enabled = true;
@@ -100,8 +99,6 @@ public class HexHighlighter : MonoBehaviour
 
         CombatManager.stateChanged += CombatStateChanged;
         CursorController.stateChanged += CursorStateChanged;
-
-        _mouseMovedLastFrame = false;
     }
 
     private void OnDestroy()
