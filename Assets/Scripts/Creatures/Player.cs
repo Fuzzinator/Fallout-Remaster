@@ -101,8 +101,6 @@ public class Player : Human
 
     #region Const
 
-    private const string FORCRUSHING = "For crushing your enemies, you earn ";
-    private const string EXPPOINTS = " exp. points.";
     private const int LVLCAP = 21;
     private const int XPINCREMENT = 1000;
 
@@ -446,13 +444,14 @@ public class Player : Human
 
         attackSuccess = base.TryAttackCreature();
 
-        if (string.IsNullOrWhiteSpace(_messageToPrint))
+        if (_targetOutOfRange || _targetBlocked)
         {
-            return attackSuccess;
+            var msgType = _targetOutOfRange
+                ? MessageType.OutOfRange
+                : (_targetBlocked ? MessageType.TargetBlocked : MessageType.None);
+            LoggingManager.LogMessage(msgType, this, _currentTarget);
         }
 
-        Debug.Log(_messageToPrint);
-        _messageToPrint = string.Empty;
         if (_currentTarget == null || _currentTarget.Alive)
         {
             return attackSuccess;
@@ -853,8 +852,7 @@ public class Player : Human
             if (_xpGainedDuringCombat > 0)
             {
                 IncreaseXP(_xpGainedDuringCombat);
-                _messageToPrint = $"{FORCRUSHING}{_xpGainedDuringCombat}{EXPPOINTS}";
-                Debug.Log(_messageToPrint);
+                LoggingManager.LogMessage(MessageType.GainedXP, this, _currentTarget, _xpGainedDuringCombat.ToString());
                 _xpGainedDuringCombat = 0;
             }
         }

@@ -82,7 +82,8 @@ public class Creature : MonoBehaviour, IOccupier
 
     protected Creature _currentTarget;
     protected int _chanceHitTarget;
-    protected string _messageToPrint;
+    protected bool _targetOutOfRange = false;
+    protected bool _targetBlocked = false;
 
     #endregion
 
@@ -134,21 +135,11 @@ public class Creature : MonoBehaviour, IOccupier
 
     public Item PrimaryItem => _primaryItem;
     public Item SecondaryItem => _secondaryItem;
-    
+
     #endregion
 
     #region Constants
 
-    private const string OUTOFRANGE = "Target out of range.";
-    private const string TARGETBLOCKED = "Your aim is blocked.";
-    private const string ATTACKMISSED = "'s attack missed";
-    private const string HIT = " was hit for ";
-    private const string HP = " hit points";
-    private const string DIED = " and was killed";
-    private const string PERIOD = ".";
-    private const string NEEDMOREAP1 = "You need ";
-    private const string NEEDMOREAP2 = " AP to attack";
-    protected const string NOAMMO = "Out of ammo.";
     protected const int UNARMEDAPCOST = 3;
     protected const int INVENTORYAPCOST = 4;
 
@@ -327,7 +318,7 @@ public class Creature : MonoBehaviour, IOccupier
 
         if (ActiveWeapon != null)
         {
-            var hasMatchingAmmoInInventory = false;//TODO Once inventory has been updated, make this work
+            var hasMatchingAmmoInInventory = false; //TODO Once inventory has been updated, make this work
             if (ActiveWeapon.UsesAmmo && hasMatchingAmmoInInventory)
             {
                 canReload = !CombatManager.Instance.CombatMode || TryDecrementAP(INVENTORYAPCOST, ActionType.None);
@@ -335,15 +326,14 @@ public class Creature : MonoBehaviour, IOccupier
                 //TriggerAnimation
             }
         }
-        
+
         return canReload;
     }
 
     protected virtual void ReloadWeapon(Weapon weapon)
     {
-        
     }
-    
+
     protected Quaternion GetTargetRotation(Coordinates currentCoord, Coordinates targetCoord, out HexDir targetDir)
     {
         var targetRotation = Quaternion.LookRotation(transform.position - targetCoord.pos);
@@ -432,7 +422,8 @@ public class Creature : MonoBehaviour, IOccupier
                 numOfAttacks = weaponInfo.AmmoCost;
                 if (!ActiveWeapon.CanUseWeapon)
                 {
-                    _messageToPrint = NOAMMO;
+                    LoggingManager.LogMessage(MessageType.OutOfAmmo, this, _currentTarget);
+
                     attackSuccess = AttackSuccess.NoAmmo;
                     return attackSuccess;
                 }
@@ -441,7 +432,8 @@ public class Creature : MonoBehaviour, IOccupier
             var canAttack = TryDecrementAP(apCost, ActionType.Attack);
             if (!canAttack)
             {
-                _messageToPrint = $"{NEEDMOREAP1}{apCost}{NEEDMOREAP2}";
+                LoggingManager.LogMessage(MessageType.NotEnoughAP, this, _currentTarget, apCost.ToString());
+
                 attackSuccess = AttackSuccess.NotEnoutAP;
                 return attackSuccess;
             }
@@ -467,13 +459,13 @@ public class Creature : MonoBehaviour, IOccupier
 
             if (allMissed)
             {
-                _messageToPrint = $"{_name}{ATTACKMISSED}";
+                LoggingManager.LogMessage(MessageType.AttackMissed, this, _currentTarget);
                 attackSuccess = AttackSuccess.AttackMissed;
             }
             else
             {
-                _messageToPrint =
-                    $"{_currentTarget}{HIT}{totalDamage}{HP}{(_currentTarget.Alive ? string.Empty : DIED)}{PERIOD}";
+                LoggingManager.LogMessage(MessageType.AttackHit, this, _currentTarget, totalDamage.ToString());
+                attackSuccess = AttackSuccess.AttackHit;
             }
         }
         else
@@ -495,7 +487,7 @@ public class Creature : MonoBehaviour, IOccupier
         var primaryMode = _activeWeaponMode;
         var secondary = _secondaryItem;
         var secondaryMode = _secondaryWeaponMode;
-        
+
         _primaryItem = secondary;
         _activeWeaponMode = secondaryMode;
         _secondaryItem = primary;
@@ -503,6 +495,7 @@ public class Creature : MonoBehaviour, IOccupier
         yield return null;
         //Play animation
     }
+
     protected virtual int ProcessAttack(int toHit)
     {
         var damage = GetDamage(toHit);
@@ -588,7 +581,8 @@ public class Creature : MonoBehaviour, IOccupier
 
         var weaponSkill = Skills.Type.Unarmed;
         var ammoACMod = 0;
-
+        _targetOutOfRange = false;
+        _targetBlocked = false;
         if (ActiveWeapon != null)
         {
             weaponSkill = ActiveWeapon.AssociatedSkill;
@@ -606,7 +600,8 @@ public class Creature : MonoBehaviour, IOccupier
 
             if (distance > weaponInfo.Range)
             {
-                _messageToPrint = OUTOFRANGE;
+                //_messageToPrint = OUTOFRANGE;
+                _targetOutOfRange = true;
                 return -1;
             }
         }
@@ -614,7 +609,8 @@ public class Creature : MonoBehaviour, IOccupier
         {
             if (distance > 1)
             {
-                _messageToPrint = OUTOFRANGE;
+                //_messageToPrint = OUTOFRANGE;
+                _targetOutOfRange = true;
                 return -1;
             }
         }
@@ -622,7 +618,8 @@ public class Creature : MonoBehaviour, IOccupier
         var viewUnobscured = CombatManager.ViewUnobscured(this, target);
         if (!viewUnobscured)
         {
-            _messageToPrint = TARGETBLOCKED;
+            _targetBlocked = true;
+            //_messageToPrint = TARGETBLOCKED;
             return -1;
         }
 

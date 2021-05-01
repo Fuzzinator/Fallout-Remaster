@@ -898,6 +898,7 @@
             <e p="GameManager.cs" t="Include" />
             <e p="GlobalVariables.cs" t="Include" />
             <e p="InputManager.cs" t="Include" />
+            <e p="LoggingManager.cs" t="Include" />
             <e p="Settings.cs" t="Include" />
             <e p="WorldClock.cs" t="Include" />
           </e>
