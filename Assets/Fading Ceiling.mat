@@ -121,7 +121,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.28235295, g: 0.28235295, b: 0.28235295, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _PlayerScreenPos: {r: 0.13411555, g: 0.65427035, b: 60.88078, a: 0}
+    - _PlayerScreenPos: {r: 0.24762526, g: 0.6542704, b: 60.88078, a: 0}
     - _PlayerWorldPos: {r: 2.057, g: 0.755, b: 18.946, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

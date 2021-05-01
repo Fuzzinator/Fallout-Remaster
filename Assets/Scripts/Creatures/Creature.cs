@@ -590,7 +590,8 @@ public class Creature : MonoBehaviour, IOccupier
             var weaponInfo = ActiveWeapon.GetAttackTypeInfo(_activeWeaponMode);
             if (!ActiveWeapon.CanUseWeapon)
             {
-                return -1;
+                _chanceHitTarget = -1;
+                return _chanceHitTarget;
             }
 
             if (ActiveWeapon.CurrentAmmo != null)
@@ -602,7 +603,8 @@ public class Creature : MonoBehaviour, IOccupier
             {
                 //_messageToPrint = OUTOFRANGE;
                 _targetOutOfRange = true;
-                return -1;
+                _chanceHitTarget = -1;
+                return _chanceHitTarget;
             }
         }
         else
@@ -611,7 +613,8 @@ public class Creature : MonoBehaviour, IOccupier
             {
                 //_messageToPrint = OUTOFRANGE;
                 _targetOutOfRange = true;
-                return -1;
+                _chanceHitTarget = -1;
+                return _chanceHitTarget;
             }
         }
 
@@ -620,7 +623,8 @@ public class Creature : MonoBehaviour, IOccupier
         {
             _targetBlocked = true;
             //_messageToPrint = TARGETBLOCKED;
-            return -1;
+            _chanceHitTarget = -1;
+            return _chanceHitTarget;
         }
 
         var chanceToHit = _skills.GetSkillLvl(weaponSkill) - 30;
@@ -636,6 +640,7 @@ public class Creature : MonoBehaviour, IOccupier
         {
         }
 
+        _chanceHitTarget = chanceToHit;
         return chanceToHit;
     }
 

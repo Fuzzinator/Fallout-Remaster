@@ -14,7 +14,9 @@ public class LoggingManager : MonoBehaviour
     private const string POSSESSIVE = "'s";
     private const string ATTACKMISSED = " attack missed.";
 
-    private const string HIT = " was hit for ";
+    private const string WAS = " was";
+    private const string WERE = " were";
+    private const string HIT = " hit for ";
     private const string HP = " hit points";
 
     private const string DIED = " and was killed";
@@ -62,8 +64,9 @@ public class LoggingManager : MonoBehaviour
                 message = source is Player ? $"{YOUR}{ATTACKMISSED}" : $"{source.Name}{POSSESSIVE}{ATTACKMISSED}";
                 break;
             case MessageType.AttackHit:
+                var name = target is Player ? $"{YOU}{WERE}" : $"{target.name}{WAS}";
                 message =
-                    $"{target.Name}{HIT}{additional}{HP}{(source.Alive ? string.Empty : DIED)}{PERIOD}";
+                    $"{name}{HIT}{additional}{HP}{(target.Alive ? string.Empty : DIED)}{PERIOD}";
                 break;
             case MessageType.CreatureDied:
                 break;
