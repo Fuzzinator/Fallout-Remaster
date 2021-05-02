@@ -34,8 +34,9 @@ public class CombatManager : MonoBehaviour
     private bool _surpriseRound = false;
     private Creature _victim;
 
-    public bool CanEndCombat =>
-        _turnOrder.Count == 0 || (_turnOrder.Count == 1 && _turnOrder.Contains(Player.Instance));
+    public bool CanEndCombat => _turnOrder.Count == 0 ||
+                                (_turnOrder.Count == 1 && _turnOrder.Contains(Player.Instance)) ||
+                                !_turnOrder.Contains(Player.Instance);
 
     #region Static Vars
 
@@ -113,6 +114,7 @@ public class CombatManager : MonoBehaviour
         }
 
         #region Track creature agro
+
         switch (newCreature.Aggression)
         {
             case BasicAI.Aggression.Friendly:
@@ -121,6 +123,7 @@ public class CombatManager : MonoBehaviour
                 {
                     Instance._friendlies.Add(newCreature);
                 }
+
                 break;
             }
             case BasicAI.Aggression.Hostile:
@@ -129,6 +132,7 @@ public class CombatManager : MonoBehaviour
                 {
                     Instance._enemies.Add(newCreature);
                 }
+
                 break;
             }
             case BasicAI.Aggression.Neutral:
@@ -136,6 +140,7 @@ public class CombatManager : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
         #endregion
 
         if (Instance._turnOrder.Contains(newCreature))
@@ -156,17 +161,19 @@ public class CombatManager : MonoBehaviour
     public static void RemoveFromCombat(Creature targetCreature)
     {
         #region Track creature agro
+
         if (Instance._friendlies.Contains(targetCreature))
         {
             Instance._friendlies.Remove(targetCreature);
         }
-        
+
         if (Instance._enemies.Contains(targetCreature))
         {
             Instance._enemies.Remove(targetCreature);
         }
+
         #endregion
-        
+
         if (!Instance._turnOrder.Contains(targetCreature))
         {
             Debug.LogWarning($"{targetCreature.Name} Already not in turn order. Why are you trying to remove it?");
@@ -254,7 +261,7 @@ public class CombatManager : MonoBehaviour
         {
             return;
         }
-        
+
         switch (creature.Aggression)
         {
             case BasicAI.Aggression.Friendly:
@@ -264,8 +271,9 @@ public class CombatManager : MonoBehaviour
                 Instance._enemies.Remove(creature);
                 break;
         }
-        
+
         #region Track creature agro
+
         switch (aggression)
         {
             case BasicAI.Aggression.Friendly:
@@ -274,6 +282,7 @@ public class CombatManager : MonoBehaviour
                 {
                     Instance._friendlies.Add(creature);
                 }
+
                 break;
             }
             case BasicAI.Aggression.Hostile:
@@ -282,6 +291,7 @@ public class CombatManager : MonoBehaviour
                 {
                     Instance._enemies.Add(creature);
                 }
+
                 break;
             }
             case BasicAI.Aggression.Neutral:
@@ -289,6 +299,7 @@ public class CombatManager : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
         #endregion
     }
 
@@ -324,6 +335,7 @@ public class CombatManager : MonoBehaviour
                 }
             }
         }
+
         return true;
     }
 }

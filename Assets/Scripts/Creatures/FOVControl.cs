@@ -6,9 +6,7 @@ using UnityEngine;
 
 public class FOVControl : MonoBehaviour
 {
-    [SerializeField, Lockable]
-    private Creature _creature;
-
+    [Header("FOV Size and Generation")]
     [SerializeField]
     private float _viewDistance;
 
@@ -17,7 +15,7 @@ public class FOVControl : MonoBehaviour
 
     [Space]
     [SerializeField, Lockable]
-    private Collider _collider;
+    private MeshCollider _collider;
 
     [SerializeField, Lockable]
     private Mesh _mesh;
@@ -25,8 +23,20 @@ public class FOVControl : MonoBehaviour
     [SerializeField]
     private bool _shouldUpdate;
 
-    private const float maxEndDist = 5f;
-    private const float maxAngle = 360f;
+    [Space]
+    [Header("Player Detection")]
+    [SerializeField, Lockable]
+    private Creature _creature;
+
+    [SerializeField, Lockable]
+    private BasicAI _ai;
+
+    [SerializeField]
+    private bool _canSeePlayer = false;
+
+    private const float MAXANGLE = 360f;
+
+    #region MeshCreation
 
     private void OnValidate()
     {
@@ -35,41 +45,62 @@ public class FOVControl : MonoBehaviour
             _creature = GetComponentInParent<Creature>();
         }
 
+        if (_ai == null)
+        {
+            _ai = GetComponentInParent<BasicAI>();
+        }
+
         if (_shouldUpdate)
         {
             UpdateFOVMesh();
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        var verts = GetNewVerticies();
-        var inc = 1f / verts.Length;
-        var lerpVal = 0f;
-        foreach (var vert in verts)
-        {
-            Gizmos.color = Color.Lerp(Color.red, Color.green, lerpVal);
-            lerpVal += inc;
-            Gizmos.DrawSphere(vert, .5f);
-        }
-    }
-
     private void UpdateFOVMesh()
     {
-        var mesh = new Mesh();
-        mesh.vertices = GetNewVerticies();
+        _mesh = new Mesh
+        {
+            vertices = GetNewVerticies(out var tris),
+            triangles = tris,
+            name = "FOV Mesh"
+        };
+        var hasMeshCollider = TryGetComponent(out _collider);
+        if (!hasMeshCollider)
+        {
+            _collider = gameObject.AddComponent<MeshCollider>();
+            _collider.convex = true;
+            _collider.isTrigger = true;
+        }
+
+        _collider.sharedMesh = _mesh;
+        _collider.sharedMesh.RecalculateNormals();
+
+#if UNITY_EDITOR
+        UnityEditor.AssetDatabase.CreateAsset(_mesh, $"Assets/Art/FOVMeshAssets/{_creature.Name} FOV.asset");
+#endif
     }
 
-    private Vector3[] GetNewVerticies()
+    private Vector3[] GetNewVerticies(out int[] tris)
     {
         var verts = new List<Vector3>();
+        var botTris = new List<int>();
+        var topTris = new List<int>();
+
+        if (_fov > MAXANGLE)
+        {
+            _fov = MAXANGLE;
+        }
+        else if (_fov < 0)
+        {
+            _fov = 0;
+        }
 
         var radians = _fov * (Mathf.PI / 360);
         var minRads = -radians;
         var minDegree = new Vector3(Mathf.Sin(minRads), 0, -Mathf.Cos(minRads));
         var maxDegree = new Vector3(Mathf.Sin(radians), 0, -Mathf.Cos(radians));
 
-        var bot = transform.position;
+        var bot = transform.localPosition;
         var top = bot + Vector3.up;
         if (!verts.Contains(bot))
         {
@@ -81,7 +112,7 @@ public class FOVControl : MonoBehaviour
             verts.Add(top);
         }
 
-        var minBot = bot + (minDegree * _viewDistance);
+        var minBot = bot + (minDegree * _creature.MaxCanMoveDist);//_viewDistance);
         var minTop = minBot + Vector3.up;
 
         if (!verts.Contains(minBot))
@@ -94,7 +125,7 @@ public class FOVControl : MonoBehaviour
             verts.Add(minTop);
         }
 
-        var midBot = bot + (transform.forward * _viewDistance);
+        var midBot = bot + (transform.forward * _creature.MaxCanMoveDist);//_viewDistance);
         var midTop = midBot + Vector3.up;
 
         if (!verts.Contains(midBot))
@@ -107,48 +138,72 @@ public class FOVControl : MonoBehaviour
             verts.Add(midTop);
         }
 
-        var points = Mathf.RoundToInt(_viewDistance * .5f * Mathf.Max(_fov / 90, 1));
+        var points = Mathf.RoundToInt(_creature.MaxCanMoveDist/*_viewDistance*/ * .5f * Mathf.Max(_fov / 90, 1));
         var angleIncs = 0f;
         if (points > 0)
         {
             angleIncs = _fov / points;
         }
 
+        var previousMinBot = midBot;
+        var previousMinTop = midTop;
+        var previousMaxBot = midBot;
+        var previousMaxTop = midTop;
         for (var i = 1; i < points; i++)
         {
             var angle = angleIncs * i;
             var pointRad = angle * (Mathf.PI / 360);
             var pointDeg = new Vector3(Mathf.Sin(pointRad), 0, -Mathf.Cos(pointRad));
             var minPointDeg = new Vector3(Mathf.Sin(-pointRad), 0, -Mathf.Cos(-pointRad));
-            var minPoint1 = bot + (pointDeg * _viewDistance);
-            var maxPoint1 = minPoint1 + Vector3.up;
+            var maxPointBot = bot + (pointDeg * _creature.MaxCanMoveDist);//_viewDistance);
+            var maxPointTop = maxPointBot + Vector3.up;
 
-            var minPoint2 = bot + (minPointDeg * _viewDistance);
-            var maxPoint2 = minPoint2 + Vector3.up;
+            var minPointBot = bot + (minPointDeg * _creature.MaxCanMoveDist);//_viewDistance);
+            var minPointTop = minPointBot + Vector3.up;
 
-            if (!verts.Contains(minPoint1))
+            if (!verts.Contains(maxPointBot))
             {
-                verts.Add(minPoint1);
+                verts.Add(maxPointBot);
             }
 
-            if (!verts.Contains(maxPoint1))
+            botTris.Add(0);
+            botTris.Add(verts.IndexOf(previousMaxBot));
+            botTris.Add(verts.IndexOf(maxPointBot));
+            previousMaxBot = maxPointBot;
+
+            if (!verts.Contains(maxPointTop))
             {
-                verts.Add(maxPoint1);
+                verts.Add(maxPointTop);
             }
 
-            if (!verts.Contains(minPoint2))
+            topTris.Add(1);
+            topTris.Add(verts.IndexOf(previousMaxTop));
+            topTris.Add(verts.IndexOf(maxPointTop));
+            previousMaxTop = maxPointTop;
+
+            if (!verts.Contains(minPointBot))
             {
-                verts.Add(minPoint2);
+                verts.Add(minPointBot);
             }
 
-            if (!verts.Contains(maxPoint2))
+            botTris.Add(0);
+            botTris.Add(verts.IndexOf(previousMinBot));
+            botTris.Add(verts.IndexOf(minPointBot));
+            previousMinBot = minPointBot;
+
+            if (!verts.Contains(minPointTop))
             {
-                verts.Add(maxPoint2);
+                verts.Add(minPointTop);
             }
+
+            topTris.Add(1);
+            topTris.Add(verts.IndexOf(previousMinTop));
+            topTris.Add(verts.IndexOf(minPointTop));
+            previousMinTop = minPointTop;
         }
 
 
-        var maxBot = bot + (maxDegree * _viewDistance);
+        var maxBot = bot + (maxDegree * _creature.MaxCanMoveDist);//_viewDistance);
         var maxTop = maxBot + Vector3.up;
 
         if (!verts.Contains(maxBot))
@@ -156,11 +211,55 @@ public class FOVControl : MonoBehaviour
             verts.Add(maxBot);
         }
 
+        botTris.Add(0);
+        botTris.Add(verts.IndexOf(previousMaxBot));
+        botTris.Add(verts.IndexOf(maxBot));
+
+        botTris.Add(0);
+        botTris.Add(verts.IndexOf(previousMinBot));
+        botTris.Add(verts.IndexOf(minBot));
+
         if (!verts.Contains(maxTop))
         {
             verts.Add(maxTop);
         }
 
+        topTris.Add(1);
+        topTris.Add(verts.IndexOf(previousMaxTop));
+        topTris.Add(verts.IndexOf(maxTop));
+
+        topTris.Add(1);
+        topTris.Add(verts.IndexOf(previousMinTop));
+        topTris.Add(verts.IndexOf(minTop));
+
+        var allTris = new List<int>();
+        allTris.AddRange(botTris);
+        allTris.AddRange(topTris);
+
+
+        tris = allTris.ToArray();
+
         return verts.ToArray();
+    }
+
+    #endregion
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (_canSeePlayer)
+        {
+            return;
+        }
+
+        _canSeePlayer = CombatManager.ViewUnobscured(_creature, Player.Instance);
+        if (_canSeePlayer)
+        {
+            _ai.DetectedEnemy(Player.Instance);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        _canSeePlayer = false;
     }
 }

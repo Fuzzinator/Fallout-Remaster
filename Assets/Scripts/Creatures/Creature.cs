@@ -701,7 +701,7 @@ public class Creature : MonoBehaviour, IOccupier
             else if (_primaryItem == null)
             {
                 var apCost = _activeWeaponMode == Weapon.AttackMode.AimedShot ? UNARMEDAPCOST + 1 : UNARMEDAPCOST;
-                weaponInfo = new Weapon.AttackTypeInfo(_activeWeaponMode, 1, apCost, 0);
+                weaponInfo = new Weapon.AttackTypeInfo(_activeWeaponMode, 0, apCost, 0);
             }
             else
             {

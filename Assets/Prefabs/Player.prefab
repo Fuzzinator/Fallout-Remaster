@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 937255292418767962}
   - component: {fileID: 937255292418767965}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 937255292820331490}
   - component: {fileID: 937255292820331491}
   - component: {fileID: 937255292820331488}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 937255292909900586}
   - component: {fileID: 937255292909900587}
   - component: {fileID: 937255292909900584}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 937255293347682925}
   - component: {fileID: 937255293347682922}
   - component: {fileID: 937255293347682923}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -393,7 +393,7 @@ GameObject:
   - component: {fileID: 937255293570207415}
   - component: {fileID: 937255293570207412}
   - component: {fileID: 937255293570207413}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -544,7 +544,7 @@ GameObject:
   m_Component:
   - component: {fileID: 937255294271531747}
   - component: {fileID: 937255294271531746}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -585,8 +585,13 @@ MonoBehaviour:
   _currentAP: 0
   _special: {fileID: 11400000, guid: fc0d1f5ad82111249b96514bab97af18, type: 2}
   _skills: {fileID: 11400000, guid: 78acac0a74bea0e45872ddb875b2f752, type: 2}
-  _activeWeapon: {fileID: 0}
+  _activeWeaponMode: 0
+  _primaryItem: {fileID: 0}
+  _secondaryItem: {fileID: 0}
+  _secondaryWeaponMode: 0
+  _isAimedShot: 0
   _equipedArmor: {fileID: 0}
+  _ai: {fileID: 0}
   _currentLocation: 14628
   _facingDir: 3
   _baseMoveSpeed: 5
@@ -594,9 +599,11 @@ MonoBehaviour:
   _xPValue: 0
   _hpIncrease: 0
   _baseHealth: 0
+  animatorController: {fileID: 0}
   _gender: 0
   _age: 25
   _tempRadResist: 0
+  _currentXP: 0
   _currentLvl: 1
   _unspentSkillPnts: 0
   _trait1: {fileID: 0}
@@ -615,7 +622,7 @@ GameObject:
   - component: {fileID: 937255294373167757}
   - component: {fileID: 937255294373167754}
   - component: {fileID: 937255294373167755}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Art
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -714,7 +721,7 @@ GameObject:
   - component: {fileID: 937255294395747994}
   - component: {fileID: 937255294395747995}
   - component: {fileID: 937255294395747992}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

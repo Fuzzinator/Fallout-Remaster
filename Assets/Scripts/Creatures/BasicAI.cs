@@ -42,6 +42,8 @@ public class BasicAI : MonoBehaviour
     [SerializeField]
     private bool _tryHealAtVLow = true;
 
+    private bool _instigator = false;
+
     private WaitForSeconds _wait;
 
     #region const
@@ -162,7 +164,20 @@ public class BasicAI : MonoBehaviour
             }
         }
 
-        var foundTarget = TryGetTarget(out var distToTarget);
+        var foundTarget = false;
+        var distToTarget = 0;
+        if (_instigator)
+        {
+            _targetCreature = _creature.TargetCreature;
+            distToTarget = HexMaker.Instance.GetDistanceToCoord(_creature.Coord, _targetCreature.Coord,
+                _creature.TargetPath, wantToMove: false);
+            CombatManager.AddToCombat(_targetCreature);
+            foundTarget = true;
+        }
+        else
+        {
+            foundTarget = TryGetTarget(out distToTarget);
+        }
 
         if (!foundTarget)
         {
@@ -244,7 +259,8 @@ public class BasicAI : MonoBehaviour
                             {
                                 var secondaryWeapon = _creature.SecondaryItem as Weapon;
                                 var info = _creature.GetAttackTypeInfo(false);
-                                if (!info.IsValidWeapon || _creature.MaxCanMoveDist < info.ActionPointCost || (!seconaryNull && !secondaryWeapon.CanUseWeapon))
+                                if (!info.IsValidWeapon || _creature.MaxCanMoveDist < info.ActionPointCost ||
+                                    (!seconaryNull && !secondaryWeapon.CanUseWeapon))
                                 {
                                     yield return null;
                                     tryAgain = false;
@@ -271,6 +287,7 @@ public class BasicAI : MonoBehaviour
                         {
                             tryAgain = false;
                         }
+
                         break;
                     case AttackSuccess.AttackMissed:
                         //wait for anim to finish
@@ -312,21 +329,24 @@ public class BasicAI : MonoBehaviour
         {
             var enemies = CombatManager.Instance.GetEnemies(_aggression);
             var closestDist = int.MaxValue;
-            foreach (var enemy in enemies)
+            if (enemies != null)
             {
-                var dist = HexMaker.Instance.GetDistanceToCoord(_creature.Coord, enemy.Coord,
-                    _creature.TargetPath, null, closestDist, false);
-
-                if (dist >= closestDist || dist < 0)
+                foreach (var enemy in enemies)
                 {
-                    continue;
-                }
+                    var dist = HexMaker.Instance.GetDistanceToCoord(_creature.Coord, enemy.Coord,
+                        _creature.TargetPath, null, closestDist, false);
 
-                closestDist = dist;
-                distance = dist;
-                _targetCreature = enemy;
-                _creature.SetTargetCreature(_targetCreature);
-                foundTarget = true;
+                    if (dist >= closestDist || dist < 0)
+                    {
+                        continue;
+                    }
+
+                    closestDist = dist;
+                    distance = dist;
+                    _targetCreature = enemy;
+                    _creature.SetTargetCreature(_targetCreature);
+                    foundTarget = true;
+                }
             }
         }
 
@@ -553,6 +573,20 @@ public class BasicAI : MonoBehaviour
         }
 
         return neighborCoord;
+    }
+
+    public void DetectedEnemy(Creature target)
+    {
+        if (!CombatManager.Instance.CombatMode)
+        {
+            _creature.SetTargetCreature(target);
+            _instigator = true;
+            _creature.InitiateCombat();
+        }
+        else
+        {
+            CombatManager.AddToCombat(_creature);
+        }
     }
 
     #region Enums
