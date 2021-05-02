@@ -171,7 +171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _creature: {fileID: 8579911623099481103}
   _viewDistance: 5
-  _fov: 83
+  _fov: 135
   _collider: {fileID: 0}
   _mesh: {fileID: 0}
   _shouldUpdate: 0

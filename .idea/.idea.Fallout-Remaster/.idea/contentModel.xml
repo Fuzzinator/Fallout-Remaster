@@ -906,6 +906,7 @@
             <e p="AnimatorController.cs" t="Include" />
             <e p="BasicAI.cs" t="Include" />
             <e p="Creature.cs" t="Include" />
+            <e p="FOVControl.cs" t="Include" />
             <e p="Human.cs" t="Include" />
             <e p="Player.cs" t="Include" />
           </e>
