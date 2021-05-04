@@ -254,10 +254,10 @@ public class BasicAI : MonoBehaviour
                     case AttackSuccess.NotEnoutAP:
                         if (firstAttack)
                         {
-                            var seconaryNull = _creature.SecondaryItem == null;
-                            if (seconaryNull || _creature.SecondaryItem is Weapon)
+                            var seconaryNull = _creature.SecondaryItemInfo == null;
+                            if (seconaryNull || _creature.SecondaryItemInfo is WeaponInfo)
                             {
-                                var secondaryWeapon = _creature.SecondaryItem as Weapon;
+                                var secondaryWeapon = _creature.SecondaryItemInfo as WeaponInfo;
                                 var info = _creature.GetAttackTypeInfo(false);
                                 if (!info.IsValidWeapon || _creature.MaxCanMoveDist < info.ActionPointCost ||
                                     (!seconaryNull && !secondaryWeapon.CanUseWeapon))

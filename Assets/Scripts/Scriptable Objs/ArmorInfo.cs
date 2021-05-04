@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(order = 11, fileName = "New Armor", menuName = "ScriptObjs/Armor")]
-public class Armor : Item
+public class ArmorInfo : ItemInfo
 {
     [Header("Main Values")]
     [SerializeField]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(order = 15, fileName = "New Ammo", menuName = "ScriptObjs/Ammo")]
-public class Ammo : Item
+public class AmmoInfo : ItemInfo
 {
     [SerializeField]
     private int _acMod;

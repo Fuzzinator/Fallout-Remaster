@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : ScriptableObject
+public abstract class ItemInfo : ScriptableObject
 {
     [SerializeField]
     private string _name;
@@ -19,4 +19,8 @@ public class Item : ScriptableObject
     [SerializeField]
     private int _maxStackSize = 0;
     public int MaxStackSize => _maxStackSize;
+
+    [SerializeField, TextArea]
+    private string _description;
+    public string Description => _description;
 }

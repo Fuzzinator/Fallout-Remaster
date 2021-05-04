@@ -30,12 +30,12 @@ public class Perk : ScriptableObject
     public Skills.Type AffectedSkill => _affectedSkill;
 
     [SerializeField]
-    private Weapon.Type _affectedWeapon = Weapon.Type.None;
-    public Weapon.Type AffectedWeapon => _affectedWeapon;
+    private WeaponInfo.Type _affectedWeapon = WeaponInfo.Type.None;
+    public WeaponInfo.Type AffectedWeapon => _affectedWeapon;
 
     [SerializeField]
-    private Armor.Type _affectedArmor = Armor.Type.None;
-    public Armor.Type AffectedArmor => _affectedArmor;
+    private ArmorInfo.Type _affectedArmor = ArmorInfo.Type.None;
+    public ArmorInfo.Type AffectedArmor => _affectedArmor;
     
     [SerializeField]
     private int effectAmout;

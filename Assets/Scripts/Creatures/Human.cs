@@ -23,9 +23,9 @@ public class Human : Creature
     {
         var radResist = 0;
 
-        if (_equipedArmor != null)
+        if (equipedArmorInfo != null)
         {
-            radResist += _equipedArmor.RadResist;
+            radResist += equipedArmorInfo.RadResist;
         }
 
         radResist += _tempRadResist;

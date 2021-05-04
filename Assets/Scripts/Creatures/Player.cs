@@ -524,7 +524,7 @@ public class Player : Human
             {
                 critChance += perk.EffectAmount;
             }
-            else if (perk.ModType == ModType.WeaponSpec && ActiveWeapon.WeaponType == perk.AffectedWeapon)
+            else if (perk.ModType == ModType.WeaponSpec && ActiveWeaponInfo.WeaponType == perk.AffectedWeapon)
             {
                 critChance += perk.EffectAmount;
             }

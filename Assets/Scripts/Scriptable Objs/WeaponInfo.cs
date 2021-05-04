@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [CreateAssetMenu(order = 10, fileName = "New Weapon", menuName = "ScriptObjs/Weapon")]
-public class Weapon : Item
+public class WeaponInfo : ItemInfo
 {
     [SerializeField]
     private int _minDamage;
@@ -21,12 +22,13 @@ public class Weapon : Item
     public bool UsesAmmo => _usesAmmo;
 
     [SerializeField]
-    private Ammo.Type _ammoType = Ammo.Type.None;
-    public Ammo.Type UsedAmmoType => _ammoType;
+    private AmmoInfo.Type _ammoType = AmmoInfo.Type.None;
+    public AmmoInfo.Type UsedAmmoType => _ammoType;
 
+    [FormerlySerializedAs("_currentAmmo")]
     [SerializeField]
-    private Ammo _currentAmmo;
-    public Ammo CurrentAmmo => _currentAmmo;
+    private AmmoInfo currentAmmoInfo;
+    public AmmoInfo CurrentAmmoInfo => currentAmmoInfo;
 
     [SerializeField]
     private int _ammoInClip = 0;
