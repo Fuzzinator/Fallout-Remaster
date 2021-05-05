@@ -27,7 +27,8 @@ public class Creature : MonoBehaviour, IOccupier
     protected Skills _skills;
 
     [SerializeField]
-    protected WeaponInfo.AttackMode _activeWeaponMode;
+    protected ItemContainer _inventory;
+    protected Weapons _weapons;
 
     [FormerlySerializedAs("_primaryItem")]
     [SerializeField]
@@ -332,6 +333,19 @@ public class Creature : MonoBehaviour, IOccupier
         }
 
         return canReload;
+    }
+
+    protected virtual bool HasMatchingAmmoInInventory()
+    {
+        if (ActiveWeaponInfo.UsesAmmo)
+        {
+            var info = ActiveWeaponInfo.CurrentAmmoInfo;
+            if (info != null)
+            {
+                
+            }
+        }
+        return false;
     }
 
     protected virtual void ReloadWeapon(WeaponInfo weaponInfo)

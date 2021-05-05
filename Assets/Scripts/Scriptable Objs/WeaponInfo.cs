@@ -25,14 +25,11 @@ public class WeaponInfo : ItemInfo
     private AmmoInfo.Type _ammoType = AmmoInfo.Type.None;
     public AmmoInfo.Type UsedAmmoType => _ammoType;
 
-    [FormerlySerializedAs("_currentAmmo")]
     [SerializeField]
-    private AmmoInfo currentAmmoInfo;
-    public AmmoInfo CurrentAmmoInfo => currentAmmoInfo;
+    private ItemContainer.InventorySlot _currentAmmo;
+    public AmmoInfo CurrentAmmoInfo => _currentAmmo?.Item as AmmoInfo;
 
-    [SerializeField]
-    private int _ammoInClip = 0;
-    public int AmmoInClip => _ammoInClip;
+    public int AmmoInClip => _currentAmmo?.Count ?? 0;
 
     [SerializeField]
     private int _magSize;
@@ -58,15 +55,15 @@ public class WeaponInfo : ItemInfo
     private bool _oneHanded = true;
     public bool OneHanded => _oneHanded;
 
-    public bool CanUseWeapon => (_usesAmmo && _ammoInClip>0) || !_usesAmmo;
-    
+    public bool CanUseWeapon => (_usesAmmo && (_currentAmmo?.Count ?? 0) > 0) || !_usesAmmo;
+
     public bool TryUseWeapon(int cost)
     {
         if (_usesAmmo)
         {
-            if (_ammoInClip >= cost)
+            if ((_currentAmmo?.Count??0) >= cost)
             {
-                _ammoInClip -= cost;
+                _currentAmmo?.Subtract(cost);
                 return true;
             }
             else
@@ -134,8 +131,8 @@ public class WeaponInfo : ItemInfo
         [SerializeField]
         private int _ammoCost;
         public int AmmoCost => _ammoCost;
-        
-        public bool IsValidWeapon => _range>=0;
+
+        public bool IsValidWeapon => _range >= 0;
 
         public AttackTypeInfo(AttackMode attackMode, int range, int actionPointCost, int ammoCost)
         {
