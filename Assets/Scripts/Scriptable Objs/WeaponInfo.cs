@@ -26,12 +26,6 @@ public class WeaponInfo : ItemInfo
     public AmmoInfo.Type UsedAmmoType => _ammoType;
 
     [SerializeField]
-    private ItemContainer.InventorySlot _currentAmmo;
-    public AmmoInfo CurrentAmmoInfo => _currentAmmo?.Item as AmmoInfo;
-
-    public int AmmoInClip => _currentAmmo?.Count ?? 0;
-
-    [SerializeField]
     private int _magSize;
     public int MagSize => _magSize;
 
@@ -54,28 +48,6 @@ public class WeaponInfo : ItemInfo
     [SerializeField]
     private bool _oneHanded = true;
     public bool OneHanded => _oneHanded;
-
-    public bool CanUseWeapon => (_usesAmmo && (_currentAmmo?.Count ?? 0) > 0) || !_usesAmmo;
-
-    public bool TryUseWeapon(int cost)
-    {
-        if (_usesAmmo)
-        {
-            if ((_currentAmmo?.Count??0) >= cost)
-            {
-                _currentAmmo?.Subtract(cost);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return true;
-        }
-    }
 
     public int GetDamage()
     {
