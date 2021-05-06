@@ -832,7 +832,7 @@ public class Player : Human
                 TryMove();
                 break;
             case CursorController.CursorState.Targeting:
-                if (_isAimedShot)
+                if (_weapons.ActiveAttackMode == WeaponInfo.AttackMode.AimedShot)
                 {
                     RequestAimedShot();
                 }

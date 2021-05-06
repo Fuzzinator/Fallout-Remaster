@@ -39,10 +39,10 @@ public class Weapons : MonoBehaviour
 
     public int AmmoInClip => ActiveAmmo?.Count ?? 0;
     
-    public bool CanUseWeapon(bool primary = true)
+    public bool CanUseWeapon(bool activeWeapon = true)
     {
-        var weapon = primary ? ActiveWeapon : OtherWeapon;
-        var ammo = primary ? ActiveAmmo : OtherAmmo;
+        var weapon = activeWeapon ? ActiveWeapon : OtherWeapon;
+        var ammo = activeWeapon ? ActiveAmmo : OtherAmmo;
         return (weapon.UsesAmmo && (ammo?.Count ?? 0) > 0) || !weapon.UsesAmmo;
     }
 
@@ -65,6 +65,7 @@ public class Weapons : MonoBehaviour
             return true;
         }
     }
+    
     public void SwapWeapons()
     {
         _primaryEquipped = !_primaryEquipped;

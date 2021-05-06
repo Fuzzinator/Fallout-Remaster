@@ -231,11 +231,10 @@ MonoBehaviour:
   _special: {fileID: 0}
   _skills: {fileID: 11400000, guid: a273fe76c95bb0f41bd94e654746facb, type: 2}
   _inventory: {fileID: 275044921679490909}
-  _activeWeaponMode: 0
+  _weapons: {fileID: 1540850405590270440}
   primaryItemInfo: {fileID: 0}
   secondaryItemInfo: {fileID: 0}
-  _secondaryWeaponMode: 0
-  _isAimedShot: 0
+  _primaryEquipped: 1
   equipedArmorInfo: {fileID: 0}
   _ai: {fileID: 5375600392172712499}
   _currentLocation: 0
@@ -295,8 +294,10 @@ MonoBehaviour:
   _primaryAmmo:
     _item: {fileID: 0}
     _count: 0
+  _primaryWeaponMode: 0
   _secondaryWeapon: {fileID: 0}
   _secondaryAmmo:
     _item: {fileID: 0}
     _count: 0
+  _secondaryWeaponMode: 0
   _primaryEquipped: 1

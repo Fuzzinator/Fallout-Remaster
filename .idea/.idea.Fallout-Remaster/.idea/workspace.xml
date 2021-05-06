@@ -3,9 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="c2ea0e13-5cbb-47c8-a0e6-5ab7e55ef4c9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Creature.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Creature.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Weapons.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Weapons.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/WeaponInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/WeaponInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,8 +64,10 @@
       <option value="$PROJECT_DIR$/Assets/Scripts/Core/Weapon.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/WeaponInfo.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Core/Inventory/ItemContainer.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Core/Weapons.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Core/Weapons.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pawPlAWun1GTbNUgMp5K1PegZV" />
@@ -165,28 +170,10 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs</url>
-          <line>117</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\BasicAI.cs" initialLine="117" />
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>399</line>
+          <line>398</line>
           <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="384" />
           <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs</url>
-          <line>164</line>
-          <properties documentPath="C:\Asus WebStorage\fuzzinator12@gmail.com\MySyncFolder\Fallout-Remaster\Assets\Scripts\Creatures\BasicAI.cs" initialLine="164" />
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs</url>
-          <line>215</line>
-          <properties documentPath="C:\Asus WebStorage\fuzzinator12@gmail.com\MySyncFolder\Fallout-Remaster\Assets\Scripts\Creatures\BasicAI.cs" initialLine="215" />
-          <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Core/Inventory/ItemContainer.cs</url>

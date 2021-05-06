@@ -5,7 +5,7 @@ using ThreePupperStudios.Lockable;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
-
+[RequireComponent(typeof(Weapons))]
 public class Creature : MonoBehaviour, IOccupier
 {
     #region Variables and Properties
@@ -39,7 +39,7 @@ public class Creature : MonoBehaviour, IOccupier
     protected ItemInfo secondaryItemInfo;
 
     [SerializeField]
-    protected bool _isAimedShot = false;
+    protected bool _primaryEquipped = true;
 
     [FormerlySerializedAs("_equipedArmor")]
     [SerializeField]
@@ -133,10 +133,13 @@ public class Creature : MonoBehaviour, IOccupier
 
     public virtual BasicAI.Aggression Aggression => _ai != null ? _ai.CurrentAggression : BasicAI.Aggression.Neutral;
 
-    protected WeaponInfo ActiveWeaponInfo => _weapons.ActiveWeapon as WeaponInfo;
+    protected WeaponInfo ActiveWeaponInfo => _weapons.ActiveWeapon;
 
     public ItemInfo PrimaryItemInfo => primaryItemInfo;
     public ItemInfo SecondaryItemInfo => secondaryItemInfo;
+    public ItemInfo ActiveItemInfo => _primaryEquipped ? primaryItemInfo:secondaryItemInfo;
+    public ItemInfo OtherItemInfo => _primaryEquipped ? secondaryItemInfo:primaryItemInfo;
+    public Weapons CurrentWeapons => _weapons;
 
     #endregion
 
@@ -324,7 +327,7 @@ public class Creature : MonoBehaviour, IOccupier
             if (ActiveWeaponInfo.UsesAmmo && hasMatchingAmmoInInventory)
             {
                 canReload = !CombatManager.Instance.CombatMode || TryDecrementAP(INVENTORYAPCOST, ActionType.None);
-                ReloadWeapon(ActiveWeaponInfo);
+                //_weapons.ReloadWeapon(ActiveWeaponInfo);
                 //TriggerAnimation
             }
         }
@@ -344,11 +347,7 @@ public class Creature : MonoBehaviour, IOccupier
         }
         return false;
     }
-
-    protected virtual void ReloadWeapon(WeaponInfo weaponInfo)
-    {
-    }
-
+    
     protected Quaternion GetTargetRotation(Coordinates currentCoord, Coordinates targetCoord, out HexDir targetDir)
     {
         var targetRotation = Quaternion.LookRotation(transform.position - targetCoord.pos);
@@ -499,11 +498,12 @@ public class Creature : MonoBehaviour, IOccupier
     public virtual IEnumerator SwapQuickbarItems()
     {
         _weapons.SwapWeapons();
-        var primary = primaryItemInfo;
+        _primaryEquipped = !_primaryEquipped;
+        /*var primary = primaryItemInfo;
         var secondary = secondaryItemInfo;
 
         primaryItemInfo = secondary;
-        secondaryItemInfo = primary;
+        secondaryItemInfo = primary;*/
         yield return null;
         //Play animation
     }
@@ -603,19 +603,19 @@ public class Creature : MonoBehaviour, IOccupier
         {
             weaponSkill = ActiveWeaponInfo.AssociatedSkill;
 
-            var weaponInfo = ActiveWeaponInfo.GetAttackTypeInfo(_activeWeaponMode);
-            if (!ActiveWeaponInfo.CanUseWeapon)
+            var attackInfo = ActiveWeaponInfo.GetAttackTypeInfo(_weapons.ActiveAttackMode);
+            if (!_weapons.CanUseWeapon())
             {
                 _chanceHitTarget = -1;
                 return _chanceHitTarget;
             }
 
-            if (ActiveWeaponInfo.CurrentAmmoInfo != null)
+            if (_weapons.ActiveAmmo != null)
             {
-                ammoACMod = ActiveWeaponInfo.CurrentAmmoInfo.ACMod;
+                ammoACMod = _weapons.ActiveAmmo.Item.ACMod;
             }
 
-            if (distance > weaponInfo.Range)
+            if (distance > attackInfo.Range)
             {
                 //_messageToPrint = OUTOFRANGE;
                 _targetOutOfRange = true;
@@ -650,10 +650,6 @@ public class Creature : MonoBehaviour, IOccupier
         if (WorldClock.Instance != null && WorldClock.Instance.IsNight && distance > 5)
         {
             chanceToHit -= 10;
-        }
-
-        if (_isAimedShot)
-        {
         }
 
         _chanceHitTarget = chanceToHit;
@@ -704,17 +700,17 @@ public class Creature : MonoBehaviour, IOccupier
         return threshold;
     }
 
-    public virtual WeaponInfo.AttackTypeInfo GetAttackTypeInfo(bool primary = true)
+    public virtual WeaponInfo.AttackTypeInfo GetAttackTypeInfo(bool activeWeapon = true)
     {
         WeaponInfo.AttackTypeInfo weaponInfo;
-        if (primary)
+        if (activeWeapon)
         {
-            var isWeapon = primaryItemInfo is WeaponInfo;
+            var isWeapon = ActiveItemInfo is WeaponInfo;
             if (isWeapon)
             {
                 weaponInfo = _weapons.ActiveWeapon.GetAttackTypeInfo(_weapons.ActiveAttackMode);
             }
-            else if (primaryItemInfo == null)
+            else if (ActiveItemInfo == null)
             {
                 var apCost = _weapons.ActiveAttackMode == WeaponInfo.AttackMode.AimedShot ? UNARMEDAPCOST + 1 : UNARMEDAPCOST;
                 weaponInfo = new WeaponInfo.AttackTypeInfo(_weapons.ActiveAttackMode, 0, apCost, 0);
@@ -726,12 +722,12 @@ public class Creature : MonoBehaviour, IOccupier
         }
         else
         {
-            var isWeapon = secondaryItemInfo is WeaponInfo;
+            var isWeapon = OtherItemInfo is WeaponInfo;
             if (isWeapon)
             {
                 weaponInfo = _weapons.OtherWeapon.GetAttackTypeInfo(_weapons.OtherAttackMode);
             }
-            else if (secondaryItemInfo == null)
+            else if (OtherItemInfo == null)
             {
                 var apCost = _weapons.OtherAttackMode == WeaponInfo.AttackMode.AimedShot ? UNARMEDAPCOST + 1 : UNARMEDAPCOST;
                 weaponInfo = new WeaponInfo.AttackTypeInfo(_weapons.OtherAttackMode, 0, apCost, 0);
