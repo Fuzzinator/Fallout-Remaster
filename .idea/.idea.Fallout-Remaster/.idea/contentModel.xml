@@ -898,8 +898,13 @@
             <e p="GameManager.cs" t="Include" />
             <e p="GlobalVariables.cs" t="Include" />
             <e p="InputManager.cs" t="Include" />
+            <e p="Inventory" t="Include">
+              <e p="Item.cs" t="Include" />
+              <e p="ItemContainer.cs" t="Include" />
+            </e>
             <e p="LoggingManager.cs" t="Include" />
             <e p="Settings.cs" t="Include" />
+            <e p="Weapons.cs" t="Include" />
             <e p="WorldClock.cs" t="Include" />
           </e>
           <e p="Creatures" t="Include">
@@ -925,9 +930,9 @@
             <e p="MapExit.cs" t="Include" />
           </e>
           <e p="Scriptable Objs" t="Include">
-            <e p="Ammo.cs" t="Include" />
-            <e p="Armor.cs" t="Include" />
-            <e p="Item.cs" t="Include" />
+            <e p="AmmoInfo.cs" t="Include" />
+            <e p="ArmorInfo.cs" t="Include" />
+            <e p="ItemInfo.cs" t="Include" />
             <e p="Location.cs" t="Include" />
             <e p="Map.cs" t="Include" />
             <e p="Perk.cs" t="Include" />
@@ -936,7 +941,7 @@
             <e p="Skills.cs" t="Include" />
             <e p="SPECIAL.cs" t="Include" />
             <e p="Trait.cs" t="Include" />
-            <e p="Weapon.cs" t="Include" />
+            <e p="WeaponInfo.cs" t="Include" />
           </e>
           <e p="Shaders" t="Include">
             <e p="HexHighlighter.shader" t="Include" />

@@ -26,10 +26,6 @@ public class WeaponInfo : ItemInfo
     public AmmoInfo.Type UsedAmmoType => _ammoType;
 
     [SerializeField]
-    private int _magSize;
-    public int MagSize => _magSize;
-
-    [SerializeField]
     private int _strRequired;
     public int StrRequired => _strRequired;
 

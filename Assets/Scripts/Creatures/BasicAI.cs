@@ -255,7 +255,7 @@ public class BasicAI : MonoBehaviour
                         if (firstAttack)
                         {
                             var seconaryNull = _creature.CurrentWeapons.OtherWeapon == null;
-                            if (seconaryNull || _creature.OtherItemInfo is WeaponInfo)
+                            if (seconaryNull || _creature.InactiveItem is WeaponInfo)
                             {
                                 var info = _creature.GetAttackTypeInfo(false);
                                 if (!info.IsValidWeapon || _creature.MaxCanMoveDist < info.ActionPointCost ||

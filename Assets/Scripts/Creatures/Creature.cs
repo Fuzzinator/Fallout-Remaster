@@ -5,13 +5,13 @@ using ThreePupperStudios.Lockable;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
+
 [RequireComponent(typeof(Weapons))]
 public class Creature : MonoBehaviour, IOccupier
 {
     #region Variables and Properties
 
     [SerializeField] protected string _name;
-
     public string Name => _name;
 
     [SerializeField]
@@ -28,15 +28,15 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected ItemContainer _inventory;
-    
-    [SerializeField]
-    protected Weapons _weapons;
+
+    //[SerializeField]
+    //protected Weapons _weapons;
 
     [SerializeField]
-    protected ItemInfo primaryItemInfo;
+    protected Item _primaryItem;
 
     [SerializeField]
-    protected ItemInfo secondaryItemInfo;
+    protected Item _secondaryItem;
 
     [SerializeField]
     protected bool _primaryEquipped = true;
@@ -133,13 +133,11 @@ public class Creature : MonoBehaviour, IOccupier
 
     public virtual BasicAI.Aggression Aggression => _ai != null ? _ai.CurrentAggression : BasicAI.Aggression.Neutral;
 
-    protected WeaponInfo ActiveWeaponInfo => _weapons.ActiveWeapon;
+    protected Item ActiveItem => _primaryEquipped ? _primaryItem : _secondaryItem;
+    protected Item InactiveItem => _primaryEquipped ? _secondaryItem : _primaryItem;
 
-    public ItemInfo PrimaryItemInfo => primaryItemInfo;
-    public ItemInfo SecondaryItemInfo => secondaryItemInfo;
-    public ItemInfo ActiveItemInfo => _primaryEquipped ? primaryItemInfo:secondaryItemInfo;
-    public ItemInfo OtherItemInfo => _primaryEquipped ? secondaryItemInfo:primaryItemInfo;
-    public Weapons CurrentWeapons => _weapons;
+    public Item PrimaryItem => _primaryItem;
+    public Item SecondaryItem => _secondaryItem;
 
     #endregion
 
@@ -317,37 +315,57 @@ public class Creature : MonoBehaviour, IOccupier
     {
     }
 
-    public virtual bool TryReloadWeapon()
+    public virtual bool TryReloadWeapon(Item item)
     {
         var canReload = false;
 
-        if (ActiveWeaponInfo != null)
+        if (item != null)
         {
-            var hasMatchingAmmoInInventory = false; //TODO Once inventory has been updated, make this work
-            if (ActiveWeaponInfo.UsesAmmo && hasMatchingAmmoInInventory)
+            var hasMatchingAmmoInInventory = _inventory.TryGetItem(item.Ammo, out var slot);
+            
+            if (item.Info is WeaponInfo info && info.UsesAmmo && hasMatchingAmmoInInventory)
             {
                 canReload = !CombatManager.Instance.CombatMode || TryDecrementAP(INVENTORYAPCOST, ActionType.None);
-                //_weapons.ReloadWeapon(ActiveWeaponInfo);
-                //TriggerAnimation
+                if (canReload)
+                {
+                    var newValue = item.ReloadCharges(slot.Count);
+                    if (newValue > 0)
+                    {
+                        slot.SetCount(newValue);
+                    }
+                    else
+                    {
+                        _inventory.RemoveSlot(slot);
+                    }
+
+                    if (item.Charges < item.Info.MaxCharges)
+                    {   
+                        hasMatchingAmmoInInventory = _inventory.TryGetItem(item.Ammo, out slot);
+                        while (hasMatchingAmmoInInventory && item.Charges < item.Info.MaxCharges)
+                        {
+                            newValue = item.ReloadCharges(slot.Count);
+                            if (newValue > 0)
+                            {
+                                slot.SetCount(newValue);
+                            }
+                            else
+                            {
+                                _inventory.RemoveSlot(slot);
+                            }
+
+                            if (item.Charges < item.Info.MaxCharges)
+                            {
+                                hasMatchingAmmoInInventory = _inventory.TryGetItem(item.Ammo, out slot);
+                            }
+                        }
+                    }
+                }
             }
         }
 
         return canReload;
     }
 
-    protected virtual bool HasMatchingAmmoInInventory()
-    {
-        if (ActiveWeaponInfo.UsesAmmo)
-        {
-            var info = _weapons.ActiveAmmo.Item;
-            if (info != null)
-            {
-                //TODO finish this logic
-            }
-        }
-        return false;
-    }
-    
     protected Quaternion GetTargetRotation(Coordinates currentCoord, Coordinates targetCoord, out HexDir targetDir)
     {
         var targetRotation = Quaternion.LookRotation(transform.position - targetCoord.pos);
@@ -525,7 +543,7 @@ public class Creature : MonoBehaviour, IOccupier
         {
             baseDamage = ActiveWeaponInfo.GetDamage();
             var hasAmmoInfo = _weapons != null && _weapons.ActiveAmmo != null && _weapons.ActiveAmmo.Item != null;
-            if(hasAmmoInfo)
+            if (hasAmmoInfo)
             {
                 baseDamage *= _weapons.ActiveAmmo.Item.DamageMod;
             }
@@ -712,7 +730,9 @@ public class Creature : MonoBehaviour, IOccupier
             }
             else if (ActiveItemInfo == null)
             {
-                var apCost = _weapons.ActiveAttackMode == WeaponInfo.AttackMode.AimedShot ? UNARMEDAPCOST + 1 : UNARMEDAPCOST;
+                var apCost = _weapons.ActiveAttackMode == WeaponInfo.AttackMode.AimedShot
+                    ? UNARMEDAPCOST + 1
+                    : UNARMEDAPCOST;
                 weaponInfo = new WeaponInfo.AttackTypeInfo(_weapons.ActiveAttackMode, 0, apCost, 0);
             }
             else
@@ -729,7 +749,9 @@ public class Creature : MonoBehaviour, IOccupier
             }
             else if (OtherItemInfo == null)
             {
-                var apCost = _weapons.OtherAttackMode == WeaponInfo.AttackMode.AimedShot ? UNARMEDAPCOST + 1 : UNARMEDAPCOST;
+                var apCost = _weapons.OtherAttackMode == WeaponInfo.AttackMode.AimedShot
+                    ? UNARMEDAPCOST + 1
+                    : UNARMEDAPCOST;
                 weaponInfo = new WeaponInfo.AttackTypeInfo(_weapons.OtherAttackMode, 0, apCost, 0);
             }
             else

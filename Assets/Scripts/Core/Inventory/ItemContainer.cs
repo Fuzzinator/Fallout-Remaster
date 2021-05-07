@@ -8,15 +8,17 @@ public class ItemContainer : MonoBehaviour
 {
     [SerializeField]
     private List<InventorySlot> _items = new List<InventorySlot>();
+
     private List<InventorySlot> _pooledSlots = new List<InventorySlot>();
-    public void AddItem(ItemInfo item, int count)
+
+    public void AddItem(Item item, int count)
     {
         while (count > 0)
         {
-            var sameItem = _items.Find(i => i.Item == item && i.Count < i.Item.MaxStackSize);
+            var sameItem = _items.Find(i => i.Item == item && i.Count < i.Item.Info.MaxStackSize);
             if (sameItem != null)
             {
-                var remainingSpace = sameItem.Item.MaxStackSize - sameItem.Count;
+                var remainingSpace = sameItem.Item.Info.MaxStackSize - sameItem.Count;
                 if (remainingSpace < count)
                 {
                     sameItem.Add(remainingSpace);
@@ -30,10 +32,10 @@ public class ItemContainer : MonoBehaviour
             }
             else
             {
-                if (count < item.MaxStackSize)
+                if (count < item.Info.MaxStackSize)
                 {
-                    count -= item.MaxStackSize;
-                    _items.Add(GetNewObject(item, item.MaxStackSize));
+                    count -= item.Info.MaxStackSize;
+                    _items.Add(GetNewObject(item, item.Info.MaxStackSize));
                 }
                 else
                 {
@@ -44,7 +46,7 @@ public class ItemContainer : MonoBehaviour
         }
     }
 
-    private InventorySlot GetNewObject(ItemInfo item, int count)
+    private InventorySlot GetNewObject(Item item, int count)
     {
         InventorySlot newSlot = null;
         if (_pooledSlots.Count > 0)
@@ -53,7 +55,10 @@ public class ItemContainer : MonoBehaviour
             _pooledSlots.Remove(newSlot);
             newSlot.Reset(item, count);
         }
-        return newSlot ??= new InventorySlot(item, count);//shorthand for if newSlow == null newSlot == new InventorySlot else return newSlot;
+
+        return
+            newSlot ??= new InventorySlot(item,
+                count); //shorthand for if newSlow == null newSlot == new InventorySlot else return newSlot;
     }
 
     private void ReturnObjToPool(InventorySlot slot)
@@ -61,7 +66,7 @@ public class ItemContainer : MonoBehaviour
         _pooledSlots.Add(slot);
     }
 
-    public void RemoveItem(ItemInfo item, int count = 1)
+    public void RemoveItem(Item item, int count = 1)
     {
         while (count > 0)
         {
@@ -71,6 +76,7 @@ public class ItemContainer : MonoBehaviour
                 Debug.LogWarning("Trying to remove object from inventory that doesnt exist. This shouldnt happen");
                 break;
             }
+
             if (sameItem.Count > count)
             {
                 sameItem.Subtract(count);
@@ -88,38 +94,67 @@ public class ItemContainer : MonoBehaviour
         }
     }
 
+    public void RemoveSlot(InventorySlot slot)
+    {
+        _items.Remove(slot);
+        _pooledSlots.Add(slot);
+    }
+    
+    public bool TryGetItem(ItemInfo info, out InventorySlot slot)
+    {
+        slot = null;
+        if (info != null && _items.Exists(i => i.Item.Info == info))
+        {
+            slot = _items.Find(i => i.Item.Info == info);
+            return true;
+        }
+
+        return false;
+    }
+
     [Serializable]
     public class InventorySlot
     {
         [SerializeField]
-        private ItemInfo _item;
+        private Item _item;
+
         [SerializeField]
         private int _count;
-        public ItemInfo Item => _item;
+
+        public Item Item => _item;
         public int Count => _count;
 
-        public InventorySlot(ItemInfo item, int count)
+        public InventorySlot(Item item, int count)
         {
             _item = item;
             _count = count;
         }
+
         public void Add(int count)
         {
             _count += count;
         }
+
         public bool Subtract(int count)
         {
             if (_count <= count)
             {
                 return false;
             }
+
             _count -= count;
             return true;
         }
-        public void Reset(ItemInfo item, int count)
+
+        public void Reset(Item item, int count)
         {
             _item = item;
             _count = count;
+        }
+
+        public void SetCount(int newCount)
+        {
+            _count = newCount;
         }
     }
 }

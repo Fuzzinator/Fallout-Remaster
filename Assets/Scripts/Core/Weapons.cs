@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Weapons : MonoBehaviour
 {
-    [SerializeField]
+    /*[SerializeField]
     private WeaponInfo _primaryWeapon;
     public WeaponInfo PrimaryWeapon => _primaryWeapon;
     [SerializeField]
@@ -69,12 +69,12 @@ public class Weapons : MonoBehaviour
     public void SwapWeapons()
     {
         _primaryEquipped = !_primaryEquipped;
-    }
+    }*/
 
-    [System.Serializable]
+    /*[System.Serializable]
     public class AmmoContainer : ItemContainer.InventorySlot
     {
         public new AmmoInfo Item => base.Item as AmmoInfo;
         public AmmoContainer(AmmoInfo ammo, int count) : base(ammo, count) { }
-    }
+    }*/
 }
