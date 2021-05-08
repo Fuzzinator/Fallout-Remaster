@@ -189,7 +189,6 @@ GameObject:
   - component: {fileID: 8579911623099481103}
   - component: {fileID: 5375600392172712499}
   - component: {fileID: 275044921679490909}
-  - component: {fileID: 1540850405590270440}
   m_Layer: 15
   m_Name: Creature
   m_TagString: Untagged
@@ -229,11 +228,16 @@ MonoBehaviour:
   _currentHealth: 0
   _currentAP: 0
   _special: {fileID: 0}
-  _skills: {fileID: 11400000, guid: a273fe76c95bb0f41bd94e654746facb, type: 2}
+  _skills: {fileID: 0}
   _inventory: {fileID: 275044921679490909}
-  _weapons: {fileID: 1540850405590270440}
-  primaryItemInfo: {fileID: 0}
-  secondaryItemInfo: {fileID: 0}
+  _primaryItem:
+    _info: {fileID: 0}
+    _ammo: {fileID: 0}
+    _charges: 0
+  _secondaryItem:
+    _info: {fileID: 0}
+    _ammo: {fileID: 0}
+    _charges: 0
   _primaryEquipped: 1
   equipedArmorInfo: {fileID: 0}
   _ai: {fileID: 5375600392172712499}
@@ -245,6 +249,8 @@ MonoBehaviour:
   _hpIncrease: 0
   _baseHealth: 0
   animatorController: {fileID: 0}
+  _primaryAttackMode: 0
+  _secondaryAttackMode: 0
 --- !u!114 &5375600392172712499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,26 +284,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _items: []
---- !u!114 &1540850405590270440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8579911623099481100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb8df1f4317b86c41ac6df63d755f9fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _primaryWeapon: {fileID: 0}
-  _primaryAmmo:
-    _item: {fileID: 0}
-    _count: 0
-  _primaryWeaponMode: 0
-  _secondaryWeapon: {fileID: 0}
-  _secondaryAmmo:
-    _item: {fileID: 0}
-    _count: 0
-  _secondaryWeaponMode: 0
-  _primaryEquipped: 1

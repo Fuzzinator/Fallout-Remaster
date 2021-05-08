@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(Weapons))]
 public class Creature : MonoBehaviour, IOccupier
 {
     #region Variables and Properties

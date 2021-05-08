@@ -142,7 +142,7 @@
       <workItem from="1618637315874" duration="31684000" />
       <workItem from="1619311417304" duration="32408000" />
       <workItem from="1619654588024" duration="11927000" />
-      <workItem from="1620354384320" duration="9750000" />
+      <workItem from="1620354384320" duration="10605000" />
     </task>
     <servers />
   </component>
@@ -167,70 +167,74 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="3397" height="314" key="GridCell.Tab.0.bottom" timestamp="1620442304304">
+    <state width="430" height="464" key="DebuggerActiveHint" timestamp="1620442881346">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.0.bottom/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.0.center" timestamp="1620442304303">
+    <state width="430" height="464" key="DebuggerActiveHint/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442881346" />
+    <state width="3397" height="314" key="GridCell.Tab.0.bottom" timestamp="1620442831258">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.0.center/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304303" />
-    <state width="3397" height="314" key="GridCell.Tab.0.left" timestamp="1620442304303">
+    <state width="3397" height="314" key="GridCell.Tab.0.bottom/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831258" />
+    <state width="3397" height="314" key="GridCell.Tab.0.center" timestamp="1620442831258">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.0.left/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304303" />
-    <state width="3397" height="314" key="GridCell.Tab.0.right" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.0.center/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831258" />
+    <state width="3397" height="314" key="GridCell.Tab.0.left" timestamp="1620442831257">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.0.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.1.bottom" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.0.left/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831257" />
+    <state width="3397" height="314" key="GridCell.Tab.0.right" timestamp="1620442831258">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.1.bottom/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.1.center" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.0.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831258" />
+    <state width="3397" height="314" key="GridCell.Tab.1.bottom" timestamp="1620442856169">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.1.center/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.1.left" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.1.bottom/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442856169" />
+    <state width="3397" height="314" key="GridCell.Tab.1.center" timestamp="1620442856169">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.1.left/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.1.right" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.1.center/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442856169" />
+    <state width="3397" height="314" key="GridCell.Tab.1.left" timestamp="1620442856169">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.1.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.2.bottom" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.1.left/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442856169" />
+    <state width="3397" height="314" key="GridCell.Tab.1.right" timestamp="1620442856169">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.2.bottom/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.2.center" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.1.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442856169" />
+    <state width="3397" height="314" key="GridCell.Tab.2.bottom" timestamp="1620442831039">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.2.center/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.2.left" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.2.bottom/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831039" />
+    <state width="3397" height="314" key="GridCell.Tab.2.center" timestamp="1620442831039">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.2.left/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.2.right" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.2.center/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831039" />
+    <state width="3397" height="314" key="GridCell.Tab.2.left" timestamp="1620442831039">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.2.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.3.bottom" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.2.left/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831039" />
+    <state width="3397" height="314" key="GridCell.Tab.2.right" timestamp="1620442831039">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.3.bottom/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.3.center" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.2.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831039" />
+    <state width="3397" height="314" key="GridCell.Tab.3.bottom" timestamp="1620442831039">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.3.center/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.3.left" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.3.bottom/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831039" />
+    <state width="3397" height="314" key="GridCell.Tab.3.center" timestamp="1620442831039">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.3.left/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
-    <state width="3397" height="314" key="GridCell.Tab.3.right" timestamp="1620442304304">
+    <state width="3397" height="314" key="GridCell.Tab.3.center/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831039" />
+    <state width="3397" height="314" key="GridCell.Tab.3.left" timestamp="1620442831039">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="3397" height="314" key="GridCell.Tab.3.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.3.left/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831039" />
+    <state width="3397" height="314" key="GridCell.Tab.3.right" timestamp="1620442831039">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.3.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831039" />
     <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1620359450738">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
@@ -247,65 +251,65 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>483</line>
+          <line>482</line>
           <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="483">
             <startOffsets>
-              <option value="13827" />
+              <option value="13791" />
             </startOffsets>
             <endOffsets>
-              <option value="13848" />
+              <option value="13812" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>473</line>
+          <line>472</line>
           <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="473">
             <startOffsets>
-              <option value="13475" />
+              <option value="13439" />
             </startOffsets>
             <endOffsets>
-              <option value="13496" />
+              <option value="13460" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>455</line>
+          <line>454</line>
           <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="455">
             <startOffsets>
-              <option value="12789" />
+              <option value="12753" />
             </startOffsets>
             <endOffsets>
-              <option value="12810" />
+              <option value="12774" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>526</line>
+          <line>525</line>
           <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="526">
             <startOffsets>
-              <option value="15179" />
+              <option value="15143" />
             </startOffsets>
             <endOffsets>
-              <option value="15200" />
+              <option value="15164" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>451</line>
+          <line>450</line>
           <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="451">
             <startOffsets>
-              <option value="12631" />
+              <option value="12595" />
             </startOffsets>
             <endOffsets>
-              <option value="12678" />
+              <option value="12642" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="19" />
@@ -338,13 +342,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>249</line>
+          <line>248</line>
           <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="249">
             <startOffsets>
-              <option value="6976" />
+              <option value="6940" />
             </startOffsets>
             <endOffsets>
-              <option value="7006" />
+              <option value="6970" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="23" />
@@ -361,6 +365,45 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs</url>
+          <line>875</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Player.cs" initialLine="875">
+            <startOffsets>
+              <option value="22552" />
+            </startOffsets>
+            <endOffsets>
+              <option value="22612" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
+          <line>628</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="629">
+            <startOffsets>
+              <option value="18094" />
+            </startOffsets>
+            <endOffsets>
+              <option value="18135" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
+          <line>626</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="627">
+            <startOffsets>
+              <option value="17977" />
+            </startOffsets>
+            <endOffsets>
+              <option value="18071" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

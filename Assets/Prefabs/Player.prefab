@@ -544,9 +544,8 @@ GameObject:
   m_Component:
   - component: {fileID: 937255294271531747}
   - component: {fileID: 937255294271531746}
-  - component: {fileID: 149040304637281309}
-  - component: {fileID: 3512865757688850739}
   - component: {fileID: 7150994076636575378}
+  - component: {fileID: 149040304637281309}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -589,9 +588,14 @@ MonoBehaviour:
   _special: {fileID: 11400000, guid: fc0d1f5ad82111249b96514bab97af18, type: 2}
   _skills: {fileID: 11400000, guid: 78acac0a74bea0e45872ddb875b2f752, type: 2}
   _inventory: {fileID: 7150994076636575378}
-  _weapons: {fileID: 3512865757688850739}
-  primaryItemInfo: {fileID: 0}
-  secondaryItemInfo: {fileID: 0}
+  _primaryItem:
+    _info: {fileID: 0}
+    _ammo: {fileID: 0}
+    _charges: 0
+  _secondaryItem:
+    _info: {fileID: 0}
+    _ammo: {fileID: 0}
+    _charges: 0
   _primaryEquipped: 1
   equipedArmorInfo: {fileID: 0}
   _ai: {fileID: 0}
@@ -603,6 +607,8 @@ MonoBehaviour:
   _hpIncrease: 0
   _baseHealth: 0
   animatorController: {fileID: 0}
+  _primaryAttackMode: 0
+  _secondaryAttackMode: 0
   _gender: 0
   _age: 25
   _tempRadResist: 0
@@ -613,6 +619,19 @@ MonoBehaviour:
   _trait2: {fileID: 0}
   _activePerks: []
   _shaderUpdater: {fileID: 937255294373167755}
+--- !u!114 &7150994076636575378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937255294271531744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed35c51f514a1d418761c7093265320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _items: []
 --- !u!54 &149040304637281309
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -629,42 +648,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3512865757688850739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 937255294271531744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb8df1f4317b86c41ac6df63d755f9fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _primaryWeapon: {fileID: 0}
-  _primaryAmmo:
-    _item: {fileID: 0}
-    _count: 0
-  _primaryWeaponMode: 0
-  _secondaryWeapon: {fileID: 0}
-  _secondaryAmmo:
-    _item: {fileID: 0}
-    _count: 0
-  _secondaryWeaponMode: 0
-  _primaryEquipped: 1
---- !u!114 &7150994076636575378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 937255294271531744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ed35c51f514a1d418761c7093265320, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _items: []
 --- !u!1 &937255294373167753
 GameObject:
   m_ObjectHideFlags: 0
