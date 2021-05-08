@@ -14,14 +14,9 @@ public class AmmoInfo : ItemInfo
     [SerializeField]
     private int _damageDiv;
     public float DamageMod => _damageMult / (float)_damageDiv;
-
-    [SerializeField]
-    private int _magSize;
-    public int MagSize => _magSize;
     
     [SerializeField]
     private int _drMod;
-
     public int DRMod => _drMod;
     public enum Type
     {

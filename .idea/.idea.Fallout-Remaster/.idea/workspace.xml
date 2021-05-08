@@ -29,6 +29,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/GlobalVariables.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/HexHighlighter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4D9F7249-F1DE-41E3-8466-8FEA10E9822F/55/3bf8e6cc/SetupCoroutine.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Location Stuff/MapExit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ItemInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/FOVControl.cs" root0="FORCE_HIGHLIGHTING" />
@@ -61,9 +62,12 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Weapons.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/WeaponInfo.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ItemInfo.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Inventory/Item.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Inventory/ItemContainer.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Inventory/Item.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/AmmoInfo.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
       </list>
     </option>
   </component>
@@ -73,8 +77,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.34777898" />
-    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.34789068" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.014260249" />
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -95,10 +99,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="17128">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="17128" />
       <option name="selectedOptions">
         <set />
       </option>
@@ -138,7 +142,7 @@
       <workItem from="1618637315874" duration="31684000" />
       <workItem from="1619311417304" duration="32408000" />
       <workItem from="1619654588024" duration="11927000" />
-      <workItem from="1620354384320" duration="4964000" />
+      <workItem from="1620354384320" duration="9750000" />
     </task>
     <servers />
   </component>
@@ -162,20 +166,201 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
+  <component name="WindowStateProjectService">
+    <state width="3397" height="314" key="GridCell.Tab.0.bottom" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.0.bottom/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.0.center" timestamp="1620442304303">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.0.center/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304303" />
+    <state width="3397" height="314" key="GridCell.Tab.0.left" timestamp="1620442304303">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.0.left/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304303" />
+    <state width="3397" height="314" key="GridCell.Tab.0.right" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.0.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.1.bottom" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.1.bottom/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.1.center" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.1.center/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.1.left" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.1.left/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.1.right" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.1.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.2.bottom" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.2.bottom/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.2.center" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.2.center/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.2.left" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.2.left/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.2.right" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.2.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.3.bottom" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.3.bottom/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.3.center" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.3.center/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.3.left" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.3.left/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state width="3397" height="314" key="GridCell.Tab.3.right" timestamp="1620442304304">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="3397" height="314" key="GridCell.Tab.3.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442304304" />
+    <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1620359450738">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620359450738" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>392</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="384" />
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Core/Inventory/ItemContainer.cs</url>
           <line>15</line>
           <properties documentPath="C:\Asus WebStorage\fuzzinator12@gmail.com\MySyncFolder\Fallout-Remaster\Assets\Scripts\Core\Inventory\ItemContainer.cs" initialLine="12" />
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
+          <line>483</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="483">
+            <startOffsets>
+              <option value="13827" />
+            </startOffsets>
+            <endOffsets>
+              <option value="13848" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
+          <line>473</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="473">
+            <startOffsets>
+              <option value="13475" />
+            </startOffsets>
+            <endOffsets>
+              <option value="13496" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
+          <line>455</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="455">
+            <startOffsets>
+              <option value="12789" />
+            </startOffsets>
+            <endOffsets>
+              <option value="12810" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
+          <line>526</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="526">
+            <startOffsets>
+              <option value="15179" />
+            </startOffsets>
+            <endOffsets>
+              <option value="15200" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
+          <line>451</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="451">
+            <startOffsets>
+              <option value="12631" />
+            </startOffsets>
+            <endOffsets>
+              <option value="12678" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs</url>
+          <line>119</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\BasicAI.cs" initialLine="119">
+            <startOffsets>
+              <option value="2603" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2625" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs</url>
+          <line>242</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\BasicAI.cs" initialLine="242">
+            <startOffsets>
+              <option value="6172" />
+            </startOffsets>
+            <endOffsets>
+              <option value="6195" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
+          <line>249</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="249">
+            <startOffsets>
+              <option value="6976" />
+            </startOffsets>
+            <endOffsets>
+              <option value="7006" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs</url>
+          <line>218</line>
+          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\BasicAI.cs" initialLine="218">
+            <startOffsets>
+              <option value="5508" />
+            </startOffsets>
+            <endOffsets>
+              <option value="5515" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

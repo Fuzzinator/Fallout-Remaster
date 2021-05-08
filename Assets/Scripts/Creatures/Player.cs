@@ -524,7 +524,8 @@ public class Player : Human
             {
                 critChance += perk.EffectAmount;
             }
-            else if (perk.ModType == ModType.WeaponSpec && ActiveWeaponInfo.WeaponType == perk.AffectedWeapon)
+            else if (perk.ModType == ModType.WeaponSpec && ActiveItem.Info != null &&
+                     ActiveItem.Info is WeaponInfo weaponInfo && weaponInfo.WeaponType == perk.AffectedWeapon)
             {
                 critChance += perk.EffectAmount;
             }
@@ -832,7 +833,7 @@ public class Player : Human
                 TryMove();
                 break;
             case CursorController.CursorState.Targeting:
-                if (_weapons.ActiveAttackMode == WeaponInfo.AttackMode.AimedShot)
+                if (ActiveAttackMode == WeaponInfo.AttackMode.AimedShot)
                 {
                     RequestAimedShot();
                 }

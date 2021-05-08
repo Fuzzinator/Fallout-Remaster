@@ -17,7 +17,6 @@ public class Item
     public int Charges => _charges;
     public AmmoInfo Ammo => _ammo;
     
-    
     public bool CanUseItem()
     {
         var canUse = _ammo == null || _charges > 0;

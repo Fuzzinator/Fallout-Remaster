@@ -80,6 +80,17 @@ public class Creature : MonoBehaviour, IOccupier
     [SerializeField]
     private AnimatorController animatorController;
 
+
+    [SerializeField]
+    private WeaponInfo.AttackMode _primaryAttackMode;
+
+    public WeaponInfo.AttackMode PrimaryAttackMode => _primaryAttackMode;
+
+    [SerializeField]
+    private WeaponInfo.AttackMode _secondaryAttackMode;
+
+    public WeaponInfo.AttackMode SecondaryAttackMode => _secondaryAttackMode;
+
     #region Combat Targeting Things
 
     protected Creature _currentTarget;
@@ -133,8 +144,11 @@ public class Creature : MonoBehaviour, IOccupier
 
     public virtual BasicAI.Aggression Aggression => _ai != null ? _ai.CurrentAggression : BasicAI.Aggression.Neutral;
 
-    protected Item ActiveItem => _primaryEquipped ? _primaryItem : _secondaryItem;
-    protected Item InactiveItem => _primaryEquipped ? _secondaryItem : _primaryItem;
+    public Item ActiveItem => _primaryEquipped ? _primaryItem : _secondaryItem;
+    public Item InactiveItem => _primaryEquipped ? _secondaryItem : _primaryItem;
+
+    public WeaponInfo.AttackMode ActiveAttackMode => _primaryEquipped ? _primaryAttackMode : _secondaryAttackMode;
+    public WeaponInfo.AttackMode InactiveAttackMode => _primaryEquipped ? _secondaryAttackMode : _primaryAttackMode;
 
     public Item PrimaryItem => _primaryItem;
     public Item SecondaryItem => _secondaryItem;
@@ -322,7 +336,7 @@ public class Creature : MonoBehaviour, IOccupier
         if (item != null)
         {
             var hasMatchingAmmoInInventory = _inventory.TryGetItem(item.Ammo, out var slot);
-            
+
             if (item.Info is WeaponInfo info && info.UsesAmmo && hasMatchingAmmoInInventory)
             {
                 canReload = !CombatManager.Instance.CombatMode || TryDecrementAP(INVENTORYAPCOST, ActionType.None);
@@ -339,7 +353,7 @@ public class Creature : MonoBehaviour, IOccupier
                     }
 
                     if (item.Charges < item.Info.MaxCharges)
-                    {   
+                    {
                         hasMatchingAmmoInInventory = _inventory.TryGetItem(item.Ammo, out slot);
                         while (hasMatchingAmmoInInventory && item.Charges < item.Info.MaxCharges)
                         {
@@ -446,13 +460,13 @@ public class Creature : MonoBehaviour, IOccupier
         {
             var apCost = UNARMEDAPCOST;
             var numOfAttacks = 1;
-            if (ActiveWeaponInfo != null)
+            if (ActiveItem != null && ActiveItem.Info != null && ActiveItem.Info is WeaponInfo weapon)
             {
-                var weaponInfo = ActiveWeaponInfo.GetAttackTypeInfo(_weapons.ActiveAttackMode);
+                var attackInfo = weapon.GetAttackTypeInfo(ActiveAttackMode);
 
-                apCost = weaponInfo.ActionPointCost;
-                numOfAttacks = weaponInfo.AmmoCost;
-                if (!_weapons.CanUseWeapon())
+                apCost = attackInfo.ActionPointCost;
+                numOfAttacks = attackInfo.AmmoCost;
+                if (!ActiveItem.CanUseItem())
                 {
                     LoggingManager.LogMessage(MessageType.OutOfAmmo, this, _currentTarget);
 
@@ -474,14 +488,14 @@ public class Creature : MonoBehaviour, IOccupier
             var totalDamage = 0;
             for (int i = 0; i < numOfAttacks; i++)
             {
-                if (ActiveWeaponInfo != null && !_weapons.TryUseWeapon(1))
+                if (ActiveItem != null && ActiveItem.Info != null && !ActiveItem.TryUseItem(1, out var destroyMe))
                 {
                     break;
                 }
 
                 var randomVal = RandomHit();
                 var toHit = _chanceHitTarget - randomVal;
-                if (toHit >= 0) //Did the attack miss?
+                if (toHit >= 0) //Did the attack hit?
                 {
                     allMissed = false;
                     totalDamage += ProcessAttack(toHit);
@@ -515,13 +529,7 @@ public class Creature : MonoBehaviour, IOccupier
 
     public virtual IEnumerator SwapQuickbarItems()
     {
-        _weapons.SwapWeapons();
         _primaryEquipped = !_primaryEquipped;
-        /*var primary = primaryItemInfo;
-        var secondary = secondaryItemInfo;
-
-        primaryItemInfo = secondary;
-        secondaryItemInfo = primary;*/
         yield return null;
         //Play animation
     }
@@ -539,24 +547,24 @@ public class Creature : MonoBehaviour, IOccupier
         var armorThreshold = 0;
         var armorResist = 0;
         var ammoDRMod = 0;
-        if (ActiveWeaponInfo != null)
+        if (ActiveItem != null && ActiveItem.Info != null && ActiveItem.Info is WeaponInfo weaponInfo)
         {
-            baseDamage = ActiveWeaponInfo.GetDamage();
-            var hasAmmoInfo = _weapons != null && _weapons.ActiveAmmo != null && _weapons.ActiveAmmo.Item != null;
+            baseDamage = weaponInfo.GetDamage();
+            var hasAmmoInfo = ActiveItem.Ammo != null;
             if (hasAmmoInfo)
             {
-                baseDamage *= _weapons.ActiveAmmo.Item.DamageMod;
+                baseDamage *= ActiveItem.Ammo.DamageMod;
             }
 
             if (_currentTarget.equipedArmorInfo != null)
             {
-                armorThreshold = _currentTarget.equipedArmorInfo.GetThreshold(ActiveWeaponInfo.DmgType);
-                armorResist = _currentTarget.equipedArmorInfo.GetResistance(ActiveWeaponInfo.DmgType);
+                armorThreshold = _currentTarget.equipedArmorInfo.GetThreshold(weaponInfo.DmgType);
+                armorResist = _currentTarget.equipedArmorInfo.GetResistance(weaponInfo.DmgType);
             }
 
             if (hasAmmoInfo)
             {
-                ammoDRMod = _weapons.ActiveAmmo.Item.DRMod;
+                ammoDRMod = ActiveItem.Ammo.DRMod;
             }
         }
         else if (_currentTarget.equipedArmorInfo != null)
@@ -617,20 +625,20 @@ public class Creature : MonoBehaviour, IOccupier
         var ammoACMod = 0;
         _targetOutOfRange = false;
         _targetBlocked = false;
-        if (ActiveWeaponInfo != null)
+        if (ActiveItem != null && ActiveItem.Info != null && ActiveItem.Info is WeaponInfo weaponInfo)
         {
-            weaponSkill = ActiveWeaponInfo.AssociatedSkill;
+            weaponSkill = weaponInfo.AssociatedSkill;
 
-            var attackInfo = ActiveWeaponInfo.GetAttackTypeInfo(_weapons.ActiveAttackMode);
-            if (!_weapons.CanUseWeapon())
+            var attackInfo = weaponInfo.GetAttackTypeInfo(ActiveAttackMode);
+            if (!ActiveItem.CanUseItem())
             {
                 _chanceHitTarget = -1;
                 return _chanceHitTarget;
             }
 
-            if (_weapons.ActiveAmmo != null)
+            if (ActiveItem.Ammo != null)
             {
-                ammoACMod = _weapons.ActiveAmmo.Item.ACMod;
+                ammoACMod = ActiveItem.Ammo.ACMod;
             }
 
             if (distance > attackInfo.Range)
@@ -720,47 +728,28 @@ public class Creature : MonoBehaviour, IOccupier
 
     public virtual WeaponInfo.AttackTypeInfo GetAttackTypeInfo(bool activeWeapon = true)
     {
-        WeaponInfo.AttackTypeInfo weaponInfo;
-        if (activeWeapon)
+        WeaponInfo.AttackTypeInfo attackInfo;
+
+        var targetItem = activeWeapon ? ActiveItem : InactiveItem;
+        var targetMode = activeWeapon ? ActiveAttackMode : InactiveAttackMode;
+
+        if (targetItem == null || targetItem.Info == null)
         {
-            var isWeapon = ActiveItemInfo is WeaponInfo;
-            if (isWeapon)
-            {
-                weaponInfo = _weapons.ActiveWeapon.GetAttackTypeInfo(_weapons.ActiveAttackMode);
-            }
-            else if (ActiveItemInfo == null)
-            {
-                var apCost = _weapons.ActiveAttackMode == WeaponInfo.AttackMode.AimedShot
-                    ? UNARMEDAPCOST + 1
-                    : UNARMEDAPCOST;
-                weaponInfo = new WeaponInfo.AttackTypeInfo(_weapons.ActiveAttackMode, 0, apCost, 0);
-            }
-            else
-            {
-                weaponInfo = new WeaponInfo.AttackTypeInfo(false);
-            }
+            var apCost = targetMode == WeaponInfo.AttackMode.AimedShot
+                ? UNARMEDAPCOST + 1
+                : UNARMEDAPCOST;
+            attackInfo = new WeaponInfo.AttackTypeInfo(targetMode, 0, apCost, 0);
+        }
+        else if (targetItem.Info is WeaponInfo weaponInfo)
+        {
+            attackInfo = weaponInfo.GetAttackTypeInfo(targetMode);
         }
         else
         {
-            var isWeapon = OtherItemInfo is WeaponInfo;
-            if (isWeapon)
-            {
-                weaponInfo = _weapons.OtherWeapon.GetAttackTypeInfo(_weapons.OtherAttackMode);
-            }
-            else if (OtherItemInfo == null)
-            {
-                var apCost = _weapons.OtherAttackMode == WeaponInfo.AttackMode.AimedShot
-                    ? UNARMEDAPCOST + 1
-                    : UNARMEDAPCOST;
-                weaponInfo = new WeaponInfo.AttackTypeInfo(_weapons.OtherAttackMode, 0, apCost, 0);
-            }
-            else
-            {
-                weaponInfo = new WeaponInfo.AttackTypeInfo(false);
-            }
+            attackInfo = new WeaponInfo.AttackTypeInfo(false);
         }
 
-        return weaponInfo;
+        return attackInfo;
     }
 
     #endregion

@@ -202,7 +202,7 @@ public class BasicAI : MonoBehaviour
         for (var i = 0; i < path.Length; i++)
         {
             _creature.TargetPath.Add(path[i]);
-            if (dist > 0)
+            if (dist > 1)
             {
                 yield return _creature.AIMoveCreature();
             }
@@ -254,12 +254,12 @@ public class BasicAI : MonoBehaviour
                     case AttackSuccess.NotEnoutAP:
                         if (firstAttack)
                         {
-                            var seconaryNull = _creature.CurrentWeapons.OtherWeapon == null;
-                            if (seconaryNull || _creature.InactiveItem is WeaponInfo)
+                            var inactiveNull = _creature.InactiveItem == null || _creature.InactiveItem.Info == null;
+                            if (inactiveNull || _creature.InactiveItem.Info is WeaponInfo)
                             {
-                                var info = _creature.GetAttackTypeInfo(false);
-                                if (!info.IsValidWeapon || _creature.MaxCanMoveDist < info.ActionPointCost ||
-                                    (!seconaryNull && !_creature.CurrentWeapons.CanUseWeapon(false)))
+                                var attackInfo = _creature.GetAttackTypeInfo(false);
+                                if (!attackInfo.IsValidWeapon || _creature.MaxCanMoveDist < attackInfo.ActionPointCost ||
+                                    (!inactiveNull && !_creature.InactiveItem.CanUseItem()))
                                 {
                                     yield return null;
                                     tryAgain = false;
@@ -271,10 +271,11 @@ public class BasicAI : MonoBehaviour
                                 break;
                             }
                         }
+
                         tryAgain = false;
                         break;
                     case AttackSuccess.NoAmmo:
-                        var canReload = _creature.TryReloadWeapon();
+                        var canReload = _creature.TryReloadWeapon(_creature.ActiveItem);
                         if (canReload)
                         {
                             //wait for anim to finish
