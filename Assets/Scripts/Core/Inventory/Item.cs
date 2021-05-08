@@ -27,9 +27,9 @@ public class Item
         return canUse;
     }
 
-    public bool TryUseItem(int cost, out bool shouldDestroy)
+    public bool TryUseItem(int cost)
     {
-        shouldDestroy = false;
+        //shouldDestroy = false;
         if (_info is WeaponInfo weapon)
         {
             if (weapon.UsesAmmo)
@@ -60,7 +60,7 @@ public class Item
                 return true;
             }
 
-            shouldDestroy = _info.DestroyWhenEmpty;
+            //shouldDestroy = _info.DestroyWhenEmpty;
             return false;
         }
     }

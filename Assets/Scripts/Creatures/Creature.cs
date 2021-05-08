@@ -158,6 +158,7 @@ public class Creature : MonoBehaviour, IOccupier
 
     protected const int UNARMEDAPCOST = 3;
     protected const int INVENTORYAPCOST = 4;
+    protected const int USEITEMAPCOST = 2;
 
     #endregion
 
@@ -379,6 +380,34 @@ public class Creature : MonoBehaviour, IOccupier
         return canReload;
     }
 
+    public virtual bool TryUseItem(Item item)
+    {
+        if (item == null || item.Info == null)
+        {
+            return false;
+        }
+        
+        var canUseItem = !CombatManager.Instance.CombatMode ||
+                         TryDecrementAP(USEITEMAPCOST, ActionType.ObjectInteraction);
+        
+        if (canUseItem)
+        {
+            canUseItem = item.TryUseItem(1);
+            if (canUseItem)
+            {
+                if (item.Info is ConsumableInfo info)
+                {
+                    foreach (var effect in info.Effects)
+                    {
+                        
+                    }
+                }
+            }
+        }
+
+        return canUseItem;
+    }
+
     protected Quaternion GetTargetRotation(Coordinates currentCoord, Coordinates targetCoord, out HexDir targetDir)
     {
         var targetRotation = Quaternion.LookRotation(transform.position - targetCoord.pos);
@@ -487,7 +516,7 @@ public class Creature : MonoBehaviour, IOccupier
             var totalDamage = 0;
             for (int i = 0; i < numOfAttacks; i++)
             {
-                if (ActiveItem != null && ActiveItem.Info != null && !ActiveItem.TryUseItem(1, out var destroyMe))
+                if (ActiveItem != null && ActiveItem.Info != null && !ActiveItem.TryUseItem(1))
                 {
                     break;
                 }

@@ -1,4 +1,4 @@
-using Serializable = System.SerializableAttribute;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +11,18 @@ public class ItemContainer : MonoBehaviour
 
     private List<InventorySlot> _pooledSlots = new List<InventorySlot>();
 
+    #region Editor Stuff
+
+    private void OnValidate()
+    {
+        foreach (var item in _items)
+        {
+            item.SetName();
+        }
+    }
+
+    #endregion
+    
     public void AddItem(Item item, int count)
     {
         while (count > 0)
@@ -112,9 +124,11 @@ public class ItemContainer : MonoBehaviour
         return false;
     }
 
-    [Serializable]
+    [System.Serializable]
     public class InventorySlot
     {
+        [SerializeField]
+        private string _name;
         [SerializeField]
         private Item _item;
 
@@ -155,6 +169,11 @@ public class ItemContainer : MonoBehaviour
         public void SetCount(int newCount)
         {
             _count = newCount;
+        }
+
+        public void SetName()
+        {
+            _name = $"({_count})-{_item?.Info?.Name}";
         }
     }
 }

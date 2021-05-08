@@ -39,6 +39,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Editor/CreatureCustomEditor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/HexMaker/IOccupier.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/WorldClock.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ConsumableInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Weapons.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Actions/InputAction.cs" root0="SKIP_HIGHLIGHTING" />
@@ -61,12 +62,13 @@
       <list>
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Weapons.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/WeaponInfo.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ItemInfo.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Inventory/ItemContainer.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Inventory/Item.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/AmmoInfo.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Inventory/ItemContainer.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ItemInfo.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ConsumableInfo.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/Inventory/Item.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
       </list>
     </option>
@@ -142,7 +144,7 @@
       <workItem from="1618637315874" duration="31684000" />
       <workItem from="1619311417304" duration="32408000" />
       <workItem from="1619654588024" duration="11927000" />
-      <workItem from="1620354384320" duration="10605000" />
+      <workItem from="1620354384320" duration="18029000" />
     </task>
     <servers />
   </component>
@@ -235,177 +237,9 @@
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
     <state width="3397" height="314" key="GridCell.Tab.3.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620442831039" />
-    <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1620359450738">
+    <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1620450684995">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620359450738" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Core/Inventory/ItemContainer.cs</url>
-          <line>15</line>
-          <properties documentPath="C:\Asus WebStorage\fuzzinator12@gmail.com\MySyncFolder\Fallout-Remaster\Assets\Scripts\Core\Inventory\ItemContainer.cs" initialLine="12" />
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>482</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="483">
-            <startOffsets>
-              <option value="13791" />
-            </startOffsets>
-            <endOffsets>
-              <option value="13812" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>472</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="473">
-            <startOffsets>
-              <option value="13439" />
-            </startOffsets>
-            <endOffsets>
-              <option value="13460" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>454</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="455">
-            <startOffsets>
-              <option value="12753" />
-            </startOffsets>
-            <endOffsets>
-              <option value="12774" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>525</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="526">
-            <startOffsets>
-              <option value="15143" />
-            </startOffsets>
-            <endOffsets>
-              <option value="15164" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>450</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="451">
-            <startOffsets>
-              <option value="12595" />
-            </startOffsets>
-            <endOffsets>
-              <option value="12642" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs</url>
-          <line>119</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\BasicAI.cs" initialLine="119">
-            <startOffsets>
-              <option value="2603" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2625" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs</url>
-          <line>242</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\BasicAI.cs" initialLine="242">
-            <startOffsets>
-              <option value="6172" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6195" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>248</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="249">
-            <startOffsets>
-              <option value="6940" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6970" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/BasicAI.cs</url>
-          <line>218</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\BasicAI.cs" initialLine="218">
-            <startOffsets>
-              <option value="5508" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5515" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs</url>
-          <line>875</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Player.cs" initialLine="875">
-            <startOffsets>
-              <option value="22552" />
-            </startOffsets>
-            <endOffsets>
-              <option value="22612" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>628</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="629">
-            <startOffsets>
-              <option value="18094" />
-            </startOffsets>
-            <endOffsets>
-              <option value="18135" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs</url>
-          <line>626</line>
-          <properties documentPath="E:\Fallout-Remaster\Assets\Scripts\Creatures\Creature.cs" initialLine="627">
-            <startOffsets>
-              <option value="17977" />
-            </startOffsets>
-            <endOffsets>
-              <option value="18071" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620450684995" />
   </component>
 </project>

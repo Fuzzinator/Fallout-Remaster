@@ -6,7 +6,7 @@ public abstract class ItemInfo : ScriptableObject
 {
     [SerializeField]
     private string _name;
-    private string Name => _name;
+    public string Name => _name;
     
     [SerializeField]
     private int _weight;

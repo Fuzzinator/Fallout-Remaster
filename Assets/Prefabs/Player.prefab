@@ -631,7 +631,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed35c51f514a1d418761c7093265320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _items: []
+  _items:
+  - _name: (1)-Knife
+    _item:
+      _info: {fileID: 11400000, guid: c050c235195b562468c576c1df573ece, type: 2}
+      _ammo: {fileID: 0}
+      _charges: 0
+    _count: 1
+  - _name: (1)-10mm Pistol
+    _item:
+      _info: {fileID: 11400000, guid: cbcbd771a268fc546aef763166728b3f, type: 2}
+      _ammo: {fileID: 11400000, guid: 9a075e297ce48c546bb9dc7d05d2a349, type: 2}
+      _charges: 12
+    _count: 1
+  - _name: (72)-10mm Hollow Point
+    _item:
+      _info: {fileID: 11400000, guid: 9a075e297ce48c546bb9dc7d05d2a349, type: 2}
+      _ammo: {fileID: 0}
+      _charges: 0
+    _count: 72
+  - _name: (1)-BrassKnuckles
+    _item:
+      _info: {fileID: 11400000, guid: f48827f7933bdde48b99ba6179ee7131, type: 2}
+      _ammo: {fileID: 0}
+      _charges: 0
+    _count: 1
 --- !u!54 &149040304637281309
 Rigidbody:
   m_ObjectHideFlags: 0

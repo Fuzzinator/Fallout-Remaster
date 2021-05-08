@@ -932,6 +932,7 @@
           <e p="Scriptable Objs" t="Include">
             <e p="AmmoInfo.cs" t="Include" />
             <e p="ArmorInfo.cs" t="Include" />
+            <e p="ConsumableInfo.cs" t="Include" />
             <e p="ItemInfo.cs" t="Include" />
             <e p="Location.cs" t="Include" />
             <e p="Map.cs" t="Include" />

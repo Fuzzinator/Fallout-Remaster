@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32bf1b4495d2ffc419079a1408f92321, type: 3}
+  m_Name: Speech
+  m_EditorClassIdentifier: 
+  skillName: 15
+  _addedValue: 0
+  description: The ability to communicate in a practical and efficient manner. The
+    skill of convincing others that your position is correct. The ability to lie
+    and not get caught.
+  special1: 4
+  special2: 0
+  _baseLevel: 25
+  _percentMod: 2
