@@ -68,10 +68,12 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Inventory/ItemContainer.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ItemInfo.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Inventory/Item.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ConsumableInfo.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Player.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Human.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/SPECIAL.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/WorldClock.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ConsumableInfo.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/StatusEffectCtrl.cs" />
       </list>
     </option>
@@ -104,10 +106,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="17128">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="17128" />
+      <option name="pid" />
       <option name="selectedOptions">
         <set />
       </option>
@@ -148,6 +150,8 @@
       <workItem from="1619311417304" duration="32408000" />
       <workItem from="1619654588024" duration="11927000" />
       <workItem from="1620354384320" duration="24819000" />
+      <workItem from="1620526542192" duration="5036000" />
+      <workItem from="1620538665328" duration="4806000" />
     </task>
     <servers />
   </component>
@@ -244,9 +248,9 @@
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
     <state width="3397" height="314" key="GridCell.Tab.3.right/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620518662505" />
-    <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1620450684995">
+    <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1620527029752">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620450684995" />
+    <state x="1383" y="315" width="672" height="678" key="search.everywhere.popup/0.-1440.3440.1400/0.0.3440.1400/3440.-501.1920.1160@0.0.3440.1400" timestamp="1620527029752" />
   </component>
 </project>

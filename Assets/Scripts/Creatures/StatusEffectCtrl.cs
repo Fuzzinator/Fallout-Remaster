@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using ThreePupperStudios.Lockable;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class StatusEffectCtrl : MonoBehaviour
 {
@@ -9,10 +11,15 @@ public class StatusEffectCtrl : MonoBehaviour
     private Creature _creature;
 
     [SerializeField]
-    private List<Effect> _queuedEffects = new List<Effect>();
+    private List<Effect> _queuedMinuteEffects = new List<Effect>();
+    [SerializeField]
+    private List<Effect> _queuedHourEffects = new List<Effect>();
 
     [SerializeField]
     private List<Effect> _currentEffects = new List<Effect>();
+
+    private bool _listeningForMinutes = false;
+    private bool _listeningForHours = false;
 
     private void OnValidate()
     {
@@ -31,12 +38,30 @@ public class StatusEffectCtrl : MonoBehaviour
                 ApplyEffect(effect);
                 continue;
             }
+
+            var targetList = effect.DelayLengthType switch
+            {
+                Effect.DelayLength.Minute => _queuedMinuteEffects,
+                Effect.DelayLength.Hour => _queuedHourEffects,
+                _ => throw new System.ArgumentOutOfRangeException()
+            };
+            
             var index = 0;
-            while (index < _queuedEffects.Count && _queuedEffects[index].EffectDelay < effect.EffectDelay)
+            while (index < targetList.Count && targetList[index].EffectDelay < effect.EffectDelay)
             {
                 index++;
             }
-            _queuedEffects.Insert(index, effect);
+            targetList.Insert(index, effect);
+        }
+
+        if (!_listeningForMinutes && _queuedMinuteEffects.Count > 0)
+        {
+            WorldClock.Instance.minuteTick += MinutePassedHandler;
+        }
+
+        if (!_listeningForHours && _queuedHourEffects.Count > 0)
+        {
+            WorldClock.Instance.hourTick += HourPassedHandler;
         }
     }
 
@@ -59,47 +84,107 @@ public class StatusEffectCtrl : MonoBehaviour
             {
                 if (_creature is Human human)
                 {
-                    human.poisonLvl += effect.MaxEffectVal;
+                    human.poisonLvl = Mathf.Max(human.poisonLvl+effect.MaxEffectVal, 0);
                 }
-
                 break;
             }
             case Effect.Type.Radiated:
             {
                 if (_creature is Human human)
                 {
-                    human.poisonLvl += effect.MaxEffectVal;
+                    human.radiatedLvl = Mathf.Max(human.radiatedLvl+effect.MaxEffectVal, 0);
                 }
                 break;
             }
             case Effect.Type.Strength:
+                _creature.ModSPECIAL(SPECIAL.Type.Strength, effect.MaxEffectVal);
                 break;
             case Effect.Type.Perception:
+                _creature.ModSPECIAL(SPECIAL.Type.Perception, effect.MaxEffectVal);
                 break;
             case Effect.Type.Endurance:
+                _creature.ModSPECIAL(SPECIAL.Type.Endurance, effect.MaxEffectVal);
                 break;
             case Effect.Type.Charisma:
+                _creature.ModSPECIAL(SPECIAL.Type.Charisma, effect.MaxEffectVal);
                 break;
             case Effect.Type.Intelligence:
+                _creature.ModSPECIAL(SPECIAL.Type.Intelligence, effect.MaxEffectVal);
                 break;
             case Effect.Type.Agility:
+                _creature.ModSPECIAL(SPECIAL.Type.Agility, effect.MaxEffectVal);
                 break;
             case Effect.Type.Luck:
+                _creature.ModSPECIAL(SPECIAL.Type.Luck, effect.MaxEffectVal);
                 break;
             default:
                 break;
         }
         //_currentEffects
     }
+    
+    private void MinutePassedHandler()
+    {
+        DecrementTime(_queuedMinuteEffects);
+    }
 
+    private void HourPassedHandler()
+    {
+        DecrementTime(_queuedHourEffects);
+    }
+
+    private void DecrementTime(List<Effect> list)
+    {
+        for (var i = 0; i < list.Count; i++)
+        {
+            var effect = list[i];
+            effect.EffectDelay -= 1;
+            if (effect.EffectDelay == 0)
+            {
+                ApplyEffect(effect);
+                list.RemoveAt(i);
+                i--;
+                continue;
+            }
+
+            list[i] = effect;
+        }
+
+        if (_queuedMinuteEffects.Count == 0)
+        {
+            WorldClock.Instance.minuteTick -= MinutePassedHandler;
+            _listeningForMinutes = false;
+        }
+        if (_queuedHourEffects.Count == 0)
+        {
+            WorldClock.Instance.hourTick -= HourPassedHandler;
+            _listeningForHours = false;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        WorldClock.Instance.minuteTick -= MinutePassedHandler;
+        WorldClock.Instance.hourTick -= HourPassedHandler;
+    }
 
     [System.Serializable]
     public struct Effect
     {
         [SerializeField]
         private int _effectDelay;
+        [SerializeField, Lockable]
+        private int _delayInMinutes;
+        public int EffectDelay
+        {
+            get => _effectDelay;
+            set => _effectDelay = value;
+        }
 
-        public int EffectDelay => _effectDelay;
+        [SerializeField]
+        private DelayLength _delayLength;
+
+        public DelayLength DelayLengthType => _delayLength;
 
         [SerializeField]
         private int _minEffectVal;
@@ -115,6 +200,14 @@ public class StatusEffectCtrl : MonoBehaviour
         private Type _effect;
 
         public Type EffectType => _effect;
+
+        public enum DelayLength
+        {
+            None = 0,
+            Minute = 1,
+            Hour = 60,
+            Day = 360,
+        }
 
         public enum Type
         {

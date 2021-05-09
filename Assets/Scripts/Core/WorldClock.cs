@@ -21,6 +21,7 @@ public class WorldClock : MonoBehaviour
     [SerializeField]
     private int _dayTicks = 0;//The number of days that have passed since the game started.
 
+    public bool paused;
     private readonly WaitForSeconds _normalTime = new WaitForSeconds(1);
 
     #region Actions
@@ -28,6 +29,8 @@ public class WorldClock : MonoBehaviour
     public Action morningStarted;
     public Action nightStarted;
 
+    public Action minuteTick;
+    public Action hourTick;
     public Action newDay;
     public Action newMonth;
     public Action newYear;
@@ -35,7 +38,7 @@ public class WorldClock : MonoBehaviour
     #endregion
     #region Properties
 
-    public bool IsLeapYear
+    private bool IsLeapYear
     {
         get
         {
@@ -96,8 +99,13 @@ public class WorldClock : MonoBehaviour
     {
         while (enabled)
         {
+            if (paused)
+            {
+                yield return null;
+            }
             yield return _normalTime;
             _minute++;
+            minuteTick?.Invoke();
             if (_minute < HOUR)
             {
                 continue;
@@ -105,7 +113,7 @@ public class WorldClock : MonoBehaviour
 
             _minute = 0;
             _hour++;
-            
+            hourTick?.Invoke();
             if (_hour < DAY)
             {
                 continue;

@@ -1,3 +1,4 @@
+using System;
 using Serializable = System.SerializableAttribute;
 using Effect = StatusEffectCtrl.Effect;
 using System.Collections;
@@ -18,6 +19,16 @@ public class ConsumableInfo : ItemInfo
     [SerializeField]
     private int _addictionChance;
     public int AddictionChance => _addictionChance;
+
+    [SerializeField]
+    private bool UpdateDelay = false;
+    private void OnValidate()
+    {
+        if (!UpdateDelay)
+        {
+            return;
+        }
+    }
 
     public enum Addiction
     {

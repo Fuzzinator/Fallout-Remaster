@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using ThreePupperStudios.Lockable;
@@ -85,6 +86,37 @@ public class SPECIAL : ScriptableObject
         };
     }
     
+    public void ModSPECIAL(Type type, int value)
+    {
+        switch(type)
+        {
+            case Type.Strength:
+                _strMod += value;
+                break;
+            case Type.Perception:
+                _perMod += value;
+                break;
+            case Type.Endurance:
+                _endMod += value;
+                break;
+            case Type.Charisma:
+                _chaMod += value;
+                break;
+            case Type.Intelligence:
+                _intMod += value;
+                break;
+            case Type.Agility:
+                _agiMod += value;
+                break;
+            case Type.Luck:
+                _lucMod += value;
+                break;
+            case Type.None:
+            case Type.All:
+            default:
+                break;
+        }
+    }
     public enum Type
     {
         None = 0,

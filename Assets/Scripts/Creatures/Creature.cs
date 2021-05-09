@@ -400,10 +400,7 @@ public class Creature : MonoBehaviour, IOccupier
             {
                 if (item.Info is ConsumableInfo info)
                 {
-                    foreach (var effect in info.Effects)
-                    {
-                        
-                    }
+                    _statusCtrl.QueueEffects(info.Effects);
                 }
             }
         }
@@ -435,6 +432,11 @@ public class Creature : MonoBehaviour, IOccupier
         {
             _currentHealth = Mathf.Min(_currentHealth + hp, MaxHealth);
         }
+    }
+
+    public void ModSPECIAL(SPECIAL.Type type, int value)
+    {
+        _special.ModSPECIAL(type, value);
     }
     
     #region Combat
