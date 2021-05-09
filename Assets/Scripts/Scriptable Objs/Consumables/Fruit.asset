@@ -12,14 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7197ceb39d920142aa5d3b720814ce8, type: 3}
   m_Name: Fruit
   m_EditorClassIdentifier: 
-  _name: 
-  _weight: 0
-  _value: 0
-  _maxStackSize: 0
-  _maxCharges: 0
-  _description: 
-  _destroyWhenEmpty: 0
-  _effects: []
+  _name: Fruit
+  _weight: 1
+  _value: 10
+  _maxStackSize: 99
+  _maxCharges: 1
+  _description: A strange piece of fruit. No preservatives and no additional food
+    coloring added.
+  _destroyWhenEmpty: 1
+  _effects:
+  - _effectDelay: 0
+    _delayInMinutes: 0
+    _delayLength: 0
+    _minEffectVal: 1
+    _maxEffectVal: 4
+    _effect: 3
+  - _effectDelay: 2
+    _delayInMinutes: 120
+    _delayLength: 60
+    _minEffectVal: 1
+    _maxEffectVal: 1
+    _effect: 5
+  - _effectDelay: 8
+    _delayInMinutes: 480
+    _delayLength: 60
+    _minEffectVal: 1
+    _maxEffectVal: 1
+    _effect: 5
   _addiction: 0
   _addictionChance: 0
   UpdateDelay: 0
