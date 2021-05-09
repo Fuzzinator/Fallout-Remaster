@@ -28,8 +28,8 @@ public class Creature : MonoBehaviour, IOccupier
     [SerializeField]
     protected ItemContainer _inventory;
 
-    //[SerializeField]
-    //protected Weapons _weapons;
+    [SerializeField]
+    protected StatusEffectCtrl _statusCtrl;
 
     [SerializeField]
     protected Item _primaryItem;
@@ -75,6 +75,9 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected int _baseHealth = 0;
+
+    public int damageResistMod;
+    public int radResistMod;
 
     [SerializeField]
     private AnimatorController animatorController;
@@ -129,7 +132,7 @@ public class Creature : MonoBehaviour, IOccupier
     public virtual int MaxActionPoints => Mathf.FloorToInt(_special.Agility * .5f) + 3;
     public virtual int ArmorClass => _special.Agility + ACMod();
     public virtual int MeleeDamage => _special.Strength > 5 ? _special.Strength - 5 : 1;
-    public virtual int RadResistance => _special.Endurance * 2;
+    public virtual int RadResistance => radResistMod + _special.Endurance * 2;
     public virtual int Sequence => _special.Perception * 2;
     public virtual int HealingRate => Mathf.CeilToInt(_special.Endurance * .3f);
 
@@ -426,6 +429,14 @@ public class Creature : MonoBehaviour, IOccupier
         _currentHealth = value;
     }
 
+    public virtual void GainCurrentHP(int hp)
+    {
+        if (_currentHealth < MaxHealth)
+        {
+            _currentHealth = Mathf.Min(_currentHealth + hp, MaxHealth);
+        }
+    }
+    
     #region Combat
 
     protected virtual bool TryDecrementAP(int cost, ActionType type)
@@ -732,7 +743,7 @@ public class Creature : MonoBehaviour, IOccupier
 
     protected virtual int DamageResistance(DamageType damageType)
     {
-        var resistance = 0;
+        var resistance = damageResistMod;
 
         if (equipedArmorInfo != null)
         {

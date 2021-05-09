@@ -10,9 +10,13 @@ public class Human : Creature
     [SerializeField]
     protected int _age = 25;//This is the player default
 
+    public int poisonLvl;
+
+    public int radiatedLvl;
+    
     [SerializeField]
     protected int _tempRadResist = 0;//Set by taking Rad-X
-
+    
     protected virtual int CarryWeight => 25 + (_special.Strength * 25);
 
     public override int RadResistance => base.RadResistance + RadResistMod();
@@ -21,7 +25,7 @@ public class Human : Creature
 
     protected virtual int RadResistMod()
     {
-        var radResist = 0;
+        var radResist = radResistMod;
 
         if (equipedArmorInfo != null)
         {

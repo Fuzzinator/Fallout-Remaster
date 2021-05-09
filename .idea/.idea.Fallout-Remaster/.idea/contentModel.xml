@@ -914,6 +914,7 @@
             <e p="FOVControl.cs" t="Include" />
             <e p="Human.cs" t="Include" />
             <e p="Player.cs" t="Include" />
+            <e p="StatusEffectCtrl.cs" t="Include" />
           </e>
           <e p="Editor" t="Include">
             <e p="CombatManagerCustomEditor.cs" t="Include" />

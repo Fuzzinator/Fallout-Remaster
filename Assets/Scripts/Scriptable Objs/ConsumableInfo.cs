@@ -1,4 +1,5 @@
 using Serializable = System.SerializableAttribute;
+using Effect = StatusEffectCtrl.Effect;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,41 +37,5 @@ public class ConsumableInfo : ItemInfo
         Beer = 2,
     }
 
-    [Serializable]
-    public struct Effect
-    {
-        [SerializeField]
-        private int _effectDelay;
-        public int EffectDelay => _effectDelay;
-        
-        [SerializeField]
-        private int _minEffectVal;
-        public int MinEffectVal => _minEffectVal;
     
-        [SerializeField]
-        private int _maxEffectVal;
-        public int MaxEffectVal => _maxEffectVal;
-
-        [SerializeField]
-        private Type _effect;
-        public Type EffectType => _effect;
-
-        public enum Type
-        {
-            None = 0,
-            DamageResistance,
-            RadiationResistance,
-            HitPoints,
-            Poison,
-            Radiated,
-            
-            Strength = 10,
-            Perception = 11,
-            Endurance = 12,
-            Charisma = 13,
-            Intelligence = 14,
-            Agility = 15,
-            Luck = 16,
-        }
-    }
 }
