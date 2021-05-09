@@ -12,8 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b67351d547de540a4460f0c3a640e5, type: 3}
   m_Name: MaxStone
   m_EditorClassIdentifier: 
-  _specials: {fileID: 0}
-  _skills: []
+  _specials: {fileID: 11400000, guid: 3ae723af4c8a8b24eb219b6d82722224, type: 2}
+  _skills:
+  - {fileID: 11400000, guid: a68a6d232ed21ff48980367c40f70bb9, type: 2}
+  - {fileID: 11400000, guid: a4420b354e6982b41888df37e1c75959, type: 2}
+  - {fileID: 11400000, guid: b22e583187ebe0f4ebcc166af9ac0a0e, type: 2}
+  - {fileID: 11400000, guid: 881f147450884304e81eee2dae29cdd5, type: 2}
+  - {fileID: 11400000, guid: 1c977ebd92ddc2348a9587f16950d63d, type: 2}
+  - {fileID: 11400000, guid: 3082da64a30253c468515963be4edcb0, type: 2}
+  - {fileID: 11400000, guid: 01c9cc0fb2aa81e4e964f13614ca6fa3, type: 2}
+  - {fileID: 11400000, guid: aa9c9656e2128874bb4c4cf7b9d79167, type: 2}
+  - {fileID: 11400000, guid: c8d5bb7d8c786fd4eb2a3578ef68b628, type: 2}
+  - {fileID: 11400000, guid: 6899aaf82a111e64d84a010693b820c0, type: 2}
+  - {fileID: 11400000, guid: 95d11f43f6b91b14ea7be1709a70aa39, type: 2}
+  - {fileID: 11400000, guid: 60586b2639870704594d76badc80e9b1, type: 2}
+  - {fileID: 11400000, guid: 0b6da718a01a67542831957293e2e240, type: 2}
+  - {fileID: 11400000, guid: 954656ac289b88f49a1f558bcb577462, type: 2}
+  - {fileID: 11400000, guid: 7bdd956c4397c204aa35461caf951323, type: 2}
+  - {fileID: 11400000, guid: 1e4fa5fb738f8184fa4d989ca6d185bb, type: 2}
+  - {fileID: 11400000, guid: d49fed5c745c63b4cac46f1d09b3532d, type: 2}
+  - {fileID: 11400000, guid: 578ebca8965102a43a2863e5b613729d, type: 2}
   tag1: 1
   tag2: 2
   tag3: 4

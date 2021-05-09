@@ -16,6 +16,11 @@ MonoBehaviour:
   _weight: 3
   _value: 2500
   _maxStackSize: 0
+  _maxCharges: 12
+  _description: A Colt 6520 10mm autoloading pistol. Each pull of the trigger will
+    automatically reload the firearm until the magazine is empty. Single shot only,
+    using the powerful 10mm round.
+  _destroyWhenEmpty: 0
   _minDamage: 5
   _maxDamage: 12
   _typeAndInfo:
@@ -29,9 +34,6 @@ MonoBehaviour:
     _ammoCost: 1
   _usesAmmo: 1
   _ammoType: 3
-  _currentAmmo: {fileID: 11400000, guid: 9a075e297ce48c546bb9dc7d05d2a349, type: 2}
-  _ammoInClip: 9
-  _magSize: 12
   _strRequired: 3
   _associatedSkill: 1
   _weaponType: 3

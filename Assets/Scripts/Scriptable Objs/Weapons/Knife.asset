@@ -12,20 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4855a0d7509f1674085805f112957e5b, type: 3}
   m_Name: Knife
   m_EditorClassIdentifier: 
-  _name: 
-  _weight: 0
-  _value: 0
-  _maxStackSize: 0
-  _maxCharges: 0
-  _description: 
+  _name: Knife
+  _weight: 1
+  _value: 40
+  _maxStackSize: 99
+  _maxCharges: 1
+  _description: A sharp-bladed cutting and stabbing weapon.
   _destroyWhenEmpty: 0
-  _minDamage: 0
-  _maxDamage: 0
-  _typeAndInfo: []
+  _minDamage: 1
+  _maxDamage: 6
+  _typeAndInfo:
+  - _attackMode: 4
+    _range: 1
+    _actionPointCost: 3
+    _ammoCost: 0
+  - _attackMode: 5
+    _range: 1
+    _actionPointCost: 3
+    _ammoCost: 0
   _usesAmmo: 0
   _ammoType: 0
-  _strRequired: 0
-  _associatedSkill: 0
-  _weaponType: 0
-  _dmgType: 0
+  _strRequired: 2
+  _associatedSkill: 5
+  _weaponType: 1
+  _dmgType: 1
   _oneHanded: 1

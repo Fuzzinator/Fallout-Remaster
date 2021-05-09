@@ -12,20 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4855a0d7509f1674085805f112957e5b, type: 3}
   m_Name: BrassKnuckles
   m_EditorClassIdentifier: 
-  _name: 
-  _weight: 0
-  _value: 0
-  _maxStackSize: 0
+  _name: Brass Knuckles
+  _weight: 1
+  _value: 40
+  _maxStackSize: 99
   _maxCharges: 0
-  _description: 
+  _description: Hardened knuckle grip that is actually made out of steel. They protect
+    your hand, and do more damage, in unarmed combat.
   _destroyWhenEmpty: 0
-  _minDamage: 0
-  _maxDamage: 0
-  _typeAndInfo: []
+  _minDamage: 2
+  _maxDamage: 5
+  _typeAndInfo:
+  - _attackMode: 6
+    _range: 1
+    _actionPointCost: 3
+    _ammoCost: 0
   _usesAmmo: 0
   _ammoType: 0
-  _strRequired: 0
-  _associatedSkill: 0
-  _weaponType: 0
-  _dmgType: 0
+  _strRequired: 1
+  _associatedSkill: 4
+  _weaponType: 1
+  _dmgType: 1
   _oneHanded: 1
