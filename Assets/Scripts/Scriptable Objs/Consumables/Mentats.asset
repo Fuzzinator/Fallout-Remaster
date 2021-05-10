@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7197ceb39d920142aa5d3b720814ce8, type: 3}
+  m_Name: Mentats
+  m_EditorClassIdentifier: 
+  _name: Mentats
+  _weight: 0
+  _value: 280
+  _maxStackSize: 99
+  _maxCharges: 1
+  _description: "A pillbox of mind-altering chems. Increases memory related functions,
+    and speeds other mental processes. Highly addictive.\r"
+  _destroyWhenEmpty: 1
+  _effects:
+  - _effectDelay: 0
+    _delayLength: 0
+    _minEffectVal: 2
+    _maxEffectVal: 2
+    _effect: 14
+  - _effectDelay: 0
+    _delayLength: 0
+    _minEffectVal: 2
+    _maxEffectVal: 2
+    _effect: 11
+  - _effectDelay: 0
+    _delayLength: 0
+    _minEffectVal: 1
+    _maxEffectVal: 1
+    _effect: 13
+  - _effectDelay: 1
+    _delayLength: 1440
+    _minEffectVal: -4
+    _maxEffectVal: -4
+    _effect: 14
+  - _effectDelay: 1
+    _delayLength: 1440
+    _minEffectVal: -4
+    _maxEffectVal: -4
+    _effect: 11
+  - _effectDelay: 1
+    _delayLength: 1440
+    _minEffectVal: -3
+    _maxEffectVal: -3
+    _effect: 13
+  - _effectDelay: 4
+    _delayLength: 1440
+    _minEffectVal: 2
+    _maxEffectVal: 2
+    _effect: 14
+  - _effectDelay: 4
+    _delayLength: 1440
+    _minEffectVal: 2
+    _maxEffectVal: 2
+    _effect: 11
+  - _effectDelay: 4
+    _delayLength: 1440
+    _minEffectVal: 2
+    _maxEffectVal: 2
+    _effect: 13
+  _addiction: 8
+  _addictionChance: 15
+  _addictWithdrawDelay: 7
+  _withdrawDelayLength: 1440
+  _addictWithdraw: 7
+  _withdrawLength: 1440

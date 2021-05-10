@@ -14,18 +14,37 @@ public class StatusEffectCtrl : MonoBehaviour
     private List<Effect> _queuedMinuteEffects = new List<Effect>();
     [SerializeField]
     private List<Effect> _queuedHourEffects = new List<Effect>();
-
     [SerializeField]
-    private List<Effect> _currentEffects = new List<Effect>();
+    private List<Effect> _queuedDayEffects = new List<Effect>();
 
     private bool _listeningForMinutes = false;
     private bool _listeningForHours = false;
+    private bool _listeningForDays = false;
 
     private void OnValidate()
     {
         if (_creature == null)
         {
             TryGetComponent(out _creature);
+        }
+    }
+
+    private void Start()
+    {
+        if (!_listeningForMinutes && _queuedMinuteEffects.Count > 0)
+        {
+            WorldClock.Instance.minuteTick += MinutePassedHandler;
+            _listeningForMinutes = true;
+        }
+        if (!_listeningForHours && _queuedHourEffects.Count > 0)
+        {
+            WorldClock.Instance.hourTick += HourPassedHandler;
+            _listeningForHours = true;
+        }
+        if (!_listeningForDays && _queuedDayEffects.Count > 0)
+        {
+            WorldClock.Instance.newDay += DayPassedHandler;
+            _listeningForDays = true;
         }
     }
 
@@ -45,7 +64,7 @@ public class StatusEffectCtrl : MonoBehaviour
                 Effect.DelayLength.Hour => _queuedHourEffects,
                 _ => throw new System.ArgumentOutOfRangeException()
             };
-            
+
             var index = 0;
             while (index < targetList.Count && targetList[index].EffectDelay < effect.EffectDelay)
             {
@@ -84,7 +103,7 @@ public class StatusEffectCtrl : MonoBehaviour
             {
                 if (_creature is Human human)
                 {
-                    human.poisonLvl = Mathf.Max(human.poisonLvl+effect.MaxEffectVal, 0);
+                    human.poisonLvl = Mathf.Max(human.poisonLvl + effect.MaxEffectVal, 0);
                 }
                 break;
             }
@@ -92,7 +111,7 @@ public class StatusEffectCtrl : MonoBehaviour
             {
                 if (_creature is Human human)
                 {
-                    human.radiatedLvl = Mathf.Max(human.radiatedLvl+effect.MaxEffectVal, 0);
+                    human.radiatedLvl = Mathf.Max(human.radiatedLvl + effect.MaxEffectVal, 0);
                 }
                 break;
             }
@@ -122,7 +141,7 @@ public class StatusEffectCtrl : MonoBehaviour
         }
         //_currentEffects
     }
-    
+
     private void MinutePassedHandler()
     {
         DecrementTime(_queuedMinuteEffects);
@@ -131,6 +150,11 @@ public class StatusEffectCtrl : MonoBehaviour
     private void HourPassedHandler()
     {
         DecrementTime(_queuedHourEffects);
+    }
+
+    private void DayPassedHandler()
+    {
+        DecrementTime(_queuedDayEffects);
     }
 
     private void DecrementTime(List<Effect> list)
@@ -160,6 +184,11 @@ public class StatusEffectCtrl : MonoBehaviour
             WorldClock.Instance.hourTick -= HourPassedHandler;
             _listeningForHours = false;
         }
+        if (_queuedDayEffects.Count == 0)
+        {
+            WorldClock.Instance.newDay -= DayPassedHandler;
+            _listeningForDays = false;
+        }
     }
 
     private void OnDestroy()
@@ -173,8 +202,6 @@ public class StatusEffectCtrl : MonoBehaviour
     {
         [SerializeField]
         private int _effectDelay;
-        [SerializeField, Lockable]
-        private int _delayInMinutes;
         public int EffectDelay
         {
             get => _effectDelay;
@@ -206,7 +233,7 @@ public class StatusEffectCtrl : MonoBehaviour
             None = 0,
             Minute = 1,
             Hour = 60,
-            Day = 360,
+            Day = 1440,
         }
 
         public enum Type

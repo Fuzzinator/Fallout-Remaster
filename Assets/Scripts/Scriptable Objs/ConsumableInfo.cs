@@ -19,17 +19,22 @@ public class ConsumableInfo : ItemInfo
     [SerializeField]
     private int _addictionChance;
     public int AddictionChance => _addictionChance;
+    
+    [SerializeField]
+    private int _addictWithdrawDelay;
+    public int AddictWithdrawDelay => _addictWithdrawDelay;
 
     [SerializeField]
-    private bool UpdateDelay = false;
-    private void OnValidate()
-    {
-        if (!UpdateDelay)
-        {
-            return;
-        }
-    }
+    private Effect.DelayLength _withdrawDelayLength;
+    public Effect.DelayLength WithdrawDelayLength => _withdrawDelayLength;
+    [SerializeField]
+    private int _addictWithdraw;
+    public int AddictWithdraw => _addictWithdraw;
 
+    [SerializeField]
+    private Effect.DelayLength _withdrawLength;
+    public Effect.DelayLength WithdrawLength => _withdrawLength;
+   
     public enum Addiction
     {
         None = 0,
@@ -37,7 +42,7 @@ public class ConsumableInfo : ItemInfo
         Buffout = 4,
         Mentats = 8,
         NukaCola = 9,
-        NukaColaQuantum = 11,
+        Psycho = 11,
         RadAway = 13
     }
 

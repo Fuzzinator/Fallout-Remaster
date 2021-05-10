@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7197ceb39d920142aa5d3b720814ce8, type: 3}
+  m_Name: RadAway
+  m_EditorClassIdentifier: 
+  _name: RadAway
+  _weight: 0
+  _value: 500
+  _maxStackSize: 99
+  _maxCharges: 1
+  _description: 'A chemical solution that bonds with radiation particles and passes
+    them through your system. Takes time to work.
+
+'
+  _destroyWhenEmpty: 1
+  _effects:
+  - _effectDelay: 0
+    _delayLength: 0
+    _minEffectVal: -25
+    _maxEffectVal: -25
+    _effect: 5
+  - _effectDelay: 2
+    _delayLength: 60
+    _minEffectVal: -50
+    _maxEffectVal: -50
+    _effect: 5
+  - _effectDelay: 4
+    _delayLength: 60
+    _minEffectVal: -75
+    _maxEffectVal: -75
+    _effect: 5
+  _addiction: 13
+  _addictionChance: 10
+  _addictWithdrawDelay: 10
+  _withdrawDelayLength: 1440
+  _addictWithdraw: 7
+  _withdrawLength: 1440

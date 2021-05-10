@@ -22,59 +22,53 @@ MonoBehaviour:
   _destroyWhenEmpty: 1
   _effects:
   - _effectDelay: 0
-    _delayInMinutes: 0
     _delayLength: 0
     _minEffectVal: 2
     _maxEffectVal: 2
     _effect: 10
   - _effectDelay: 0
-    _delayInMinutes: 0
     _delayLength: 0
     _minEffectVal: 2
     _maxEffectVal: 2
     _effect: 15
   - _effectDelay: 0
-    _delayInMinutes: 0
     _delayLength: 0
     _minEffectVal: 3
     _maxEffectVal: 3
     _effect: 12
   - _effectDelay: 6
-    _delayInMinutes: 360
     _delayLength: 60
     _minEffectVal: -4
     _maxEffectVal: -4
     _effect: 10
   - _effectDelay: 6
-    _delayInMinutes: 360
     _delayLength: 60
     _minEffectVal: -4
     _maxEffectVal: -4
     _effect: 15
   - _effectDelay: 6
-    _delayInMinutes: 360
     _delayLength: 60
     _minEffectVal: -4
     _maxEffectVal: -4
     _effect: 12
   - _effectDelay: 18
-    _delayInMinutes: 1080
     _delayLength: 60
     _minEffectVal: 2
     _maxEffectVal: 2
     _effect: 10
   - _effectDelay: 18
-    _delayInMinutes: 1080
     _delayLength: 60
     _minEffectVal: 2
     _maxEffectVal: 2
     _effect: 15
   - _effectDelay: 18
-    _delayInMinutes: 1080
     _delayLength: 60
     _minEffectVal: 1
     _maxEffectVal: 1
     _effect: 12
   _addiction: 4
   _addictionChance: 25
-  UpdateDelay: 0
+  _addictWithdrawDelay: 2
+  _withdrawDelayLength: 1440
+  _addictWithdraw: 7
+  _withdrawLength: 1440

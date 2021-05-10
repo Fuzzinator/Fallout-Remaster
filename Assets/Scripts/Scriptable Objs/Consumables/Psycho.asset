@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7197ceb39d920142aa5d3b720814ce8, type: 3}
+  m_Name: Psycho
+  m_EditorClassIdentifier: 
+  _name: Psycho
+  _weight: 0
+  _value: 400
+  _maxStackSize: 99
+  _maxCharges: 1
+  _description: 'A unique delivery system filled with strange and unknown chemicals
+    of probably military origin. It is supposed to increase the combat potential
+    of a soldier.
+
+'
+  _destroyWhenEmpty: 1
+  _effects:
+  - _effectDelay: 0
+    _delayLength: 0
+    _minEffectVal: 3
+    _maxEffectVal: 3
+    _effect: 15
+  - _effectDelay: 0
+    _delayLength: 0
+    _minEffectVal: -3
+    _maxEffectVal: -3
+    _effect: 14
+  - _effectDelay: 0
+    _delayLength: 0
+    _minEffectVal: 50
+    _maxEffectVal: 50
+    _effect: 1
+  - _effectDelay: 4
+    _delayLength: 60
+    _minEffectVal: -3
+    _maxEffectVal: -3
+    _effect: 15
+  - _effectDelay: 4
+    _delayLength: 60
+    _minEffectVal: 1
+    _maxEffectVal: 1
+    _effect: 14
+  - _effectDelay: 4
+    _delayLength: 60
+    _minEffectVal: -25
+    _maxEffectVal: -25
+    _effect: 1
+  - _effectDelay: 8
+    _delayLength: 60
+    _minEffectVal: 2
+    _maxEffectVal: 2
+    _effect: 14
+  - _effectDelay: 8
+    _delayLength: 60
+    _minEffectVal: -25
+    _maxEffectVal: -25
+    _effect: 1
+  _addiction: 11
+  _addictionChance: 20
+  _addictWithdrawDelay: 7
+  _withdrawDelayLength: 1440
+  _addictWithdraw: 7
+  _withdrawLength: 1440
