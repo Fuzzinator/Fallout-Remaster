@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2ea0e13-5cbb-47c8-a0e6-5ab7e55ef4c9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Fading Ceiling.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Fading Ceiling.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/FadingWall.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/FadingWall.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Vault 13/Cave Entrance.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Vault 13/Cave Entrance.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Creatures/StatusEffectCtrl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Creatures/StatusEffectCtrl.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ConsumableInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ConsumableInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Consumables/Buffout.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/Consumables/Buffout.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +22,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.0.2/InputSystem/Actions/InputAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/WeaponInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/GlobalVariables.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Addiction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4D9F7249-F1DE-41E3-8466-8FEA10E9822F/43/3cc3c670/SetupCoroutine.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/AmmoInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Location Stuff/MapExit.cs" root0="FORCE_HIGHLIGHTING" />
@@ -61,8 +58,10 @@
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/StatusEffectCtrl.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Core/Addiction.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ConsumableInfo.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/StatusEffectCtrl.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pawPlAWun1GTbNUgMp5K1PegZV" />

@@ -21,6 +21,8 @@ public class StatusEffectCtrl : MonoBehaviour
     private bool _listeningForHours = false;
     private bool _listeningForDays = false;
 
+    private Dictionary<ConsumableInfo.Type, Effect[]> _activeEffects = new Dictionary<ConsumableInfo.Type, Effect[]>();
+
     private void OnValidate()
     {
         if (_creature == null)
@@ -48,10 +50,42 @@ public class StatusEffectCtrl : MonoBehaviour
         }
     }
 
-    public void QueueEffects(Effect[] effects)
+    public void QueueEffects(ConsumableInfo consumableInfo)
     {
-        foreach (var effect in effects)
+        if (_activeEffects.ContainsKey(consumableInfo.ConsumableType))
         {
+            for (var i = 0; i < _activeEffects[consumableInfo.ConsumableType].Length; i++)
+            {
+                var effect = _activeEffects[consumableInfo.ConsumableType][i];
+                if (effect == null)
+                {
+                    continue;
+                }
+                
+                if (_queuedMinuteEffects.Contains(effect))
+                {
+                    _queuedMinuteEffects.Remove(effect);
+                }
+                if (_queuedHourEffects.Contains(effect))
+                {
+                    _queuedHourEffects.Remove(effect);
+                }
+                if (_queuedDayEffects.Contains(effect))
+                {
+                    _queuedDayEffects.Remove(effect);
+                }
+
+                ApplyEffect(effect);
+            }
+            _activeEffects.Remove(consumableInfo.ConsumableType);
+        }
+
+        _activeEffects[consumableInfo.ConsumableType] = GetNewEffects(consumableInfo.Effects);
+
+        for (var i = 0; i < _activeEffects[consumableInfo.ConsumableType].Length; i++)
+        {
+            var effect = _activeEffects[consumableInfo.ConsumableType][i];
+            
             if (effect.EffectDelay == 0)
             {
                 ApplyEffect(effect);
@@ -62,6 +96,7 @@ public class StatusEffectCtrl : MonoBehaviour
             {
                 Effect.DelayLength.Minute => _queuedMinuteEffects,
                 Effect.DelayLength.Hour => _queuedHourEffects,
+                Effect.DelayLength.Day => _queuedDayEffects,
                 _ => throw new System.ArgumentOutOfRangeException()
             };
 
@@ -81,6 +116,11 @@ public class StatusEffectCtrl : MonoBehaviour
         if (!_listeningForHours && _queuedHourEffects.Count > 0)
         {
             WorldClock.Instance.hourTick += HourPassedHandler;
+        }
+
+        if (!_listeningForDays && _queuedDayEffects.Count > 0)
+        {
+            WorldClock.Instance.newDay += DayPassedHandler;
         }
     }
 
@@ -157,7 +197,7 @@ public class StatusEffectCtrl : MonoBehaviour
         DecrementTime(_queuedDayEffects);
     }
 
-    private void DecrementTime(List<Effect> list)
+    private void DecrementTime(IList<Effect> list)
     {
         for (var i = 0; i < list.Count; i++)
         {
@@ -167,6 +207,7 @@ public class StatusEffectCtrl : MonoBehaviour
             {
                 ApplyEffect(effect);
                 list.RemoveAt(i);
+                RemoveFromDictionary(effect);
                 i--;
                 continue;
             }
@@ -191,6 +232,56 @@ public class StatusEffectCtrl : MonoBehaviour
         }
     }
 
+    private Effect[] GetNewEffects(IReadOnlyList<Effect> effects)
+    {
+        var newEffects = new Effect[effects.Count];
+        for (var i = 0; i < effects.Count; i++)
+        {
+            newEffects[i] = new Effect(effects[i]);
+        }
+        return newEffects;
+    }
+
+    private void RemoveFromDictionary(Effect effectToRemove)
+    {
+        var keyCollection = _activeEffects.Keys;
+        var keys = new ConsumableInfo.Type[keyCollection.Count];
+        var index = 0;
+        foreach (var key in keyCollection)
+        {
+            keys[index] = key;
+            index++;
+        }
+        for (var j = 0; j < keys.Length; j++)
+        {
+            var effects = _activeEffects[keys[j]];
+            var allNull = true;
+            for (var i = 0; i < effects.Length; i++)
+            {
+                var effect = effects[i];
+                if (effect == effectToRemove)
+                {
+                    _activeEffects[keys[i]] = null;
+                }
+                if (_activeEffects[keys[i]] != null)
+                {
+                    allNull = false;
+                }
+            }
+            if (!allNull)
+            {
+                keys[j] = ConsumableInfo.Type.None;
+            }
+        }
+        foreach (var key in keys)
+        {
+            if (key != ConsumableInfo.Type.None)
+            {
+                _activeEffects.Remove(key);
+            }
+        }
+    }
+
     private void OnDestroy()
     {
         WorldClock.Instance.minuteTick -= MinutePassedHandler;
@@ -198,7 +289,7 @@ public class StatusEffectCtrl : MonoBehaviour
     }
 
     [System.Serializable]
-    public struct Effect
+    public class Effect
     {
         [SerializeField]
         private int _effectDelay;
@@ -227,6 +318,24 @@ public class StatusEffectCtrl : MonoBehaviour
         private Type _effect;
 
         public Type EffectType => _effect;
+
+        public Effect(int delay, DelayLength length, int minVal, int maxVal, Type effect)
+        {
+            _effectDelay = delay;
+            _delayLength = length;
+            _minEffectVal = minVal;
+            _maxEffectVal = maxVal;
+            _effect = effect;
+        }
+
+        public Effect(Effect effect)
+        {
+            _effectDelay = effect._effectDelay;
+            _delayLength = effect._delayLength;
+            _minEffectVal = effect._minEffectVal;
+            _maxEffectVal = effect._maxEffectVal;
+            _effect = effect._effect;
+        }
 
         public enum DelayLength
         {

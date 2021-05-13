@@ -400,7 +400,7 @@ public class Creature : MonoBehaviour, IOccupier
             {
                 if (item.Info is ConsumableInfo info)
                 {
-                    _statusCtrl.QueueEffects(info.Effects);
+                    _statusCtrl.QueueEffects(info);
                 }
             }
         }
