@@ -17,6 +17,9 @@ public class StatusEffectCtrl : MonoBehaviour
     [SerializeField]
     private List<Tuple<ConsumableInfo.Type, Effect>> _queuedDayEffects = new List<Tuple<ConsumableInfo.Type, Effect>>();
 
+    [SerializeField]
+    private List<Addiction> _activeAddictions = new List<Addiction>();
+
     private bool _listeningForMinutes = false;
     private bool _listeningForHours = false;
     private bool _listeningForDays = false;
@@ -109,20 +112,39 @@ public class StatusEffectCtrl : MonoBehaviour
             }
             targetList.Insert(index, new Tuple<ConsumableInfo.Type, Effect>(consumableInfo.ConsumableType, effect));
         }
-
+        if (_creature is Human human && consumableInfo.AddictionType != Addiction.Type.None)
+        {
+            var indexOfExisting = _activeAddictions.FindIndex(i => i.AddictionType == consumableInfo.AddictionType);
+            if (indexOfExisting>=0)
+            {
+                ResetAddiction(consumableInfo.Addiction);
+            }
+            else
+            {
+                var addictionChance = Random.Range(0, 100);
+                //TODO if human has addiction related perk or traits apply logic here
+                if (addictionChance <= consumableInfo.Addiction.AddictionChance)
+                {
+                    TriggerAddiction(consumableInfo.Addiction);
+                }
+            }
+        }
         if (!_listeningForMinutes && _queuedMinuteEffects.Count > 0)
         {
             WorldClock.Instance.minuteTick += MinutePassedHandler;
+            _listeningForMinutes = true;
         }
 
         if (!_listeningForHours && _queuedHourEffects.Count > 0)
         {
             WorldClock.Instance.hourTick += HourPassedHandler;
+            _listeningForHours = true;
         }
 
         if (!_listeningForDays && _queuedDayEffects.Count > 0)
         {
             WorldClock.Instance.newDay += DayPassedHandler;
+            _listeningForDays = true;
         }
     }
 
@@ -272,6 +294,17 @@ public class StatusEffectCtrl : MonoBehaviour
         }
     }
 
+    private void ResetAddiction(Addiction addiction)
+    {
+        //TODO finish this
+    }
+
+    private void TriggerAddiction(Addiction addiction)
+    {
+        _activeAddictions.Add(addiction);
+        //TODO finish this logic
+    }
+
     private void OnDestroy()
     {
         WorldClock.Instance.minuteTick -= MinutePassedHandler;
@@ -339,7 +372,7 @@ public class StatusEffectCtrl : MonoBehaviour
             Intelligence = 14,
             Agility = 15,
             Luck = 16,
-            
+
             NukaCola = 20
         }
 
