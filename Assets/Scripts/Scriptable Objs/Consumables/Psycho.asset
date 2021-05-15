@@ -23,50 +23,50 @@ MonoBehaviour:
 
 '
   _destroyWhenEmpty: 1
+  _type: 0
+  _effectsStackable: 0
   _effects:
   - _effectDelay: 0
     _delayLength: 0
-    _minEffectVal: 3
-    _maxEffectVal: 3
-    _effect: 15
-  - _effectDelay: 0
-    _delayLength: 0
-    _minEffectVal: -3
-    _maxEffectVal: -3
-    _effect: 14
-  - _effectDelay: 0
-    _delayLength: 0
-    _minEffectVal: 50
-    _maxEffectVal: 50
-    _effect: 1
+    _effectDetails:
+    - _minEffectVal: 3
+      _maxEffectVal: 3
+      _effect: 15
+    - _minEffectVal: -3
+      _maxEffectVal: -3
+      _effect: 14
+    - _minEffectVal: 50
+      _maxEffectVal: 50
+      _effect: 1
   - _effectDelay: 4
     _delayLength: 60
-    _minEffectVal: -3
-    _maxEffectVal: -3
-    _effect: 15
-  - _effectDelay: 4
-    _delayLength: 60
-    _minEffectVal: 1
-    _maxEffectVal: 1
-    _effect: 14
-  - _effectDelay: 4
-    _delayLength: 60
-    _minEffectVal: -25
-    _maxEffectVal: -25
-    _effect: 1
+    _effectDetails:
+    - _minEffectVal: -3
+      _maxEffectVal: -3
+      _effect: 15
+    - _minEffectVal: 1
+      _maxEffectVal: 1
+      _effect: 14
+    - _minEffectVal: -25
+      _maxEffectVal: -25
+      _effect: 1
   - _effectDelay: 8
     _delayLength: 60
-    _minEffectVal: 2
-    _maxEffectVal: 2
-    _effect: 14
-  - _effectDelay: 8
-    _delayLength: 60
-    _minEffectVal: -25
-    _maxEffectVal: -25
-    _effect: 1
-  _addiction: 11
-  _addictionChance: 20
-  _addictWithdrawDelay: 7
-  _withdrawDelayLength: 1440
-  _addictWithdraw: 7
-  _withdrawLength: 1440
+    _effectDetails:
+    - _minEffectVal: 2
+      _maxEffectVal: 2
+      _effect: 14
+    - _minEffectVal: -25
+      _maxEffectVal: -25
+      _effect: 1
+  _addiction:
+    _addictionType: 11
+    _addictionChance: 20
+    _addictWithdrawDelay: 7
+    _withdrawDelayLength: 1440
+    _addictWithdraw: 7
+    _withdrawLength: 1440
+    _effects:
+    - _minEffectVal: -2
+      _maxEffectVal: -2
+      _effect: 14

@@ -20,55 +20,59 @@ MonoBehaviour:
   _description: Highly advanced steroids. While in effect, they increase strength
     and reflexes. Very addictive.
   _destroyWhenEmpty: 1
+  _type: 0
+  _effectsStackable: 0
   _effects:
   - _effectDelay: 0
     _delayLength: 0
-    _minEffectVal: 2
-    _maxEffectVal: 2
-    _effect: 10
-  - _effectDelay: 0
-    _delayLength: 0
-    _minEffectVal: 2
-    _maxEffectVal: 2
-    _effect: 15
-  - _effectDelay: 0
-    _delayLength: 0
-    _minEffectVal: 3
-    _maxEffectVal: 3
-    _effect: 12
+    _effectDetails:
+    - _minEffectVal: 2
+      _maxEffectVal: 2
+      _effect: 10
+    - _minEffectVal: 2
+      _maxEffectVal: 2
+      _effect: 15
+    - _minEffectVal: 3
+      _maxEffectVal: 3
+      _effect: 12
   - _effectDelay: 6
     _delayLength: 60
-    _minEffectVal: -4
-    _maxEffectVal: -4
-    _effect: 10
-  - _effectDelay: 6
-    _delayLength: 60
-    _minEffectVal: -4
-    _maxEffectVal: -4
-    _effect: 15
-  - _effectDelay: 6
-    _delayLength: 60
-    _minEffectVal: -4
-    _maxEffectVal: -4
-    _effect: 12
+    _effectDetails:
+    - _minEffectVal: -4
+      _maxEffectVal: -4
+      _effect: 10
+    - _minEffectVal: -4
+      _maxEffectVal: -4
+      _effect: 15
+    - _minEffectVal: -4
+      _maxEffectVal: -4
+      _effect: 12
   - _effectDelay: 18
     _delayLength: 60
-    _minEffectVal: 2
-    _maxEffectVal: 2
-    _effect: 10
-  - _effectDelay: 18
-    _delayLength: 60
-    _minEffectVal: 2
-    _maxEffectVal: 2
-    _effect: 15
-  - _effectDelay: 18
-    _delayLength: 60
-    _minEffectVal: 1
-    _maxEffectVal: 1
-    _effect: 12
-  _addiction: 4
-  _addictionChance: 25
-  _addictWithdrawDelay: 2
-  _withdrawDelayLength: 1440
-  _addictWithdraw: 7
-  _withdrawLength: 1440
+    _effectDetails:
+    - _minEffectVal: 2
+      _maxEffectVal: 2
+      _effect: 10
+    - _minEffectVal: 2
+      _maxEffectVal: 2
+      _effect: 15
+    - _minEffectVal: 1
+      _maxEffectVal: 1
+      _effect: 12
+  _addiction:
+    _addictionType: 4
+    _addictionChance: 25
+    _addictWithdrawDelay: 48
+    _withdrawDelayLength: 60
+    _addictWithdraw: 7
+    _withdrawLength: 1440
+    _effects:
+    - _minEffectVal: -2
+      _maxEffectVal: -2
+      _effect: 10
+    - _minEffectVal: -3
+      _maxEffectVal: -3
+      _effect: 15
+    - _minEffectVal: -2
+      _maxEffectVal: -2
+      _effect: 12

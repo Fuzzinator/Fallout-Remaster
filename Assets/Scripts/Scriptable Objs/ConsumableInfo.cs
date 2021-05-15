@@ -13,6 +13,10 @@ public class ConsumableInfo : ItemInfo
     public Type ConsumableType => _type;
     
     [SerializeField]
+    private bool _effectsStackable;
+    public bool Stackable => _effectsStackable;
+    
+    [SerializeField]
     private Effect[] _effects = new Effect[0];
     public Effect[] Effects => _effects;
 

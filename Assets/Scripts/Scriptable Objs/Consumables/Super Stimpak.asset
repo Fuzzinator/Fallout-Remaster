@@ -21,25 +21,32 @@ MonoBehaviour:
     small amount of damage after a period of time due to powerful nature of the chemicals
     used.\r"
   _destroyWhenEmpty: 1
+  _type: 0
+  _effectsStackable: 1
   _effects:
   - _effectDelay: 0
     _delayLength: 0
-    _minEffectVal: 75
-    _maxEffectVal: 75
-    _effect: 3
+    _effectDetails:
+    - _minEffectVal: 75
+      _maxEffectVal: 75
+      _effect: 3
   - _effectDelay: 1
     _delayLength: 1
-    _minEffectVal: -3
-    _maxEffectVal: -3
-    _effect: 3
+    _effectDetails:
+    - _minEffectVal: -3
+      _maxEffectVal: -3
+      _effect: 3
   - _effectDelay: 2
     _delayLength: 1
-    _minEffectVal: -6
-    _maxEffectVal: -6
-    _effect: 3
-  _addiction: 0
-  _addictionChance: 0
-  _addictWithdrawDelay: 0
-  _withdrawDelayLength: 0
-  _addictWithdraw: 0
-  _withdrawLength: 0
+    _effectDetails:
+    - _minEffectVal: -6
+      _maxEffectVal: -6
+      _effect: 3
+  _addiction:
+    _addictionType: 0
+    _addictionChance: 0
+    _addictWithdrawDelay: 0
+    _withdrawDelayLength: 0
+    _addictWithdraw: 0
+    _withdrawLength: 0
+    _effects: []

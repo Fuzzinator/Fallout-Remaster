@@ -20,25 +20,32 @@ MonoBehaviour:
   _description: "Anti-radiation chems to be taken before exposure. No known side
     effects.\r"
   _destroyWhenEmpty: 1
+  _type: 0
+  _effectsStackable: 0
   _effects:
   - _effectDelay: 0
     _delayLength: 0
-    _minEffectVal: 50
-    _maxEffectVal: 50
-    _effect: 2
+    _effectDetails:
+    - _minEffectVal: 50
+      _maxEffectVal: 50
+      _effect: 2
   - _effectDelay: 1
     _delayLength: 1440
-    _minEffectVal: -25
-    _maxEffectVal: -25
-    _effect: 2
+    _effectDetails:
+    - _minEffectVal: -25
+      _maxEffectVal: -25
+      _effect: 2
   - _effectDelay: 2
     _delayLength: 1440
-    _minEffectVal: -25
-    _maxEffectVal: -25
-    _effect: 2
-  _addiction: 0
-  _addictionChance: 0
-  _addictWithdrawDelay: 0
-  _withdrawDelayLength: 0
-  _addictWithdraw: 0
-  _withdrawLength: 0
+    _effectDetails:
+    - _minEffectVal: -25
+      _maxEffectVal: -25
+      _effect: 2
+  _addiction:
+    _addictionType: 0
+    _addictionChance: 0
+    _addictWithdrawDelay: 0
+    _withdrawDelayLength: 0
+    _addictWithdraw: 0
+    _withdrawLength: 0
+    _effects: []

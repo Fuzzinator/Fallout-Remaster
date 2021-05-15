@@ -22,10 +22,17 @@ MonoBehaviour:
 
 '
   _destroyWhenEmpty: 1
+  _type: 0
+  _effectsStackable: 1
   _effects: []
-  _addiction: 0
-  _addictionChance: 10
-  _addictWithdrawDelay: 30
-  _withdrawDelayLength: 1
-  _addictWithdraw: 0
-  _withdrawLength: 0
+  _addiction:
+    _addictionType: 9
+    _addictionChance: 10
+    _addictWithdrawDelay: 30
+    _withdrawDelayLength: 1
+    _addictWithdraw: 7
+    _withdrawLength: 1440
+    _effects:
+    - _minEffectVal: 0
+      _maxEffectVal: 0
+      _effect: 20

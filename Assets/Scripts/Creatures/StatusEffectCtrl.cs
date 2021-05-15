@@ -11,11 +11,11 @@ public class StatusEffectCtrl : MonoBehaviour
     private Creature _creature;
 
     [SerializeField]
-    private List<Effect> _queuedMinuteEffects = new List<Effect>();
+    private List<Tuple<ConsumableInfo.Type, Effect>> _queuedMinuteEffects = new List<Tuple<ConsumableInfo.Type, Effect>>();
     [SerializeField]
-    private List<Effect> _queuedHourEffects = new List<Effect>();
+    private List<Tuple<ConsumableInfo.Type, Effect>> _queuedHourEffects = new List<Tuple<ConsumableInfo.Type, Effect>>();
     [SerializeField]
-    private List<Effect> _queuedDayEffects = new List<Effect>();
+    private List<Tuple<ConsumableInfo.Type, Effect>> _queuedDayEffects = new List<Tuple<ConsumableInfo.Type, Effect>>();
 
     private bool _listeningForMinutes = false;
     private bool _listeningForHours = false;
@@ -52,7 +52,7 @@ public class StatusEffectCtrl : MonoBehaviour
 
     public void QueueEffects(ConsumableInfo consumableInfo)
     {
-        if (_activeEffects.ContainsKey(consumableInfo.ConsumableType))
+        if (!consumableInfo.Stackable && _activeEffects.ContainsKey(consumableInfo.ConsumableType))
         {
             for (var i = 0; i < _activeEffects[consumableInfo.ConsumableType].Length; i++)
             {
@@ -61,18 +61,20 @@ public class StatusEffectCtrl : MonoBehaviour
                 {
                     continue;
                 }
-                
-                if (_queuedMinuteEffects.Contains(effect))
+                var tup = _queuedMinuteEffects.Find(j => j.Item2 == effect);
+                if (tup != null)
                 {
-                    _queuedMinuteEffects.Remove(effect);
+                    _queuedMinuteEffects.Remove(tup);
                 }
-                if (_queuedHourEffects.Contains(effect))
+                tup = _queuedHourEffects.Find(j => j.Item2 == effect);
+                if (tup != null)
                 {
-                    _queuedHourEffects.Remove(effect);
+                    _queuedHourEffects.Remove(tup);
                 }
-                if (_queuedDayEffects.Contains(effect))
+                tup = _queuedDayEffects.Find(j => j.Item2 == effect);
+                if (tup != null)
                 {
-                    _queuedDayEffects.Remove(effect);
+                    _queuedDayEffects.Remove(tup);
                 }
 
                 ApplyEffect(effect);
@@ -85,7 +87,7 @@ public class StatusEffectCtrl : MonoBehaviour
         for (var i = 0; i < _activeEffects[consumableInfo.ConsumableType].Length; i++)
         {
             var effect = _activeEffects[consumableInfo.ConsumableType][i];
-            
+
             if (effect.EffectDelay == 0)
             {
                 ApplyEffect(effect);
@@ -101,11 +103,11 @@ public class StatusEffectCtrl : MonoBehaviour
             };
 
             var index = 0;
-            while (index < targetList.Count && targetList[index].EffectDelay < effect.EffectDelay)
+            while (index < targetList.Count && targetList[index].Item2.EffectDelay < effect.EffectDelay)
             {
                 index++;
             }
-            targetList.Insert(index, effect);
+            targetList.Insert(index, new Tuple<ConsumableInfo.Type, Effect>(consumableInfo.ConsumableType, effect));
         }
 
         if (!_listeningForMinutes && _queuedMinuteEffects.Count > 0)
@@ -126,58 +128,61 @@ public class StatusEffectCtrl : MonoBehaviour
 
     private void ApplyEffect(Effect effect)
     {
-        switch (effect.EffectType)
+        foreach (var details in effect.EffectDetailsArray)
         {
-            case Effect.Type.None:
-                break;
-            case Effect.Type.DamageResistance:
-                _creature.damageResistMod += effect.MaxEffectVal;
-                break;
-            case Effect.Type.RadiationResistance:
-                _creature.radResistMod += effect.MaxEffectVal;
-                break;
-            case Effect.Type.HitPoints:
-                _creature.GainCurrentHP(Random.Range(effect.MinEffectVal, effect.MaxEffectVal));
-                break;
-            case Effect.Type.Poison:
+            switch (details.EffectType)
             {
-                if (_creature is Human human)
+                case Effect.Type.None:
+                    break;
+                case Effect.Type.DamageResistance:
+                    _creature.damageResistMod += details.MaxEffectVal;
+                    break;
+                case Effect.Type.RadiationResistance:
+                    _creature.radResistMod += details.MaxEffectVal;
+                    break;
+                case Effect.Type.HitPoints:
+                    _creature.GainCurrentHP(Random.Range(details.MinEffectVal, details.MaxEffectVal));
+                    break;
+                case Effect.Type.Poison:
                 {
-                    human.poisonLvl = Mathf.Max(human.poisonLvl + effect.MaxEffectVal, 0);
+                    if (_creature is Human human)
+                    {
+                        human.poisonLvl = Mathf.Max(human.poisonLvl + details.MaxEffectVal, 0);
+                    }
+                    break;
                 }
-                break;
-            }
-            case Effect.Type.Radiated:
-            {
-                if (_creature is Human human)
+                case Effect.Type.Radiated:
                 {
-                    human.radiatedLvl = Mathf.Max(human.radiatedLvl + effect.MaxEffectVal, 0);
+                    if (_creature is Human human)
+                    {
+                        human.radiatedLvl = Mathf.Max(human.radiatedLvl + details.MaxEffectVal, 0);
+                    }
+                    break;
                 }
-                break;
+                case Effect.Type.Strength:
+                    _creature.ModSPECIAL(SPECIAL.Type.Strength, details.MaxEffectVal);
+                    break;
+                case Effect.Type.Perception:
+                    _creature.ModSPECIAL(SPECIAL.Type.Perception, details.MaxEffectVal);
+                    break;
+                case Effect.Type.Endurance:
+                    _creature.ModSPECIAL(SPECIAL.Type.Endurance, details.MaxEffectVal);
+                    break;
+                case Effect.Type.Charisma:
+                    _creature.ModSPECIAL(SPECIAL.Type.Charisma, details.MaxEffectVal);
+                    break;
+                case Effect.Type.Intelligence:
+                    _creature.ModSPECIAL(SPECIAL.Type.Intelligence, details.MaxEffectVal);
+                    break;
+                case Effect.Type.Agility:
+                    _creature.ModSPECIAL(SPECIAL.Type.Agility, details.MaxEffectVal);
+                    break;
+                case Effect.Type.Luck:
+                    _creature.ModSPECIAL(SPECIAL.Type.Luck, details.MaxEffectVal);
+                    break;
+                default:
+                    break;
             }
-            case Effect.Type.Strength:
-                _creature.ModSPECIAL(SPECIAL.Type.Strength, effect.MaxEffectVal);
-                break;
-            case Effect.Type.Perception:
-                _creature.ModSPECIAL(SPECIAL.Type.Perception, effect.MaxEffectVal);
-                break;
-            case Effect.Type.Endurance:
-                _creature.ModSPECIAL(SPECIAL.Type.Endurance, effect.MaxEffectVal);
-                break;
-            case Effect.Type.Charisma:
-                _creature.ModSPECIAL(SPECIAL.Type.Charisma, effect.MaxEffectVal);
-                break;
-            case Effect.Type.Intelligence:
-                _creature.ModSPECIAL(SPECIAL.Type.Intelligence, effect.MaxEffectVal);
-                break;
-            case Effect.Type.Agility:
-                _creature.ModSPECIAL(SPECIAL.Type.Agility, effect.MaxEffectVal);
-                break;
-            case Effect.Type.Luck:
-                _creature.ModSPECIAL(SPECIAL.Type.Luck, effect.MaxEffectVal);
-                break;
-            default:
-                break;
         }
         //_currentEffects
     }
@@ -197,22 +202,20 @@ public class StatusEffectCtrl : MonoBehaviour
         DecrementTime(_queuedDayEffects);
     }
 
-    private void DecrementTime(IList<Effect> list)
+    private void DecrementTime(IList<Tuple<ConsumableInfo.Type, Effect>> list)
     {
         for (var i = 0; i < list.Count; i++)
         {
-            var effect = list[i];
+            var effect = list[i].Item2;
             effect.EffectDelay -= 1;
             if (effect.EffectDelay == 0)
             {
                 ApplyEffect(effect);
                 list.RemoveAt(i);
-                RemoveFromDictionary(effect);
+                RemoveFromDictionary(list[i]);
                 i--;
                 continue;
             }
-
-            list[i] = effect;
         }
 
         if (_queuedMinuteEffects.Count == 0)
@@ -242,43 +245,30 @@ public class StatusEffectCtrl : MonoBehaviour
         return newEffects;
     }
 
-    private void RemoveFromDictionary(Effect effectToRemove)
+    private void RemoveFromDictionary(Tuple<ConsumableInfo.Type, Effect> effect)
     {
-        var keyCollection = _activeEffects.Keys;
-        var keys = new ConsumableInfo.Type[keyCollection.Count];
-        var index = 0;
-        foreach (var key in keyCollection)
+        var (item1, item2) = effect;
+        if (!_activeEffects.ContainsKey(item1))
         {
-            keys[index] = key;
-            index++;
+            return;
+
         }
-        for (var j = 0; j < keys.Length; j++)
+        var allNull = true;
+        var array = _activeEffects[item1];
+        for (var i = 0; i < array.Length; i++)
         {
-            var effects = _activeEffects[keys[j]];
-            var allNull = true;
-            for (var i = 0; i < effects.Length; i++)
+            if (array[i] == item2)
             {
-                var effect = effects[i];
-                if (effect == effectToRemove)
-                {
-                    _activeEffects[keys[i]] = null;
-                }
-                if (_activeEffects[keys[i]] != null)
-                {
-                    allNull = false;
-                }
+                _activeEffects[item1][i] = null;
             }
-            if (!allNull)
+            if (array[i] != null)
             {
-                keys[j] = ConsumableInfo.Type.None;
+                allNull = false;
             }
         }
-        foreach (var key in keys)
+        if (allNull)
         {
-            if (key != ConsumableInfo.Type.None)
-            {
-                _activeEffects.Remove(key);
-            }
+            _activeEffects.Remove(item1);
         }
     }
 
@@ -305,36 +295,24 @@ public class StatusEffectCtrl : MonoBehaviour
         public DelayLength DelayLengthType => _delayLength;
 
         [SerializeField]
-        private int _minEffectVal;
-
-        public int MinEffectVal => _minEffectVal;
-
-        [SerializeField]
-        private int _maxEffectVal;
-
-        public int MaxEffectVal => _maxEffectVal;
-
-        [SerializeField]
-        private Type _effect;
-
-        public Type EffectType => _effect;
+        private EffectDetails[] _effectDetails;
+        public EffectDetails[] EffectDetailsArray => _effectDetails;
 
         public Effect(int delay, DelayLength length, int minVal, int maxVal, Type effect)
         {
             _effectDelay = delay;
             _delayLength = length;
-            _minEffectVal = minVal;
-            _maxEffectVal = maxVal;
-            _effect = effect;
+            _effectDetails = new[]
+                             {
+                                 new EffectDetails(minVal, maxVal, effect)
+                             };
         }
 
         public Effect(Effect effect)
         {
             _effectDelay = effect._effectDelay;
             _delayLength = effect._delayLength;
-            _minEffectVal = effect._minEffectVal;
-            _maxEffectVal = effect._maxEffectVal;
-            _effect = effect._effect;
+            _effectDetails = effect.EffectDetailsArray;
         }
 
         public enum DelayLength
@@ -361,6 +339,34 @@ public class StatusEffectCtrl : MonoBehaviour
             Intelligence = 14,
             Agility = 15,
             Luck = 16,
+            
+            NukaCola = 20
+        }
+
+        [Serializable]
+        public struct EffectDetails
+        {
+            [SerializeField]
+            private int _minEffectVal;
+
+            public int MinEffectVal => _minEffectVal;
+
+            [SerializeField]
+            private int _maxEffectVal;
+
+            public int MaxEffectVal => _maxEffectVal;
+
+            [SerializeField]
+            private Type _effect;
+
+            public Type EffectType => _effect;
+
+            public EffectDetails(int min, int max, Type effect)
+            {
+                _minEffectVal = min;
+                _maxEffectVal = max;
+                _effect = effect;
+            }
         }
     }
 }

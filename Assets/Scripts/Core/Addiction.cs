@@ -7,8 +7,6 @@ using Effect = StatusEffectCtrl.Effect;
 public class Addiction
 {
     [SerializeField]
-    private StatusEffectCtrl.Effect effect;
-    [SerializeField]
     private Type _addictionType;
     public Type AddictionType => _addictionType;
     
@@ -30,6 +28,10 @@ public class Addiction
     [SerializeField]
     private Effect.DelayLength _withdrawLength;
     public Effect.DelayLength WithdrawLength => _withdrawLength;
+    
+    [SerializeField]
+    private Effect.EffectDetails[] _effects;
+    public Effect.EffectDetails[] Effects => _effects;
     
     public enum Type
     {

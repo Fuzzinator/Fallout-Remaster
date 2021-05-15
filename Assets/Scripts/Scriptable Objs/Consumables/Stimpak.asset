@@ -20,10 +20,20 @@ MonoBehaviour:
   _description: A healing chem. When injected, the chem provides immediate healing
     of minor wounds.
   _destroyWhenEmpty: 1
+  _type: 0
+  _effectsStackable: 1
   _effects:
   - _effectDelay: 0
-    _minEffectVal: 12
-    _maxEffectVal: 20
-    _effect: 3
-  _addiction: 0
-  _addictionChance: 0
+    _delayLength: 0
+    _effectDetails:
+    - _minEffectVal: 12
+      _maxEffectVal: 20
+      _effect: 3
+  _addiction:
+    _addictionType: 0
+    _addictionChance: 0
+    _addictWithdrawDelay: 0
+    _withdrawDelayLength: 0
+    _addictWithdraw: 0
+    _withdrawLength: 0
+    _effects: []

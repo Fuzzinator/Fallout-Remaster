@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2ea0e13-5cbb-47c8-a0e6-5ab7e55ef4c9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/contentModel.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fallout-Remaster/riderModule.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Addiction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Addiction.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Creatures/StatusEffectCtrl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Creatures/StatusEffectCtrl.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ConsumableInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ConsumableInfo.cs" afterDir="false" />
     </list>
@@ -58,8 +61,8 @@
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/Assets/Scripts/Core/Addiction.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/Creature.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Core/Addiction.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Scriptable Objs/ConsumableInfo.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Creatures/StatusEffectCtrl.cs" />
     </changedPaths>
@@ -140,6 +143,7 @@
       <workItem from="1620354384320" duration="24819000" />
       <workItem from="1620526542192" duration="5036000" />
       <workItem from="1620538665328" duration="4806000" />
+      <workItem from="1620952765966" duration="5082000" />
     </task>
     <servers />
   </component>
