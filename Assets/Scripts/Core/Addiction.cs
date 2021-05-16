@@ -62,8 +62,12 @@ public class Addiction
 
     public bool TryPassTime(int amount, Effect.DelayLength length, out WithdrawInfo withdrawInfo)
     {
-        withdrawInfo.nowInWithdraw = _withdrawStarted;
-        withdrawInfo.wasInWithdraw = _withdrawStarted;
+        withdrawInfo = new WithdrawInfo
+        {
+            nowInWithdraw = _withdrawStarted,
+            wasInWithdraw = _withdrawStarted
+        };
+        
         if (!_withdrawStarted)
         {
             if (_withdrawDelayLength != length)
