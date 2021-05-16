@@ -11,9 +11,13 @@ public class StatusEffectCtrl : MonoBehaviour
     private Creature _creature;
 
     [SerializeField]
-    private List<Tuple<ConsumableInfo.Type, Effect>> _queuedMinuteEffects = new List<Tuple<ConsumableInfo.Type, Effect>>();
+    private List<Tuple<ConsumableInfo.Type, Effect>> _queuedMinuteEffects =
+        new List<Tuple<ConsumableInfo.Type, Effect>>();
+
     [SerializeField]
-    private List<Tuple<ConsumableInfo.Type, Effect>> _queuedHourEffects = new List<Tuple<ConsumableInfo.Type, Effect>>();
+    private List<Tuple<ConsumableInfo.Type, Effect>>
+        _queuedHourEffects = new List<Tuple<ConsumableInfo.Type, Effect>>();
+
     [SerializeField]
     private List<Tuple<ConsumableInfo.Type, Effect>> _queuedDayEffects = new List<Tuple<ConsumableInfo.Type, Effect>>();
 
@@ -41,11 +45,13 @@ public class StatusEffectCtrl : MonoBehaviour
             WorldClock.Instance.minuteTick += MinutePassedHandler;
             _listeningForMinutes = true;
         }
+
         if (!_listeningForHours && _queuedHourEffects.Count > 0)
         {
             WorldClock.Instance.hourTick += HourPassedHandler;
             _listeningForHours = true;
         }
+
         if (!_listeningForDays && _queuedDayEffects.Count > 0)
         {
             WorldClock.Instance.newDay += DayPassedHandler;
@@ -64,28 +70,32 @@ public class StatusEffectCtrl : MonoBehaviour
                 {
                     continue;
                 }
+
                 var tup = _queuedMinuteEffects.Find(j => j.Item2 == effect);
                 if (tup != null)
                 {
                     _queuedMinuteEffects.Remove(tup);
                 }
+
                 tup = _queuedHourEffects.Find(j => j.Item2 == effect);
                 if (tup != null)
                 {
                     _queuedHourEffects.Remove(tup);
                 }
+
                 tup = _queuedDayEffects.Find(j => j.Item2 == effect);
                 if (tup != null)
                 {
                     _queuedDayEffects.Remove(tup);
                 }
 
-                ApplyEffect(effect);
+                ApplyEffect(effect.EffectDetailsArray);
             }
+
             _activeEffects.Remove(consumableInfo.ConsumableType);
         }
 
-        _activeEffects[consumableInfo.ConsumableType] = GetNewEffects(consumableInfo.Effects);
+        _activeEffects[consumableInfo.ConsumableType] = Effect.GetNewEffects(consumableInfo.Effects);
 
         for (var i = 0; i < _activeEffects[consumableInfo.ConsumableType].Length; i++)
         {
@@ -93,7 +103,7 @@ public class StatusEffectCtrl : MonoBehaviour
 
             if (effect.EffectDelay == 0)
             {
-                ApplyEffect(effect);
+                ApplyEffect(effect.EffectDetailsArray);
                 continue;
             }
 
@@ -110,14 +120,16 @@ public class StatusEffectCtrl : MonoBehaviour
             {
                 index++;
             }
+
             targetList.Insert(index, new Tuple<ConsumableInfo.Type, Effect>(consumableInfo.ConsumableType, effect));
         }
+
         if (_creature is Human human && consumableInfo.AddictionType != Addiction.Type.None)
         {
             var indexOfExisting = _activeAddictions.FindIndex(i => i.AddictionType == consumableInfo.AddictionType);
-            if (indexOfExisting>=0)
+            if (indexOfExisting >= 0)
             {
-                ResetAddiction(consumableInfo.Addiction);
+                ResetAddiction(_activeAddictions[indexOfExisting], consumableInfo.Addiction);
             }
             else
             {
@@ -129,32 +141,38 @@ public class StatusEffectCtrl : MonoBehaviour
                 }
             }
         }
-        if (!_listeningForMinutes && _queuedMinuteEffects.Count > 0)
+
+        if (!_listeningForMinutes && (_queuedMinuteEffects.Count > 0 ||
+                                      _activeAddictions.Exists(i =>
+                                          AddictionMatchesType(i, Effect.DelayLength.Minute))))
         {
             WorldClock.Instance.minuteTick += MinutePassedHandler;
             _listeningForMinutes = true;
         }
 
-        if (!_listeningForHours && _queuedHourEffects.Count > 0)
+        if (!_listeningForHours && (_queuedHourEffects.Count > 0 ||
+                                    _activeAddictions.Exists(i => AddictionMatchesType(i, Effect.DelayLength.Hour))))
         {
             WorldClock.Instance.hourTick += HourPassedHandler;
             _listeningForHours = true;
         }
 
-        if (!_listeningForDays && _queuedDayEffects.Count > 0)
+        if (!_listeningForDays && (_queuedDayEffects.Count > 0 ||
+                                   _activeAddictions.Exists(i => AddictionMatchesType(i, Effect.DelayLength.Day))))
         {
             WorldClock.Instance.newDay += DayPassedHandler;
             _listeningForDays = true;
         }
     }
 
-    private void ApplyEffect(Effect effect)
+    private void ApplyEffect(IEnumerable<Effect.EffectDetails> effect)
     {
-        foreach (var details in effect.EffectDetailsArray)
+        foreach (var details in effect)
         {
             switch (details.EffectType)
             {
                 case Effect.Type.None:
+                case Effect.Type.NukaCola:
                     break;
                 case Effect.Type.DamageResistance:
                     _creature.damageResistMod += details.MaxEffectVal;
@@ -171,6 +189,7 @@ public class StatusEffectCtrl : MonoBehaviour
                     {
                         human.poisonLvl = Mathf.Max(human.poisonLvl + details.MaxEffectVal, 0);
                     }
+
                     break;
                 }
                 case Effect.Type.Radiated:
@@ -179,6 +198,7 @@ public class StatusEffectCtrl : MonoBehaviour
                     {
                         human.radiatedLvl = Mathf.Max(human.radiatedLvl + details.MaxEffectVal, 0);
                     }
+
                     break;
                 }
                 case Effect.Type.Strength:
@@ -206,25 +226,55 @@ public class StatusEffectCtrl : MonoBehaviour
                     break;
             }
         }
+
         //_currentEffects
     }
 
+    private void ApplyInvertedEffects(Effect.EffectDetails[] effects)
+    {
+        var invertedEffects = effects;
+        for (var j = 0; j < invertedEffects.Length; j++)
+        {
+            var effect = invertedEffects[j];
+            effect.MinEffectVal *= -1;
+            effect.MaxEffectVal *= -1;
+            invertedEffects[j] = effect;
+        }
+        ApplyEffect(invertedEffects);
+    }
+    
     private void MinutePassedHandler()
     {
-        DecrementTime(_queuedMinuteEffects);
+        DecrementEffectTime(_queuedMinuteEffects);
+        if (_activeAddictions.Count > 0 &&
+            _activeAddictions.Exists(i => AddictionMatchesType(i, Effect.DelayLength.Minute)))
+
+        {
+            UpdateAddictions(Effect.DelayLength.Minute);
+        }
     }
 
     private void HourPassedHandler()
     {
-        DecrementTime(_queuedHourEffects);
+        DecrementEffectTime(_queuedHourEffects);
+        if (_activeAddictions.Count > 0 &&
+            _activeAddictions.Exists(i => AddictionMatchesType(i, Effect.DelayLength.Hour)))
+        {
+            UpdateAddictions(Effect.DelayLength.Hour);
+        }
     }
 
     private void DayPassedHandler()
     {
-        DecrementTime(_queuedDayEffects);
+        DecrementEffectTime(_queuedDayEffects);
+        if (_activeAddictions.Count > 0 &&
+            _activeAddictions.Exists(i => AddictionMatchesType(i, Effect.DelayLength.Day)))
+        {
+            UpdateAddictions(Effect.DelayLength.Day);
+        }
     }
 
-    private void DecrementTime(IList<Tuple<ConsumableInfo.Type, Effect>> list)
+    private void DecrementEffectTime(IList<Tuple<ConsumableInfo.Type, Effect>> list)
     {
         for (var i = 0; i < list.Count; i++)
         {
@@ -232,7 +282,7 @@ public class StatusEffectCtrl : MonoBehaviour
             effect.EffectDelay -= 1;
             if (effect.EffectDelay == 0)
             {
-                ApplyEffect(effect);
+                ApplyEffect(effect.EffectDetailsArray);
                 list.RemoveAt(i);
                 RemoveFromDictionary(list[i]);
                 i--;
@@ -240,31 +290,63 @@ public class StatusEffectCtrl : MonoBehaviour
             }
         }
 
-        if (_queuedMinuteEffects.Count == 0)
+        if (_queuedMinuteEffects.Count == 0 &&
+            !_activeAddictions.Exists(i => AddictionMatchesType(i, Effect.DelayLength.Minute)))
         {
             WorldClock.Instance.minuteTick -= MinutePassedHandler;
             _listeningForMinutes = false;
         }
-        if (_queuedHourEffects.Count == 0)
+
+        if (_queuedHourEffects.Count == 0 &&
+            !_activeAddictions.Exists(i => AddictionMatchesType(i, Effect.DelayLength.Hour)))
         {
             WorldClock.Instance.hourTick -= HourPassedHandler;
             _listeningForHours = false;
         }
-        if (_queuedDayEffects.Count == 0)
+
+        if (_queuedDayEffects.Count == 0 &&
+            !_activeAddictions.Exists(i => AddictionMatchesType(i, Effect.DelayLength.Day)))
         {
             WorldClock.Instance.newDay -= DayPassedHandler;
             _listeningForDays = false;
         }
     }
 
-    private Effect[] GetNewEffects(IReadOnlyList<Effect> effects)
+    private static bool AddictionMatchesType(Addiction addiction, Effect.DelayLength length)
     {
-        var newEffects = new Effect[effects.Count];
-        for (var i = 0; i < effects.Count; i++)
+        var info = addiction.GetWithdrawInfo;
+        if (!info.nowInWithdraw)
         {
-            newEffects[i] = new Effect(effects[i]);
+            return addiction.WithdrawDelayLength == length;
         }
-        return newEffects;
+        else
+        {
+            return addiction.WithdrawLength == length;
+        }
+    }
+
+    private void UpdateAddictions(Effect.DelayLength length)
+    {
+        for (var i = 0; i < _activeAddictions.Count; i++)
+        {
+            var addiction = _activeAddictions[i];
+            var passedTime = addiction.TryPassTime(-1, length, out var withdrawInfo);
+            if (!passedTime || !withdrawInfo.nowInWithdraw)
+            {
+                continue;
+            }
+
+            if (!withdrawInfo.wasInWithdraw)
+            {
+                ApplyEffect(addiction.Effects);
+            }
+            else if(withdrawInfo.withdrawEnding)
+            {
+                ApplyInvertedEffects(addiction.Effects);
+                _activeAddictions.Remove(addiction);
+                i--;
+            }
+        }
     }
 
     private void RemoveFromDictionary(Tuple<ConsumableInfo.Type, Effect> effect)
@@ -273,8 +355,8 @@ public class StatusEffectCtrl : MonoBehaviour
         if (!_activeEffects.ContainsKey(item1))
         {
             return;
-
         }
+
         var allNull = true;
         var array = _activeEffects[item1];
         for (var i = 0; i < array.Length; i++)
@@ -283,25 +365,27 @@ public class StatusEffectCtrl : MonoBehaviour
             {
                 _activeEffects[item1][i] = null;
             }
+
             if (array[i] != null)
             {
                 allNull = false;
             }
         }
+
         if (allNull)
         {
             _activeEffects.Remove(item1);
         }
     }
 
-    private void ResetAddiction(Addiction addiction)
+    private static void ResetAddiction(Addiction existingAddiction, Addiction newAddiction)
     {
-        //TODO finish this
+        existingAddiction.SetValues(newAddiction);
     }
 
     private void TriggerAddiction(Addiction addiction)
     {
-        _activeAddictions.Add(addiction);
+        _activeAddictions.Add(new Addiction(addiction));
         //TODO finish this logic
     }
 
@@ -316,6 +400,7 @@ public class StatusEffectCtrl : MonoBehaviour
     {
         [SerializeField]
         private int _effectDelay;
+
         public int EffectDelay
         {
             get => _effectDelay;
@@ -329,16 +414,28 @@ public class StatusEffectCtrl : MonoBehaviour
 
         [SerializeField]
         private EffectDetails[] _effectDetails;
+
         public EffectDetails[] EffectDetailsArray => _effectDetails;
+
+        public static Effect[] GetNewEffects(IReadOnlyList<Effect> effects)
+        {
+            var newEffects = new Effect[effects.Count];
+            for (var i = 0; i < effects.Count; i++)
+            {
+                newEffects[i] = new Effect(effects[i]);
+            }
+
+            return newEffects;
+        }
 
         public Effect(int delay, DelayLength length, int minVal, int maxVal, Type effect)
         {
             _effectDelay = delay;
             _delayLength = length;
             _effectDetails = new[]
-                             {
-                                 new EffectDetails(minVal, maxVal, effect)
-                             };
+            {
+                new EffectDetails(minVal, maxVal, effect)
+            };
         }
 
         public Effect(Effect effect)
@@ -346,6 +443,11 @@ public class StatusEffectCtrl : MonoBehaviour
             _effectDelay = effect._effectDelay;
             _delayLength = effect._delayLength;
             _effectDetails = effect.EffectDetailsArray;
+        }
+
+        public Effect(EffectDetails[] details)
+        {
+            _effectDetails = details;
         }
 
         public enum DelayLength
@@ -382,12 +484,20 @@ public class StatusEffectCtrl : MonoBehaviour
             [SerializeField]
             private int _minEffectVal;
 
-            public int MinEffectVal => _minEffectVal;
+            public int MinEffectVal
+            {
+                get => _minEffectVal;
+                set => _minEffectVal = value;
+            }
 
             [SerializeField]
             private int _maxEffectVal;
 
-            public int MaxEffectVal => _maxEffectVal;
+            public int MaxEffectVal
+            {
+                get => _maxEffectVal;
+                set => _maxEffectVal = value;
+            }
 
             [SerializeField]
             private Type _effect;

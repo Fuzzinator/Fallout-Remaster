@@ -36,11 +36,4 @@ public class Human : Creature
         
         return radResist;
     }
-
-    //Need to make an actual drug system
-    protected IEnumerator TurnDownRadResist()
-    {
-        yield return null;//Make this the length of how 24 hours. Which is rad-X half life
-        _tempRadResist -= 50;//Value 1/2 of 1 Rad-X
-    }
 }
