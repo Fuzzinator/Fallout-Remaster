@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using ThreePupperStudios.Lockable;
@@ -11,15 +10,16 @@ public class StatusEffectCtrl : MonoBehaviour
     private Creature _creature;
 
     [SerializeField]
-    private List<Tuple<ConsumableInfo.Type, Effect>> _queuedMinuteEffects =
-        new List<Tuple<ConsumableInfo.Type, Effect>>();
+    private List<System.Tuple<ConsumableInfo.Type, Effect>> _queuedMinuteEffects =
+        new List<System.Tuple<ConsumableInfo.Type, Effect>>();
 
     [SerializeField]
-    private List<Tuple<ConsumableInfo.Type, Effect>>
-        _queuedHourEffects = new List<Tuple<ConsumableInfo.Type, Effect>>();
+    private List<System.Tuple<ConsumableInfo.Type, Effect>>
+        _queuedHourEffects = new List<System.Tuple<ConsumableInfo.Type, Effect>>();
 
     [SerializeField]
-    private List<Tuple<ConsumableInfo.Type, Effect>> _queuedDayEffects = new List<Tuple<ConsumableInfo.Type, Effect>>();
+    private List<System.Tuple<ConsumableInfo.Type, Effect>> _queuedDayEffects =
+        new List<System.Tuple<ConsumableInfo.Type, Effect>>();
 
     [SerializeField]
     private List<Addiction> _activeAddictions = new List<Addiction>();
@@ -121,7 +121,8 @@ public class StatusEffectCtrl : MonoBehaviour
                 index++;
             }
 
-            targetList.Insert(index, new Tuple<ConsumableInfo.Type, Effect>(consumableInfo.ConsumableType, effect));
+            targetList.Insert(index,
+                new System.Tuple<ConsumableInfo.Type, Effect>(consumableInfo.ConsumableType, effect));
         }
 
         if (_creature is Human human && consumableInfo.AddictionType != Addiction.Type.None)
@@ -240,9 +241,10 @@ public class StatusEffectCtrl : MonoBehaviour
             effect.MaxEffectVal *= -1;
             invertedEffects[j] = effect;
         }
+
         ApplyEffect(invertedEffects);
     }
-    
+
     private void MinutePassedHandler()
     {
         DecrementEffectTime(_queuedMinuteEffects);
@@ -274,7 +276,7 @@ public class StatusEffectCtrl : MonoBehaviour
         }
     }
 
-    private void DecrementEffectTime(IList<Tuple<ConsumableInfo.Type, Effect>> list)
+    private void DecrementEffectTime(IList<System.Tuple<ConsumableInfo.Type, Effect>> list)
     {
         for (var i = 0; i < list.Count; i++)
         {
@@ -340,7 +342,7 @@ public class StatusEffectCtrl : MonoBehaviour
             {
                 ApplyEffect(addiction.Effects);
             }
-            else if(withdrawInfo.withdrawEnding)
+            else if (withdrawInfo.withdrawEnding)
             {
                 ApplyInvertedEffects(addiction.Effects);
                 _activeAddictions.Remove(addiction);
@@ -349,9 +351,10 @@ public class StatusEffectCtrl : MonoBehaviour
         }
     }
 
-    private void RemoveFromDictionary(Tuple<ConsumableInfo.Type, Effect> effect)
+    private void RemoveFromDictionary(System.Tuple<ConsumableInfo.Type, Effect> effect)
     {
-        var (item1, item2) = effect;
+        var item1 = effect.Item1;
+        var item2 = effect.Item2;
         if (!_activeEffects.ContainsKey(item1))
         {
             return;
@@ -478,7 +481,7 @@ public class StatusEffectCtrl : MonoBehaviour
             NukaCola = 20
         }
 
-        [Serializable]
+        [System.Serializable]
         public struct EffectDetails
         {
             [SerializeField]
