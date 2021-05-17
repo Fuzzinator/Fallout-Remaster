@@ -197,7 +197,7 @@ public class StatusEffectCtrl : MonoBehaviour
                 {
                     if (_creature is Human human)
                     {
-                        human.radiatedLvl = Mathf.Max(human.radiatedLvl + details.MaxEffectVal, 0);
+                        human.UpdateRadiationLvl(details.MaxEffectVal);
                     }
 
                     break;
