@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,24 +49,82 @@ public class Human : Creature
         {
             _radiatedLvl = 0;
         }
-
-        if (_radiatedLvl > currentLvl)
+        var radLvlIncreased = false;
+        var radLvlDecreased = false;
+        while (_currentRadiatedLevel != RadiatedLevel.IntenseAgony && _radiatedLvl >= (int)(_currentRadiatedLevel+1))
         {
-            switch (true)
-            {
-                case var b when _radiatedLvl >= 0 && _radiatedLvl < (int)RadiatedLevel.SlightlyFatigued:
-                    break;
-                case var b when _radiatedLvl >= (int)RadiatedLevel.SlightlyFatigued && _radiatedLvl < (int)RadiatedLevel.VomitingDoesNotStop:
-                    break;
-                case var b when _radiatedLvl >= (int)RadiatedLevel.VomitingDoesNotStop && _radiatedLvl < (int)RadiatedLevel.HairFallingOut:
-                    break;
-                case var b when _radiatedLvl >= (int)RadiatedLevel.HairFallingOut && _radiatedLvl < (int)RadiatedLevel.SkinFallingOff:
-                    break;
-                case var b when _radiatedLvl >= (int)RadiatedLevel.SkinFallingOff && _radiatedLvl < (int)RadiatedLevel.IntenseAgony:
-                    break;
-                case var b when _radiatedLvl >= (int)RadiatedLevel.IntenseAgony:
-                    break;
-            }
+            _currentRadiatedLevel += 1;
+            radLvlIncreased = true;
+        }
+        while (_currentRadiatedLevel != RadiatedLevel.SlightlyFatigued && _radiatedLvl < (int)(_currentRadiatedLevel-1))
+        {
+            _currentRadiatedLevel -= 1;
+            radLvlDecreased = true;
+        }
+        switch (_currentRadiatedLevel)
+        {
+            case RadiatedLevel.SlightlyFatigued:
+                if (radLvlDecreased)
+                {
+                    
+                }
+                break;
+            case RadiatedLevel.VomitingDoesNotStop:
+                if (radLvlDecreased)
+                {
+                    
+                }
+                else if (radLvlIncreased)
+                {
+                    
+                }
+                break;
+            case RadiatedLevel.HairFallingOut:
+                if (radLvlDecreased)
+                {
+                    
+                }
+                else if (radLvlIncreased)
+                {
+                    
+                }
+                break;
+            case RadiatedLevel.SkinFallingOff:
+                if (radLvlDecreased)
+                {
+                    
+                }
+                else if (radLvlIncreased)
+                {
+                    
+                }
+                break;
+            case RadiatedLevel.IntenseAgony:
+                if (radLvlIncreased)
+                {
+                    //Start death timer
+                    
+                }
+                break;
+            case RadiatedLevel.None:
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+        
+        switch (true)
+        {
+            case var b when _radiatedLvl >= 0 && _radiatedLvl < (int)RadiatedLevel.SlightlyFatigued:
+                break;
+            case var b when _radiatedLvl >= (int)RadiatedLevel.SlightlyFatigued && _radiatedLvl < (int)RadiatedLevel.VomitingDoesNotStop:
+                break;
+            case var b when _radiatedLvl >= (int)RadiatedLevel.VomitingDoesNotStop && _radiatedLvl < (int)RadiatedLevel.HairFallingOut:
+                break;
+            case var b when _radiatedLvl >= (int)RadiatedLevel.HairFallingOut && _radiatedLvl < (int)RadiatedLevel.SkinFallingOff:
+                break;
+            case var b when _radiatedLvl >= (int)RadiatedLevel.SkinFallingOff && _radiatedLvl < (int)RadiatedLevel.IntenseAgony:
+                break;
+            case var b when _radiatedLvl >= (int)RadiatedLevel.IntenseAgony:
+                break;
         }
     }
     
