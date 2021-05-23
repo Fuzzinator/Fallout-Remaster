@@ -94,6 +94,8 @@ public class Player : Human
     public override int CriticalChance => base.CriticalChance + CritMod();
 
     public int MaxMovement => _currentAP + _bonusMovement;
+    
+    public float AddictionChanceModifier => 
 
     public override BasicAI.Aggression Aggression => BasicAI.Aggression.Friendly;
 

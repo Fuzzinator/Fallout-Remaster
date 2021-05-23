@@ -130,7 +130,7 @@ public class StatusEffectCtrl : MonoBehaviour
                 new System.Tuple<ConsumableInfo.Type, Effect>(consumableInfo.ConsumableType, effect));
         }
 
-        if (_creature is Human human && consumableInfo.AddictionType != Addiction.Type.None)
+        if (_creature is Player player && consumableInfo.AddictionType != Addiction.Type.None)
         {
             var indexOfExisting = _activeAddictions.FindIndex(i => i.AddictionType == consumableInfo.AddictionType);
             if (indexOfExisting >= 0)
@@ -140,6 +140,7 @@ public class StatusEffectCtrl : MonoBehaviour
             else
             {
                 var addictionChance = Random.Range(0, 100);
+                if(player.)
                 //TODO if human has addiction related perk or traits apply logic here
                 if (addictionChance <= consumableInfo.Addiction.AddictionChance)
                 {
