@@ -377,16 +377,19 @@ public class BasicAI : MonoBehaviour
         return percent <= VERYLOWHEALTH;
     }
 
-    private bool TryToHeal() //TODO once inventory is set up, flesh this out
+    private bool TryToHeal()
     {
-        var creatureHasStimPackInInventory = false;
-        if (creatureHasStimPackInInventory)
+        var stimInInventory = _targetCreature.Inventory.TryGetConsumable(ConsumableInfo.Type.Stimpak, out var stimpak);
+        if (!stimInInventory)
+        {
+            stimInInventory = _targetCreature.Inventory.TryGetConsumable(ConsumableInfo.Type.SuperStimpak, out stimpak);
+        }
+        if (stimInInventory)
         {
             var canOpenInventory = _creature.TryOpenInventory();
             if (canOpenInventory)
             {
-                //ai uses stim pack
-                return true;
+                return _creature.TryUseItem(stimpak.Item, true);
             }
         }
 

@@ -22,7 +22,7 @@ public class ItemContainer : MonoBehaviour
     }
 
     #endregion
-    
+
     public void AddItem(Item item, int count)
     {
         while (count > 0)
@@ -111,8 +111,8 @@ public class ItemContainer : MonoBehaviour
         _items.Remove(slot);
         _pooledSlots.Add(slot);
     }
-    
-    public bool TryGetItem(ItemInfo info, out InventorySlot slot)
+
+    public bool TryGetAmmo(ItemInfo info, out InventorySlot slot)
     {
         slot = null;
         if (info != null && _items.Exists(i => i.Item.Info == info))
@@ -124,11 +124,18 @@ public class ItemContainer : MonoBehaviour
         return false;
     }
 
+    public bool TryGetConsumable(ConsumableInfo.Type type, out InventorySlot slot)
+    {
+        slot = _items.Find(i => i.Item.Info is ConsumableInfo consumable && consumable.ConsumableType == type);
+        return slot != null;
+    }
+
     [System.Serializable]
     public class InventorySlot
     {
         [SerializeField]
         private string _name;
+
         [SerializeField]
         private Item _item;
 

@@ -27,6 +27,7 @@ public class Creature : MonoBehaviour, IOccupier
 
     [SerializeField]
     protected ItemContainer _inventory;
+    public ItemContainer Inventory => _inventory;
 
     [SerializeField]
     protected StatusEffectCtrl _statusCtrl;
@@ -339,7 +340,7 @@ public class Creature : MonoBehaviour, IOccupier
 
         if (item != null)
         {
-            var hasMatchingAmmoInInventory = _inventory.TryGetItem(item.Ammo, out var slot);
+            var hasMatchingAmmoInInventory = _inventory.TryGetAmmo(item.Ammo, out var slot);
 
             if (item.Info is WeaponInfo info && info.UsesAmmo && hasMatchingAmmoInInventory)
             {
@@ -358,7 +359,7 @@ public class Creature : MonoBehaviour, IOccupier
 
                     if (item.Charges < item.Info.MaxCharges)
                     {
-                        hasMatchingAmmoInInventory = _inventory.TryGetItem(item.Ammo, out slot);
+                        hasMatchingAmmoInInventory = _inventory.TryGetAmmo(item.Ammo, out slot);
                         while (hasMatchingAmmoInInventory && item.Charges < item.Info.MaxCharges)
                         {
                             newValue = item.ReloadCharges(slot.Count);
@@ -373,7 +374,7 @@ public class Creature : MonoBehaviour, IOccupier
 
                             if (item.Charges < item.Info.MaxCharges)
                             {
-                                hasMatchingAmmoInInventory = _inventory.TryGetItem(item.Ammo, out slot);
+                                hasMatchingAmmoInInventory = _inventory.TryGetAmmo(item.Ammo, out slot);
                             }
                         }
                     }
@@ -384,14 +385,14 @@ public class Creature : MonoBehaviour, IOccupier
         return canReload;
     }
 
-    public virtual bool TryUseItem(Item item)
+    public virtual bool TryUseItem(Item item, bool usingFromInventory = false)
     {
         if (item == null || item.Info == null)
         {
             return false;
         }
         
-        var canUseItem = !CombatManager.Instance.CombatMode ||
+        var canUseItem = !CombatManager.Instance.CombatMode || usingFromInventory ||
                          TryDecrementAP(USEITEMAPCOST, ActionType.ObjectInteraction);
         
         if (canUseItem)
