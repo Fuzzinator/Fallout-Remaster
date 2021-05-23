@@ -596,26 +596,26 @@ public class Player : Human
 
     private int HRModifiers()
     {
-        var healRateMod = 0;
+        var hrMod = healRateMod;
         foreach (var perk in _activePerks)
         {
             if (perk.ModType == ModType.HPRecover)
             {
-                healRateMod += perk.EffectAmount;
+                hrMod += perk.EffectAmount;
             }
         }
 
         if (_trait1 != null && _trait1.TraitType == Trait.Type.FastMetabolism && _trait1.Benefit == ModType.HPRecover)
         {
-            healRateMod += _trait1.BenefitAmount;
+            hrMod += _trait1.BenefitAmount;
         }
         else if (_trait2 != null && _trait2.TraitType == Trait.Type.FastMetabolism &&
                  _trait2.Benefit == ModType.HPRecover)
         {
-            healRateMod += _trait2.BenefitAmount;
+            hrMod += _trait2.BenefitAmount;
         }
 
-        return healRateMod;
+        return hrMod;
     }
 
     private int SkillRateMod()

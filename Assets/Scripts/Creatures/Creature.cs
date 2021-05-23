@@ -78,6 +78,7 @@ public class Creature : MonoBehaviour, IOccupier
 
     public int damageResistMod;
     public int radResistMod;
+    public int healRateMod;
 
     [SerializeField]
     private AnimatorController animatorController;

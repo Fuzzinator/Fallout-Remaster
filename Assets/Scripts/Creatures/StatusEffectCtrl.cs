@@ -28,8 +28,13 @@ public class StatusEffectCtrl : MonoBehaviour
     private bool _listeningForHours = false;
     private bool _listeningForDays = false;
 
+    [SerializeField, HideInInspector]
+    private int _radiationDeathTimer = ONEDAY;
+
     private Dictionary<ConsumableInfo.Type, Effect[]> _activeEffects = new Dictionary<ConsumableInfo.Type, Effect[]>();
 
+    private const int ONEDAY = 24;
+    
     private void OnValidate()
     {
         if (_creature == null)
@@ -392,10 +397,34 @@ public class StatusEffectCtrl : MonoBehaviour
         //TODO finish this logic
     }
 
+    public void StartRadDeathTimer()
+    {
+        _radiationDeathTimer = ONEDAY;
+        WorldClock.Instance.hourTick += CountDownRadDeathTimer;
+    }
+
+    public void StopRadDeathTimer()
+    {
+        WorldClock.Instance.hourTick -= CountDownRadDeathTimer;
+        _radiationDeathTimer = ONEDAY;
+    }
+
+    private void CountDownRadDeathTimer()
+    {
+        _radiationDeathTimer--;
+        if (_radiationDeathTimer <= 0)
+        {
+            WorldClock.Instance.hourTick -= CountDownRadDeathTimer;
+            _creature.TakeDamage(999999);
+        }
+    }
+
     private void OnDestroy()
     {
         WorldClock.Instance.minuteTick -= MinutePassedHandler;
         WorldClock.Instance.hourTick -= HourPassedHandler;
+        WorldClock.Instance.newDay -= DayPassedHandler;
+        WorldClock.Instance.hourTick -= CountDownRadDeathTimer;
     }
 
     [System.Serializable]
