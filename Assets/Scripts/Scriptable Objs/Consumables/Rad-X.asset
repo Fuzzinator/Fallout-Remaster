@@ -29,14 +29,14 @@ MonoBehaviour:
     - _minEffectVal: 50
       _maxEffectVal: 50
       _effect: 2
-  - _effectDelay: 1
-    _delayLength: 1440
+  - _effectDelay: 24
+    _delayLength: 60
     _effectDetails:
     - _minEffectVal: -25
       _maxEffectVal: -25
       _effect: 2
-  - _effectDelay: 2
-    _delayLength: 1440
+  - _effectDelay: 48
+    _delayLength: 60
     _effectDetails:
     - _minEffectVal: -25
       _maxEffectVal: -25
@@ -44,8 +44,9 @@ MonoBehaviour:
   _addiction:
     _addictionType: 0
     _addictionChance: 0
-    _addictWithdrawDelay: 0
+    _withdrawDelay: 0
     _withdrawDelayLength: 0
     _addictWithdraw: 0
     _withdrawLength: 0
     _effects: []
+    _withdrawStarted: 0

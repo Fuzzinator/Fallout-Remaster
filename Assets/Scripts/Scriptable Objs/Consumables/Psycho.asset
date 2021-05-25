@@ -62,11 +62,12 @@ MonoBehaviour:
   _addiction:
     _addictionType: 11
     _addictionChance: 20
-    _addictWithdrawDelay: 7
-    _withdrawDelayLength: 1440
-    _addictWithdraw: 7
-    _withdrawLength: 1440
+    _withdrawDelay: 168
+    _withdrawDelayLength: 60
+    _addictWithdraw: 168
+    _withdrawLength: 60
     _effects:
     - _minEffectVal: -2
       _maxEffectVal: -2
       _effect: 14
+    _withdrawStarted: 0

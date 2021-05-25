@@ -16,17 +16,12 @@ public class StatusEffectCtrl : MonoBehaviour
     [SerializeField]
     private List<System.Tuple<ConsumableInfo.Type, Effect>>
         _queuedHourEffects = new List<System.Tuple<ConsumableInfo.Type, Effect>>();
-
-    [SerializeField]
-    private List<System.Tuple<ConsumableInfo.Type, Effect>> _queuedDayEffects =
-        new List<System.Tuple<ConsumableInfo.Type, Effect>>();
-
+   
     [SerializeField]
     private List<Addiction> _activeAddictions = new List<Addiction>();
 
     private bool _listeningForMinutes = false;
     private bool _listeningForHours = false;
-    private bool _listeningForDays = false;
 
     [SerializeField, HideInInspector]
     private int _radiationDeathTimer = ONEDAY;
@@ -56,12 +51,6 @@ public class StatusEffectCtrl : MonoBehaviour
             WorldClock.Instance.hourTick += HourPassedHandler;
             _listeningForHours = true;
         }
-
-        if (!_listeningForDays && _queuedDayEffects.Count > 0)
-        {
-            WorldClock.Instance.newDay += DayPassedHandler;
-            _listeningForDays = true;
-        }
     }
 
     public void QueueEffects(ConsumableInfo consumableInfo)
@@ -88,12 +77,6 @@ public class StatusEffectCtrl : MonoBehaviour
                     _queuedHourEffects.Remove(tup);
                 }
 
-                tup = _queuedDayEffects.Find(j => j.Item2 == effect);
-                if (tup != null)
-                {
-                    _queuedDayEffects.Remove(tup);
-                }
-
                 ApplyEffect(effect.EffectDetailsArray);
             }
 
@@ -116,7 +99,6 @@ public class StatusEffectCtrl : MonoBehaviour
             {
                 Effect.DelayLength.Minute => _queuedMinuteEffects,
                 Effect.DelayLength.Hour => _queuedHourEffects,
-                Effect.DelayLength.Day => _queuedDayEffects,
                 _ => throw new System.ArgumentOutOfRangeException()
             };
 
@@ -160,13 +142,6 @@ public class StatusEffectCtrl : MonoBehaviour
         {
             WorldClock.Instance.hourTick += HourPassedHandler;
             _listeningForHours = true;
-        }
-
-        if (!_listeningForDays && (_queuedDayEffects.Count > 0 ||
-                                   _activeAddictions.Exists(i => AddictionMatchesType(i, Effect.DelayLength.Day))))
-        {
-            WorldClock.Instance.newDay += DayPassedHandler;
-            _listeningForDays = true;
         }
     }
 
@@ -270,16 +245,6 @@ public class StatusEffectCtrl : MonoBehaviour
         }
     }
 
-    private void DayPassedHandler()
-    {
-        DecrementEffectTime(_queuedDayEffects);
-        if (_activeAddictions.Count > 0 &&
-            _activeAddictions.Exists(i => AddictionMatchesType(i, Effect.DelayLength.Day)))
-        {
-            UpdateAddictions(Effect.DelayLength.Day);
-        }
-    }
-
     private void DecrementEffectTime(IList<System.Tuple<ConsumableInfo.Type, Effect>> list)
     {
         for (var i = 0; i < list.Count; i++)
@@ -308,13 +273,6 @@ public class StatusEffectCtrl : MonoBehaviour
         {
             WorldClock.Instance.hourTick -= HourPassedHandler;
             _listeningForHours = false;
-        }
-
-        if (_queuedDayEffects.Count == 0 &&
-            !_activeAddictions.Exists(i => AddictionMatchesType(i, Effect.DelayLength.Day)))
-        {
-            WorldClock.Instance.newDay -= DayPassedHandler;
-            _listeningForDays = false;
         }
     }
 
@@ -422,7 +380,6 @@ public class StatusEffectCtrl : MonoBehaviour
     {
         WorldClock.Instance.minuteTick -= MinutePassedHandler;
         WorldClock.Instance.hourTick -= HourPassedHandler;
-        WorldClock.Instance.newDay -= DayPassedHandler;
         WorldClock.Instance.hourTick -= CountDownRadDeathTimer;
     }
 
