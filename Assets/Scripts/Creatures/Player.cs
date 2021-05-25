@@ -94,8 +94,6 @@ public class Player : Human
     public override int CriticalChance => base.CriticalChance + CritMod();
 
     public int MaxMovement => _currentAP + _bonusMovement;
-    
-    public float AddictionChanceModifier => 
 
     public override BasicAI.Aggression Aggression => BasicAI.Aggression.Friendly;
 
@@ -800,6 +798,44 @@ public class Player : Human
         }
 
         return radResist;
+    }
+
+    public float AddictionResistMod()
+    {
+        var mod = 1f;
+        
+        if (_trait1 != null)
+        {
+            if(_trait1.Benefit == ModType.AddictResist)
+            {
+                mod *= (.01f*_trait1.BenefitAmount);
+            }
+            if (_trait1.Penalty == ModType.AddictResist)
+            {
+                mod *= (.01f*_trait1.PenaltyAmount);
+            }
+        }
+        
+        if (_trait2 != null)
+        {
+            if(_trait2.Benefit == ModType.AddictResist)
+            {
+                mod *= (.01f*_trait2.BenefitAmount);
+            }
+            if (_trait2.Penalty == ModType.AddictResist)
+            {
+                mod *= (.01f*_trait2.PenaltyAmount);
+            }
+        }
+        
+        foreach (var perk in _activePerks)
+        {
+            if (perk.ModType == ModType.AddictResist)//In Fallout 1 Only Flower Child does this
+            {
+                mod *= (.01f*perk.EffectAmount);
+            }
+        }
+        return mod;
     }
 
     protected override int ACMod()

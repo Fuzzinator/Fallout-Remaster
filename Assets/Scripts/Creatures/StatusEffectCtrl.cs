@@ -140,9 +140,7 @@ public class StatusEffectCtrl : MonoBehaviour
             else
             {
                 var addictionChance = Random.Range(0, 100);
-                if(player.)
-                //TODO if human has addiction related perk or traits apply logic here
-                if (addictionChance <= consumableInfo.Addiction.AddictionChance)
+                if (addictionChance <= consumableInfo.Addiction.AddictionChance*player.AddictionResistMod())
                 {
                     TriggerAddiction(consumableInfo.Addiction);
                 }

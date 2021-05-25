@@ -61,7 +61,7 @@ public enum ModType
     PerkRate = 13,
     SkillLvlInc = 15,
     
-    
+    AddictResist = 16,
     RadResist = 17,
     DamageResist = 18,
     PoisonResist = 19,
